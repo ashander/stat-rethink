@@ -44,9 +44,11 @@ All families in this country have a maximum of two children.
     ## [1] 0.5546
     qplot(probability.boy, posterior, data = dat, 
         geom = "line")
-![plot of chunk prob1.a.fig](prob1.a.fig.png)
+![plot of chunk prob1a_fig](prob1a_fig.png)
 
   
+
+
 # Colophon 
 
 Written using the excellent [knitr](http://yihui.github.com/knitr/).
@@ -54,13 +56,13 @@ Written using the excellent [knitr](http://yihui.github.com/knitr/).
 Need to use not only the options below suggested by knitr docs
 
     #opts_knit$set(theme='gfm',
-    #   base.url='https://github.com/ashander/[REPO]/raw/master/')
+    #   base.url='https://github.com/ashander/stat-rethink/raw/master/')
 
 
 
 but also 
 
-    opts_knit$set(out.format = "markdown")
+    #opts_knit$set(out.format='gfm')
 
 
 
