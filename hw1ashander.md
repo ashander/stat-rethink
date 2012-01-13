@@ -33,6 +33,7 @@ pb.max = p.b[-log(likelihood) == min(-log(likelihood))]
 
 
   The model `p.b = 1` maximizes the posterior probability at the value
+
 ```
 ## [1] 0.5546
 ```
@@ -56,13 +57,13 @@ post.95 = c(p.b.sample[250], p.b.sample[9750])
 Posterior density intervals for probabilty of drawing a boy:
   
 ```
-##  50 % interval:  0.5305 0.5776 
+##  50 % interval:  0.5315 0.5786 
 ```
 ```
-##  90 % interval:  0.4965 0.6116 
+##  90 % interval:  0.4975 0.6126 
 ```
 ```
-##  95 % interval:  0.4875 0.6216 
+##  95 % interval:  0.4855 0.6216 
 ```
 
 

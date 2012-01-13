@@ -31,6 +31,7 @@ end.rcode-->
 end.rcode-->
 
   The model `p.b = 1` maximizes the posterior probability at the value
+
 <!--begin.rcode prob1a, message=FALSE, echo=FALSE
 print(pb.max)
 end.rcode-->
