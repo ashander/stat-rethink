@@ -115,6 +115,7 @@ g = ggplot(fit.both)
 g + geom_pointrange(aes(Interval.width, Estimate, ymin=lower, ymax=upper, color=type), position=position_dodge(width=0.1))
 #dat = data.frame(prior=prior, likelihood=likelihood, posterior=naive.posterior, probability.boy=p.b)
 #g = ggplot(dat)+geom_vline(xintercept=pb.max,color='red') + geom_vline(xintercept=post.50,color='blue')
+
 end.rcode-->
   
 # Problem 2

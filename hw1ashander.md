@@ -99,9 +99,9 @@ Posterior density intervals for probabilty of drawing a boy:
   
 ```
 ##   Estimate  lower  upper Interval.width
-## 1   0.5546 0.5305 0.5776            0.5
-## 2   0.5546 0.4955 0.6116            0.9
-## 3   0.5546 0.4855 0.6216           0.95
+## 1   0.5546 0.5315 0.5776            0.5
+## 2   0.5546 0.4965 0.6106            0.9
+## 3   0.5546 0.4855 0.6206           0.95
 ```
 
 
