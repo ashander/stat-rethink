@@ -3,38 +3,6 @@
 
 
 
-```
-## Loading required package: rethinking
-```
-```
-## Loading required package: MASS
-```
-```
-## Loading required package: ggplot2
-```
-```
-## Loading required package: reshape
-```
-```
-## Loading required package: plyr
-```
-```
-## 
-## Attaching package: 'reshape'
-## 
-```
-```
-## The following object(s) are masked from 'package:plyr':
-## 
-##     rename, round_any
-## 
-```
-```
-## Loading required package: grid
-```
-```
-## Loading required package: proto
-```
 
 
 
@@ -59,12 +27,16 @@ prior <- rep(1/1000, 1000)
 likelihood <- dbinom(sum(birth1) + sum(birth2), 
     size = length(c(birth1, birth2)), prob = p.b)  # likelihood of data given 1000 models (binomial success parameter)
 naive.posterior <- prior * likelihood
-pb.max <- p.b[-log(likelihood) == min(-log(likelihood))]
+Max.post <- function(parameter, posterior) {
+    estimate = parameter[-log(posterior) == min(-log(posterior))]
+    estimate
+}
+pb.max <- Max.post(p.b, naive.posterior)
 ```
 
 
 
-  The model `p.b = 1` maximizes the posterior probability at the value
+  The maximimum posterior probability occurs with model: `p.b = `
 
 ```
 ## [1] 0.5546
@@ -76,17 +48,49 @@ pb.max <- p.b[-log(likelihood) == min(-log(likelihood))]
 ## 1 b
 
 ```r
+# construct intervals
+confint.bayes <- function(par.samples = param.ci, 
+    level = level) {
+    len <- length(par.samples)
+    p <- (1 - level)/2
+    ## some code to construct labels, borrowed from RM's
+    #   confint.quad
+    lowlab <- paste(format(p * 100, nsmall = 1), "%", sep = "")
+    hilab <- paste(format((1 - p) * 100, nsmall = 1), "%", 
+        sep = "")
+    ## find the indices to pull out of the par.samples
+    low <- round(len * p)
+    up <- round(len * (1 - p))
+    ci <- data.frame(col1 = par.samples[low], col2 = par.samples[up])
+    colnames(ci) = c(lowlab, hilab)
+    ci
+}
+
+# construct table like precis
+Precis.bayes <- function(parameter, posterior, 
+    param.ci = NA, level = 0.95) {
+    # param.ci = an ordered set of samples TODO: change to
+    #   do resampling
+    result <- data.frame(est = Max.post(parameter, posterior))
+    colnames(result) <- c("Estimate")
+    if (length(param.ci) > 10) {
+        ci <- confint.bayes(par.samples = param.ci, level = level)
+        result <- cbind(result, ci)
+    }
+    result
+}
+
 p.b.sample <- sample(p.b, size = 10000, replace = TRUE, 
     prob = naive.posterior)
-```
-```
-## Warning message: Walker's alias method used: results are different from R < 2.2.0
-```
-```r
 p.b.sample <- p.b.sample[order(p.b.sample)]
-post.50 <- c(p.b.sample[2500], p.b.sample[7500])
-post.90 <- c(p.b.sample[500], p.b.sample[9500])
-post.95 <- c(p.b.sample[250], p.b.sample[9750])
+
+CItypes = c(0.5, 0.9, 0.95)
+fit.bayes = as.data.frame(t(sapply(CItypes, function(x) {
+    unlist(Precis.bayes(p.b, posterior = naive.posterior, 
+        param.ci = p.b.sample, level = x))
+})))
+names(fit.bayes)[2:3] = c("lower", "upper")
+fit.bayes$Interval.width = as.character(CItypes)
 ```
 
 
@@ -94,34 +98,75 @@ post.95 <- c(p.b.sample[250], p.b.sample[9750])
 Posterior density intervals for probabilty of drawing a boy:
   
 ```
-##  50 % interval:  0.5315 0.5786 
+##   Estimate  lower  upper Interval.width
+## 1   0.5546 0.5305 0.5776            0.5
+## 2   0.5546 0.4955 0.6116            0.9
+## 3   0.5546 0.4855 0.6216           0.95
+```
+
+
+
+## 1c
+
+```r
+births = c(birth1, birth2)
+pb.ml = mle2(y ~ dbinom(size = length(births), 
+    prob = pb), data = list(y = sum(births)), start = list(pb = 0.5))
 ```
 ```
-##  90 % interval:  0.4975 0.6106 
+## Warning message: NaNs produced
 ```
 ```
-##  95 % interval:  0.4865 0.6216 
+## Warning message: NaNs produced
+```
+```
+## Warning message: NaNs produced
+```
+```r
+CItypes = c(0.5, 0.9, 0.95)
+fit.ml = as.data.frame(t(sapply(CItypes, function(x) {
+    unlist(precis(pb.ml, level = x))
+})))
+names(fit.ml)[3:4] = c("lower", "upper")
+fit.ml$Interval.width = as.character(CItypes)
+fit.ml$`Std. Error` = NULL
+```
+
+
+
+```
+##   Estimate  lower  upper Interval.width
+## 1    0.555 0.5313 0.5787            0.5
+## 2    0.555 0.4972 0.6128            0.9
+## 3    0.555 0.4861 0.6239           0.95
 ```
 
 
 
 ```r
-dat = data.frame(prior = prior, likelihood = likelihood, 
-    posterior = naive.posterior, probability.boy = p.b)
-g = ggplot(dat) + geom_vline(xintercept = pb.max, 
-    color = "red")
-g = g + geom_vline(xintercept = post.50, color = "blue")
-g = g + geom_vline(xintercept = post.90, color = "orange")
-g = g + geom_vline(xintercept = post.95, color = "green")
-g = g + geom_line(aes(probability.boy, posterior))
-g
+fit.bayes$type = "Bayes"
+fit.ml$type = "Max. Lik."
+fit.both = rbind(fit.bayes, fit.ml)
+fit.both$Interval.width = as.factor(fit.both$Interval.width)
+#melt.m = melt(fit.ml, id.vars=c('Interval.width',
+#   'lower', 'upper'))
+#tmp =melt(tot, id.vars=c('type', 'Interval.width',
+#   'variable'))
+
+g = ggplot(fit.both)
+g + geom_pointrange(aes(Interval.width, Estimate, 
+    ymin = lower, ymax = upper, color = type), position = position_dodge(width = 0.1))
 ```
-![plot of chunk prob1a_fig](https://github.com/ashander/stat-rethink/raw/master/prob1a_fig.png)
+![plot of chunk prob1a_fig](https://github.com/ashander/stat-rethink/raw/master/prob1a_fig.png)```r
+#dat = data.frame(prior=prior, likelihood=likelihood,
+#   posterior=naive.posterior, probability.boy=p.b)
+#g =
+#   ggplot(dat)+geom_vline(xintercept=pb.max,color='red')
+#   + geom_vline(xintercept=post.50,color='blue')
+```
 
 
-## 1c
-
-
+  
 # Problem 2
 
 ## 2a

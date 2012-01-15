@@ -4,7 +4,7 @@
 <!--roptions dev=png,width=5,height=5 -->
 
 <!--begin.rcode,echo=FALSE
-#require(bbmle)
+require(bbmle)
 require(rethinking)
 require(ggplot2)
 end.rcode-->
@@ -27,10 +27,14 @@ end.rcode-->
  prior <- rep(1/1000, 1000)
  likelihood <- dbinom(sum(birth1)+sum(birth2), size=length(c(birth1,birth2)), prob=p.b) # likelihood of data given 1000 models (binomial success parameter)
  naive.posterior <- prior * likelihood
- pb.max <- p.b[-log(likelihood) == min(-log(likelihood))]
+Max.post <- function(parameter, posterior){
+	estimate=parameter[-log(posterior) == min(-log(posterior))]
+	estimate
+}
+ pb.max <- Max.post(p.b, naive.posterior) 
 end.rcode-->
 
-  The model `p.b = 1` maximizes the posterior probability at the value
+  The maximimum posterior probability occurs with model: `p.b = `
 
 <!--begin.rcode prob1a, message=FALSE, echo=FALSE
 print(pb.max)
@@ -40,34 +44,79 @@ end.rcode-->
 ## 1 b
 
 <!--begin.rcode prob1b, message=FALSE
+# construct intervals
+confint.bayes<-function(par.samples=param.ci, level=level){
+  len <- length(par.samples)
+  p <- (1-level)/2
+  ## some code to construct labels, borrowed from RM's confint.quad
+  lowlab <- paste(format(p * 100, nsmall = 1), "%", sep = "")
+  hilab <- paste(format((1 - p) * 100, nsmall = 1), "%", sep = "")
+  ## find the indices to pull out of the par.samples
+  low <- round(len*p)
+  up <- round(len*(1-p))
+  ci <- data.frame(col1=par.samples[low], col2=par.samples[up])
+  colnames(ci) = c(lowlab, hilab)
+  ci
+ }
+
+# construct table like precis
+Precis.bayes<-function (parameter, posterior, param.ci=NA, level=0.95)
+{
+  # param.ci = an ordered set of samples TODO: change to do resampling 
+  result <- data.frame(est=Max.post(parameter, posterior))
+  colnames(result) <- c("Estimate")
+  if (length(param.ci)>10){
+        ci <- confint.bayes(par.samples=param.ci, level=level)
+        result <- cbind(result, ci)
+    }
+   result
+}
+
 p.b.sample <- sample(p.b, size=1e4, replace=TRUE, prob=naive.posterior)
 p.b.sample <- p.b.sample[order(p.b.sample)]
-post.50 <- c(p.b.sample[2500], p.b.sample[7500])
-post.90 <- c(p.b.sample[500], p.b.sample[9500])
-post.95 <- c(p.b.sample[250], p.b.sample[9750])
+
+CItypes = c(0.5, 0.9, 0.95)
+fit.bayes = as.data.frame(t(sapply(CItypes, function(x){unlist(Precis.bayes(p.b, posterior=naive.posterior, param.ci=p.b.sample, level=x))})))
+names(fit.bayes)[2:3] = c("lower", "upper")
+fit.bayes$Interval.width = as.character(CItypes)
 end.rcode-->
 
 Posterior density intervals for probabilty of drawing a boy:
   
-<!--begin.rcode prob1b, message=FALSE, echo=FALSE
-cat( " 50 % interval: ", post.50, "\n")
-cat( " 90 % interval: ", post.90, "\n")
-cat( " 95 % interval: ", post.95, "\n")
-end.rcode-->
-
-<!--begin.rcode prob1a_fig, message=FALSE, fig=TRUE
-dat = data.frame(prior=prior, likelihood=likelihood, posterior=naive.posterior, probability.boy=p.b)
-g = ggplot(dat)+geom_vline(xintercept=pb.max,color='red')
-g = g + geom_vline(xintercept=post.50,color='blue')
-g = g + geom_vline(xintercept=post.90,color='orange')
-g = g + geom_vline(xintercept=post.95,color='green')
-g = g+geom_line(aes(probability.boy, posterior))    
-g
+<!--begin.rcode prob1btab, message=FALSE, echo=FALSE
+fit.bayes
 end.rcode-->
 
 ## 1c
 
+<!--begin.rcode prob1c, message=FALSE
+births = c(birth1, birth2)
+pb.ml =  mle2(y ~ dbinom(size=length(births), prob=pb), data=list(y=sum(births)), start=list(pb=0.5))
+CItypes = c(0.5, 0.9, 0.95)
+fit.ml = as.data.frame(t(sapply(CItypes, function(x){unlist(precis(pb.ml, level=x))})))
+names(fit.ml)[3:4] = c("lower", "upper")
+fit.ml$Interval.width = as.character(CItypes)
+fit.ml$`Std. Error` = NULL
+end.rcode-->
 
+<!--begin.rcode prob1ctab, message=FALSE, echo=FALSE
+fit.ml
+end.rcode-->
+
+<!--begin.rcode prob1a_fig, message=FALSE, fig=TRUE
+fit.bayes$type = "Bayes"
+fit.ml$type = "Max. Lik."
+fit.both = rbind(fit.bayes, fit.ml)
+fit.both$Interval.width = as.factor(fit.both$Interval.width)
+#melt.m = melt(fit.ml, id.vars=c('Interval.width', 'lower', 'upper'))
+#tmp =melt(tot, id.vars=c('type', 'Interval.width', 'variable'))
+
+g = ggplot(fit.both)
+g + geom_pointrange(aes(Interval.width, Estimate, ymin=lower, ymax=upper, color=type), position=position_dodge(width=0.1))
+#dat = data.frame(prior=prior, likelihood=likelihood, posterior=naive.posterior, probability.boy=p.b)
+#g = ggplot(dat)+geom_vline(xintercept=pb.max,color='red') + geom_vline(xintercept=post.50,color='blue')
+end.rcode-->
+  
 # Problem 2
 
 ## 2a
