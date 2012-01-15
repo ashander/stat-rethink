@@ -100,8 +100,8 @@ Posterior density intervals for probabilty of drawing a boy:
 ```
 ##   Estimate  lower  upper Interval.width
 ## 1   0.5546 0.5315 0.5776            0.5
-## 2   0.5546 0.4965 0.6106            0.9
-## 3   0.5546 0.4855 0.6206           0.95
+## 2   0.5546 0.4975 0.6116            0.9
+## 3   0.5546 0.4855 0.6226           0.95
 ```
 
 
@@ -153,18 +153,18 @@ fit.both$Interval.width = as.factor(fit.both$Interval.width)
 #tmp =melt(tot, id.vars=c('type', 'Interval.width',
 #   'variable'))
 
-g = ggplot(fit.both)
-g + geom_pointrange(aes(Interval.width, Estimate, 
-    ymin = lower, ymax = upper, color = type), position = position_dodge(width = 0.1))
-```
-![plot of chunk prob1a_fig](https://github.com/ashander/stat-rethink/raw/master/prob1a_fig.png)```r
+## old plots
 #dat = data.frame(prior=prior, likelihood=likelihood,
 #   posterior=naive.posterior, probability.boy=p.b)
 #g =
 #   ggplot(dat)+geom_vline(xintercept=pb.max,color='red')
 #   + geom_vline(xintercept=post.50,color='blue')
-```
 
+g = ggplot(fit.both)
+g + geom_pointrange(aes(Interval.width, Estimate, 
+    ymin = lower, ymax = upper, color = type), position = position_dodge(width = 0.1))
+```
+![plot of chunk prob1a_fig](https://github.com/ashander/stat-rethink/raw/master/prob1a_fig.png)
 
   
 # Problem 2

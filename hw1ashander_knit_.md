@@ -111,10 +111,12 @@ fit.both$Interval.width = as.factor(fit.both$Interval.width)
 #melt.m = melt(fit.ml, id.vars=c('Interval.width', 'lower', 'upper'))
 #tmp =melt(tot, id.vars=c('type', 'Interval.width', 'variable'))
 
-g = ggplot(fit.both)
-g + geom_pointrange(aes(Interval.width, Estimate, ymin=lower, ymax=upper, color=type), position=position_dodge(width=0.1))
+## old plots
 #dat = data.frame(prior=prior, likelihood=likelihood, posterior=naive.posterior, probability.boy=p.b)
 #g = ggplot(dat)+geom_vline(xintercept=pb.max,color='red') + geom_vline(xintercept=post.50,color='blue')
+
+g = ggplot(fit.both)
+g + geom_pointrange(aes(Interval.width, Estimate, ymin=lower, ymax=upper, color=type), position=position_dodge(width=0.1))
 
 end.rcode-->
   
