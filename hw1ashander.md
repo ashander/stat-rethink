@@ -22,20 +22,18 @@ data(homeworkch2)  #
 
 ## 1 a
 
-
-
 ```r
 p.b <- seq(from = 0, to = 1, length.out = 1000)
 prior <- rep(1/1000, 1000)
 likelihood <- dbinom(sum(birth1) + sum(birth2), 
     size = length(c(birth1, birth2)), prob = p.b)  # likelihood of data given 1000 models (binomial success parameter)
-naive.posterior <- prior * likelihood
-naive.posterior <- naive.posterior/sum(naive.posterior)
+posterior <- prior * likelihood
+posterior <- posterior/sum(posterior)
 Max.post <- function(parameter, posterior) {
     estimate = parameter[-log(posterior) == min(-log(posterior))]
     estimate
 }
-pb.max <- Max.post(p.b, naive.posterior)
+pb.max <- Max.post(p.b, posterior)
 ```
 
 
@@ -54,22 +52,19 @@ pb.max <- Max.post(p.b, naive.posterior)
 
 
 
-To construct credible intervals, we sample the posterior, order the samples, and choose appropriate elements of from the vector of ordered samples.
+To construct highest posterior density intervals, we use the `HPDI`.
 Choice of appropriate sample and formatting of output is encapsulated in function `Precis.bayes` (a modified version of `rethinking::precis`). 
   
 ```r
 p.b.sample <- sample(p.b, size = 10000, replace = TRUE, 
-    prob = naive.posterior)
-p.b.sample <- p.b.sample[order(p.b.sample)]
+    prob = posterior)
 
-CI.types = c(0.5, 0.9, 0.95)
-CI.data = t(sapply(CI.types, function(x) {
-    unlist(Precis.bayes(p.b, posterior = naive.posterior, 
-        param.ci = p.b.sample, level = x))
+CI.data <- t(sapply(CI.types, function(x) {
+    unlist(Precis.bayes(p.b, posterior = posterior, param.samples = p.b.sample, 
+        level = x))
 }))
-fit.bayes = as.data.frame(CI.data)
-names(fit.bayes)[2:3] = c("lower", "upper")
-fit.bayes$Interval.width = as.character(CI.types)
+fit.bayes <- as.data.frame(CI.data)
+fit.bayes$Interval.width <- as.character(CI.types)
 ```
 
 
@@ -78,9 +73,9 @@ Credible intervals, based on sampling the posterior density, for probabilty of d
   
 ```
 ##   Estimate  lower  upper Interval.width
-## 1   0.5546 0.5305 0.5776            0.5
-## 2   0.5546 0.4975 0.6116            0.9
-## 3   0.5546 0.4855 0.6236           0.95
+## 1   0.5546 0.5315 0.5786            0.5
+## 2   0.5546 0.4965 0.6126            0.9
+## 3   0.5546 0.4845 0.6226           0.95
 ```
 
 
@@ -92,8 +87,8 @@ Credible intervals, based on sampling the posterior density, for probabilty of d
 For maximum likelihood estimation we use `mle2`, and `rethinking::precis` to construct confidence intervals. 
 
 ```r
-births = c(birth1, birth2)
-pb.ml = mle2(y ~ dbinom(size = length(births), 
+births <- c(birth1, birth2)
+pb.ml <- mle2(y ~ dbinom(size = length(births), 
     prob = pb), data = list(y = sum(births)), start = list(pb = 0.5))
 ```
 ```
@@ -106,13 +101,13 @@ pb.ml = mle2(y ~ dbinom(size = length(births),
 ## Warning message: NaNs produced
 ```
 ```r
-CI.dat.bayes = t(sapply(CI.types, function(x) {
+CI.dat.bayes <- t(sapply(CI.types, function(x) {
     unlist(precis(pb.ml, level = x))
 }))
-fit.ml = as.data.frame(CI.dat.bayes)
-names(fit.ml)[3:4] = c("lower", "upper")
-fit.ml$Interval.width = as.character(CI.types)
-fit.ml$`Std. Error` = NULL
+fit.ml <- as.data.frame(CI.dat.bayes)
+names(fit.ml)[3:4] <- c("lower", "upper")
+fit.ml$Interval.width <- as.character(CI.types)
+fit.ml$`Std. Error` <- NULL
 ```
 
 
@@ -128,28 +123,45 @@ fit.ml$`Std. Error` = NULL
 
 
   
+  
+As can be seen from the figure below, the quadratic approximation of the density agrees with the Bayesian posterior in the center of the distribution, but deviates wildly in the tails.
+Additionally, the ML posterior is symmetric.
+
 ```r
-fit.bayes$type = "Bayes"
-fit.ml$type = "Max. Lik."
-fit.both = rbind(fit.bayes, fit.ml)
-fit.both$Interval.width = as.factor(fit.both$Interval.width)
-#melt.m = melt(fit.ml, id.vars=c('Interval.width',
-#   'lower', 'upper'))
-#tmp =melt(tot, id.vars=c('type', 'Interval.width',
-#   'variable'))
+dens.compare <- data.frame(probability = p.b, 
+    Bayes = -log(posterior), ML = -log(dnorm(p.b, mean = pb.max, 
+        sd = sqrt(vcov(pb.ml)))/sum(dnorm(p.b, mean = pb.max, 
+        sd = sqrt(vcov(pb.ml))))))
+d.c = melt(dens.compare, id.vars = "probability")
 
-## old plots
-#dat = data.frame(prior=prior, likelihood=likelihood,
-#   posterior=naive.posterior, probability.boy=p.b)
-#g =
-#   ggplot(dat)+geom_vline(xintercept=pb.max,color='red')
-#   + geom_vline(xintercept=post.50,color='blue')
+g <- ggplot(d.c, aes(probability, value, color = variable))
+g + geom_line() + ylab("- log density")
+```
+![plot of chunk prob1_fig2](https://github.com/ashander/stat-rethink/raw/master/prob1_fig2.png)
 
-g = ggplot(fit.both)
+
+The ML confidence intervals and Bayesian HPDIs are shown below recentered by the ML estimate.
+The ML intervals are symmetric, while the Bayesian intervals are slightly asymmetric.
+Bayesian estimates are slightly below ML estimates, but the intervals tend to agree approximately in width.
+Overall, Bayesian and ML estimate perform similarly for this data set. 
+
+  
+```r
+fit.bayes$type <- "Bayes (HDPI)"
+fit.ml$type <- "Max. Lik. (CI)"
+estimate.ml <- fit.ml[, 1]  # recenter by the ML estimates
+fit.ml[, 1:3] <- fit.ml[, 1:3] - estimate.ml
+fit.bayes[, 1:3] <- fit.bayes[, 1:3] - estimate.ml
+fit.both <- rbind(fit.bayes, fit.ml)
+fit.both$Interval.width <- as.factor(fit.both$Interval.width)
+
+g <- ggplot(fit.both)
 g + geom_pointrange(aes(Interval.width, Estimate, 
     ymin = lower, ymax = upper, color = type), position = position_dodge(width = 0.1))
 ```
-![plot of chunk prob1a_fig](https://github.com/ashander/stat-rethink/raw/master/prob1a_fig.png)
+![plot of chunk prob1_fig1](https://github.com/ashander/stat-rethink/raw/master/prob1_fig1.png)
+
+
 
   
 # Problem 2
@@ -166,7 +178,7 @@ Num.boys <- function(p.b.this, n.total) {
 }
 
 p.b.sims <- sample(p.b, size = 10000, replace = TRUE, 
-    prob = naive.posterior)
+    prob = posterior)
 boys.sims <- sapply(p.b.sims, function(x) {
     Num.boys(x, 200)
 })
@@ -186,7 +198,7 @@ From this use of posterior predictive simulation, the model seems to fit the dat
 
 ```r
 p.b.sims <- sample(p.b, size = 10000, replace = TRUE, 
-    prob = naive.posterior)
+    prob = posterior)
 fb.boys.sims <- sapply(p.b.sims, function(x) {
     Num.boys(x, 100)
 })
@@ -218,7 +230,7 @@ Now simulate 49 births and compare to acutal data (focusing as before on boys):
 
 ```r
 p.b.sims <- sample(p.b, size = 10000, replace = TRUE, 
-    prob = naive.posterior)
+    prob = posterior)
 pg.sims <- sapply(p.b.sims, function(x) {
     Num.boys(x, 49)
 })
@@ -253,7 +265,8 @@ but also
 
 ```r
 opts_knit$set(out.format = "gfm")
-knit("/Users/jaime/PHD/stat-rethink/hw1ashander_knit_.md")  ## to run
+knit("/Users/jaime/PHD/stat-rethink/hw1ashander_knit_.md", 
+    tangle = TRUE)  ## to run
 ```
 
 
