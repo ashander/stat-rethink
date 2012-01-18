@@ -141,7 +141,7 @@ end.rcode-->
 
 ## 2a
 
- Simulating the number of boys born in 200 births using `rbinom`, 10000 replicates
+  Now, we simulate the number of boys born in 200 births using `rbinom`, 10000 replicates:
 
 <!--begin.rcode prob2a, message=FALSE,fig=TRUE
 # define a function to use in simulations 
@@ -156,13 +156,13 @@ dens(boys.sims, adj=1)
 abline(v=sum(c(birth1,birth2)),lwd=3, col='red')
 end.rcode-->
 
-  The actual total births is right in the center of the distribution of predicted number of boys.
+Above is the density of the predicted number of boys, with the actual births (red line) right in the center of the distribution of predicted number of boys.
 From this use of posterior predictive simulation, the model seems to fit the data well.
 
 
 ## 2b
 
- Simulating the number of first born boys in 100 births using `rbinom`, 10000 replicates
+We now simulate the number of first born boys in 100 births using `rbinom`, 10000 replicates:
 
 <!--begin.rcode prob2b, message=FALSE,fig=TRUE
 p.b.sims  <- sample(p.b, size=1e4, replace=TRUE, prob=posterior)
@@ -171,14 +171,13 @@ dens(fb.boys.sims, adj=1)
 abline(v=sum(c(birth1)),lwd=3, col='red')
 end.rcode-->
 
-  The actual count of first born boys is less than the center of the predicted distribution.
+As above, this plot shows the density of predicted number of boys, but this time for first born boys. The actual count of first born boys (red line) is less than the center of the predicted distribution.
 Here, it looks like the model overpredicts the number of first-born boys.
 
 
 ## 2c
 
- Simulating the number of second born boys with sisters births using `rbinom`, 10000 replicates.
-
+To simulate the number of second born boys with sisters as first-born, we must ask:
 How many first-born girls were there, and how were the siblings born after girls distributed?
 Note that the data are ordered by family.
 
@@ -188,7 +187,7 @@ cat("first born girls: ", length(birth.pg), ", boys born after girls: ", sum(bir
 end.rcode-->
   
 So, 49 girls were born first, and following those births, 39 boys and 10 girls were born. 
-Now simulate 49 births and compare to acutal data (focusing as before on boys):
+Now simulate 49 births and compare to acutal data (focusing as before on boys,  using `rbinom`, 10000 replicates):
 
 <!--begin.rcode prob2c, message=FALSE,fig=TRUE
 p.b.sims  <- sample(p.b, size=1e4, replace=TRUE, prob=posterior)
@@ -197,12 +196,16 @@ dens(pg.sims, adj=1)
 abline(v=sum(c(birth.pg)),lwd=3, col='red')
 end.rcode-->
 
-  The actual number of boys born girls (39 boys following 49 girls) exceeds by  _far_ the center of the predicted distribution.
-This could be explained if a boy is more likely to be born following a girl.
-Yet, the model performs well on births in aggregate.
-This could be explained if the assumption of independence between sex of first and second born is invalid in general, and the increased likelihood of bearing girls following boys cancels out the above-demonstrated underprediction of second born boys following girls.
+  The actual number of boys born following girls (red line, 39 boys following 49 girls) exceeds by  _far_ the center of the predicted distribution shown in the density plot above.
+This could be explained if a boy is more likely to be born following a girl (non-independence).
 
+Yet, the model performs well on births in aggregate (as shown in 2a).
+This could be explained if the assumption of independence between sex of first and second born is invalid in general.
+Then, if the increased likelihood of bearing girls following boys cancels out the above-demonstrated underprediction of second born boys following girls, the aggregate data could still fit our model, which assumed independence.
 
+# Full code
+
+[Link to the full code.](https://github.com/ashander/stat-rethink/raw/master/hw1ashander_knit_.R)
 
   
 # Colophon 
@@ -220,6 +223,6 @@ but also
 
 <!--begin.rcode eval=FALSE
 opts_knit$set(out.format='gfm')
-knit('/Users/jaime/PHD/stat-rethink/hw1ashander_knit_.md',tangle=TRUE) ## to run
+knit('/Users/jaime/PHD/stat-rethink/hw1ashander_knit_.md') ## to run
 end.rcode-->
 
