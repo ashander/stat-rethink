@@ -58,7 +58,7 @@ Choice of appropriate sample and formatting of output is encapsulated in functio
 ```r
 p.b.sample <- sample(p.b, size = 10000, replace = TRUE, 
     prob = posterior)
-
+CI.types=c(0.50, 0.90, 0.95)
 CI.data <- t(sapply(CI.types, function(x) {
     unlist(Precis.bayes(p.b, posterior = posterior, param.samples = p.b.sample, 
         level = x))
