@@ -117,8 +117,8 @@ end.rcode-->
 As can be seen from the figure below, the quadratic approximation of the density agrees with the Bayesian posterior in the center of the distribution, but deviates wildly in the tails.
 Additionally, the ML posterior is symmetric.
 
-<!--begin.rcode prob1_fig2, message=FALSE, fig=TRUE
-dens.compare <- data.frame(probability=p.b, Bayes=-log(posterior), ML = -log(dnorm(p.b, mean=pb.max, sd=sqrt(vcov(pb.ml)))/sum(dnorm(p.b, mean=pb.max, sd=sqrt(vcov(pb.ml))))))
+<!--begin.rcode prob1_fig1, message=FALSE, fig=TRUE
+dens.compare <- data.frame(probability=p.b, Bayes=-log(posterior), ML = -log(dnorm(p.b, mean=fit.ml$Estimate[1], sd=sqrt(vcov(pb.ml)))/sum(dnorm(p.b, mean=pb.max, sd=sqrt(vcov(pb.ml))))))
 d.c = melt(dens.compare, id.vars='probability')
 
 g <- ggplot(d.c, aes(probability, value, color=variable))
@@ -131,7 +131,7 @@ Bayesian estimates are slightly below ML estimates, but the intervals tend to ag
 Overall, Bayesian and ML estimate perform similarly for this data set. 
 
   
-<!--begin.rcode prob1_fig1, message=FALSE, fig=TRUE
+<!--begin.rcode prob1_fig2, message=FALSE, fig=TRUE
 fit.bayes$type <- "Bayes (HDPI)"
 fit.ml$type <- "Max. Lik. (CI)"
 estimate.ml <- fit.ml[,1] # recenter by the ML estimates

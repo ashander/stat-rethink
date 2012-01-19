@@ -140,7 +140,7 @@ As can be seen from the figure below, the quadratic approximation of the density
 Additionally, the ML posterior is symmetric.
 
 <<prob1_fig1, message=FALSE, fig=TRUE>>=
-dens.compare <- data.frame(probability=p.b, Bayes=-log(posterior), ML = -log(dnorm(p.b, mean=pb.max, sd=sqrt(vcov(pb.ml)))/sum(dnorm(p.b, mean=pb.max, sd=sqrt(vcov(pb.ml))))))
+dens.compare <- data.frame(probability=p.b, Bayes=-log(posterior), ML = -log(dnorm(p.b, mean=fit.ml$Estimate[1], sd=sqrt(vcov(pb.ml)))/sum(dnorm(p.b, mean=pb.max, sd=sqrt(vcov(pb.ml))))))
 d.c = melt(dens.compare, id.vars='probability')
 
 g <- ggplot(d.c, aes(probability, value, color=variable))

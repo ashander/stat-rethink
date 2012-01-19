@@ -1,12 +1,65 @@
-# Homework 1, Statistical rethinking
- Jaime Ashander
+latex input:		mmd-tufte-handout-header  
+Title:			Homework 1, Statistical rethinking
+Base Header Level:	2
+latex mode:			memoir  
+author:           Jaime Ashander
+copyright:			2011 Jaime Ashander
+					This work is licensed under a Creative Commons License.  
+					http://creativecommons.org/licenses/by-nc-sa/3.0/  
+latex input:		mmd-natbib-plain
+latex input:		mmd-tufte-handout-begin-doc  
+latex footer:		mmd-tufte-footer
 
 
 
+```
+## Loading required package: bbmle
+```
+```
+## Loading required package: stats4
+```
+```
+## Loading required package: numDeriv
+```
+```
+## Loading required package: lattice
+```
+```
+## Loading required package: MASS
+```
+```
+## Loading required package: rethinking
+```
+```
+## Loading required package: ggplot2
+```
+```
+## Loading required package: reshape
+```
+```
+## Loading required package: plyr
+```
+```
+## 
+## Attaching package: 'reshape'
+## 
+```
+```
+## The following object(s) are masked from 'package:plyr':
+## 
+##     rename, round_any
+## 
+```
+```
+## Loading required package: grid
+```
+```
+## Loading required package: proto
+```
 
 
 
-# Problem 1  
+## Problem 1  
 
 First load the data, `birth1` and `birth2`, which indicate the gender (male=1, female=0) of reported first (second) born children in 100 families.
 All families in this country have a maximum of two children.
@@ -20,7 +73,7 @@ data(homeworkch2)  #
 
 
 
-## 1 a
+### 1 a
 
 ```r
 p.b <- seq(from = 0, to = 1, length.out = 1000)
@@ -47,7 +100,7 @@ pb.max <- Max.post(p.b, posterior)
 
 
 
-## 1 b
+### 1 b
 
 
 
@@ -58,7 +111,12 @@ Choice of appropriate sample and formatting of output is encapsulated in functio
 ```r
 p.b.sample <- sample(p.b, size = 10000, replace = TRUE, 
     prob = posterior)
-CI.types=c(0.50, 0.90, 0.95)
+```
+```
+## Warning message: Walker's alias method used: results are different from R < 2.2.0
+```
+```r
+CI.types <- c(0.5, 0.9, 0.95)
 CI.data <- t(sapply(CI.types, function(x) {
     unlist(Precis.bayes(p.b, posterior = posterior, param.samples = p.b.sample, 
         level = x))
@@ -73,16 +131,16 @@ Credible intervals, based on sampling the posterior density, for probabilty of d
   
 ```
 ##   Estimate  lower  upper Interval.width
-## 1   0.5546 0.5305 0.5776            0.5
-## 2   0.5546 0.4965 0.6126            0.9
-## 3   0.5546 0.4825 0.6216           0.95
+## 1   0.5546 0.5255 0.5726            0.5
+## 2   0.5546 0.4945 0.6086            0.9
+## 3   0.5546 0.4865 0.6226           0.95
 ```
 
 
 
   Maximum posterior probability estimate of `p.b` is also reported.
 
-## 1c
+### 1c
 
 For maximum likelihood estimation we use `mle2`, and `rethinking::precis` to construct confidence intervals. 
 
@@ -129,7 +187,7 @@ Additionally, the ML posterior is symmetric.
 
 ```r
 dens.compare <- data.frame(probability = p.b, 
-    Bayes = -log(posterior), ML = -log(dnorm(p.b, mean = pb.max, 
+    Bayes = -log(posterior), ML = -log(dnorm(p.b, mean = fit.ml$Estimate[1], 
         sd = sqrt(vcov(pb.ml)))/sum(dnorm(p.b, mean = pb.max, 
         sd = sqrt(vcov(pb.ml))))))
 d.c = melt(dens.compare, id.vars = "probability")
@@ -137,7 +195,7 @@ d.c = melt(dens.compare, id.vars = "probability")
 g <- ggplot(d.c, aes(probability, value, color = variable))
 g + geom_line() + ylab("- log density")
 ```
-![plot of chunk prob1_fig2](https://github.com/ashander/stat-rethink/raw/master/prob1_fig2.png)
+![plot of chunk prob1_fig1](https://github.com/ashander/stat-rethink/raw/master/prob1_fig1.png)
 
 
 The ML confidence intervals and Bayesian HPDIs are shown below recentered by the ML estimate.
@@ -159,14 +217,14 @@ g <- ggplot(fit.both)
 g + geom_pointrange(aes(Interval.width, Estimate, 
     ymin = lower, ymax = upper, color = type), position = position_dodge(width = 0.1))
 ```
-![plot of chunk prob1_fig1](https://github.com/ashander/stat-rethink/raw/master/prob1_fig1.png)
+![plot of chunk prob1_fig2](https://github.com/ashander/stat-rethink/raw/master/prob1_fig2.png)
 
 
 
   
-# Problem 2
+## Problem 2
 
-## 2a
+### 2a
 
   Now, we simulate the number of boys born in 200 births using `rbinom`, 10000 replicates:
 
@@ -192,7 +250,7 @@ Above is the density of the predicted number of boys, with the actual births (re
 From this use of posterior predictive simulation, the model seems to fit the data well.
 
 
-## 2b
+### 2b
 
 We now simulate the number of first born boys in 100 births using `rbinom`, 10000 replicates:
 
@@ -212,7 +270,7 @@ As above, this plot shows the density of predicted number of boys, but this time
 Here, it looks like the model overpredicts the number of first-born boys.
 
 
-## 2c
+### 2c
 
 To simulate the number of second born boys with sisters as first-born, we must ask:
 How many first-born girls were there, and how were the siblings born after girls distributed?
@@ -246,30 +304,46 @@ Yet, the model performs well on births in aggregate (as shown in 2a).
 This could be explained if the assumption of independence between sex of first and second born is invalid in general.
 Then, if the increased likelihood of bearing girls following boys cancels out the above-demonstrated underprediction of second born boys following girls, the aggregate data could still fit our model, which assumed independence.
 
-# Full code
+## Full code
 
 [Link to the full code.](https://github.com/ashander/stat-rethink/raw/master/hw1ashander_knit_.R)
 
   
-# Colophon 
+## Colophon 
 
 Written using the excellent [knitr](http://yihui.github.com/knitr/).
 
-Need to use not only the options below suggested by knitr docs
-
 ```r
-require(knitr)  ## the package
-opts_knit$set(base.url = "https://github.com/ashander/stat-rethink/raw/master/")
-```
-
-
-
-but also 
-
-```r
-opts_knit$set(out.format = "gfm")
+require(knitr)  ### the package
 knit("/Users/jaime/PHD/stat-rethink/hw1ashander_knit_.md")  ## to run
 ```
 
+
+
+### For Github
+
+```r
+opts_knit$set(base.url = "https://github.com/ashander/stat-rethink/raw/master/")
+opts_knit$set(out.format = "gfm")
+```
+
+
+
+### For normal markdown
+
+```r
+#opts_knit$set(base.url='https://github.com/ashander/stat-rethink/raw/master/')
+opts_knit$set(out.format = "markdown")
+```
+
+
+
+  
+### For latex
+
+```r
+#opts_knit$set(base.url='https://github.com/ashander/stat-rethink/raw/master/')
+opts_knit$set(out.format = "tex", theme = "tex")
+```
 
 
