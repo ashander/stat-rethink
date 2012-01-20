@@ -1,0 +1,202 @@
+%% LyX 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+% \SweaveOpts{fig.path=fig/hw2-,fig.align=center,fig.show=hold,dev=png,fig.width=4,fig.height=3}
+
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+
+
+
+\begin{center}
+  {\bf \Large Homework 2, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+
+\subsection*{Problem 1}
+\label{problem1}
+
+First load the data from last week, \texttt{birth1} and \texttt{birth2}, which indicate the gender (male=1, female=0) of reported first (second) born children in 100 families.
+All families in this country have a maximum of two children.
+
+Our hypothesis is that births are determined by a random process, with some probability of obtaining a boy \texttt{p.b}.
+Assuming births are independent samples of this process, we model the data as random binomial trials.
+
+\subsubsection*{1 a}
+\label{1a}
+
+Now we will compute a $p$ value for $H_0$:  {\tt p.b = 0.5}.
+That is, we compute the probability we would see a result as deviant (or more deviant) assuming the null is true.
+
+<<nhst-p1,message=FALSE>>=
+data(homeworkch2) #
+boys.born = sum(c(birth1,birth2))
+total.births = length(c(birth1,birth2))
+pb.h0 <- 0.5 #0th step: specify the null
+pb.mle <- boys.born/total.births# first step: compute the observed MLE of p.b which in this case is just the proportion of boy births (more generally we could compute P(D | M) assuming we could writedown the likelihood 
+# second step: compute the probability of observing a range of possible boys born from 0 to totalbirths (roughly implying pb.mle from 0 to 1) _if the null were true_
+boys.possible <- seq(from=0, to=total.births)
+p.b.observing <- dbinom(boys.possible, size=total.births, prob = pb.h0)
+# third step: compute the p value by "summing over the tail" of possible boys as great or greater (111 to 200) 
+pb.pval <- sum(p.b.observing[111:200])
+pb.pval
+@
+
+With $p > 0.05$, NHST suggests that we should fail to reject the null, in effect concluding that {\tt p.b = 0.5}.
+
+\subsubsection*{1 b}
+\label{1b}
+
+The figure below reproduces the posterior from last week. The red line is {\tt p.b = 0.5}. 
+In the context of our estimated posterior, the null is not a great point estimate to choose.
+Although it does fall within the 90\% HPDI  (not shown) it falls outside the 50\% HPDI.
+
+<<null-v-prior, message=FALSE,echo=FALSE,fig=TRUE>>=
+p.b <- seq(from = 0, to = 1, length.out = 1000) 
+prior <- rep(1/1000, 1000) 
+likelihood <- dbinom(sum(birth1) + sum(birth2), size = length(c(birth1,
+birth2)), prob = p.b) # likelihood of data given 1000 models (binomial success parameter)
+posterior <- prior * likelihood 
+posterior <- posterior/sum(posterior)
+plot(posterior~p.b, type='l')
+abline(v=pb.h0, col='red', lwd=2)
+
+@ 
+
+
+\subsection*{Problem 2}
+\label{problem2}
+
+
+The question: is a die loaded such that $Pr(die =1) = 1/2$ instead of typical $Pr(die=1) = 1/6$?
+
+The data: 65 tosses, with 18 ``1''s. 
+
+We model the data as random binomial trials, with the rolls assumed independent. 
+Define a roll of 1 as a success, and let the probabilty of success {\tt p.d}. 
+
+<<die-data,message=FALSE>>=
+die.succ <- 18
+die.trials <- 65
+@ 
+
+
+\subsubsection*{2a}
+\label{2a}
+
+Using null hypotehsis signficance test, we compare the observed data against a null hypothesis: 
+
+$H_0: p.d = 1/6$
+
+As in Problem 1, we compute the $p$ value by assuming the null: 
+
+<<die-pval,message=FALSE>>=
+pd.h0 <- 1/6
+pd.mle <- die.succ/die.trails
+die.possible <- seq(0,die.trials)
+pd.under.null <- dbinom(die.possible, size=die.trails, prob=pd.h0)
+pd.pval <- sum(pd.under.null[18:65])
+pd.pval
+@ 
+
+With $p = 0.03 < 0.05$, NHST suggests we should reject the null in favor of the alternative hypothesis: {\tt p.d > 1/6}. 
+
+So the die is not fair!
+
+\subsubsection*{2b}
+
+To use the Bayesian suggestion, we apply Bayes' theorem.
+
+\[
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)}
+\]
+
+Here, as before, the data are 18 rolls of ``1'' in 65 tries.
+
+<<bayes-die, message=FALSE>>=
+pd.fair = 1/6
+pd.loaded = 0.5
+pr.fair <- pr.loaded <- 0.5
+pr.data_fair <- dbinom(die.succ, size=die.trials, prob = pd.fair)
+pr.data_loaded <- dbinom(die.succ, size=die.trials, prob = pd.loaded)
+pr.data <- pr.data_fair + pr.data_loaded
+pr.fair_data <- pr.data_fair*pr.fair/pr.data
+pr.fair_data
+@ 
+
+By this analysis, there is $\approx 0.50$ probability that the die is fair. Perhaps we should run some more trials before roughing up the suspected cheater!
+
+\subsection*{Problem 3}
+\label{problem3}
+
+Our null, $H_0$ is that the die is fair. 
+We want to compute the value of $Pr(fair)$ such that
+
+\[
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)} = 0.03
+\]
+
+(Our $p$ value from Problem 2(a).)
+
+Thus, compute
+
+\[
+Pr(fair) = \frac{ 0.03 \cdot \left(Pr(data|fair)+ Pr(data|loaded)\right)}{Pr(data | fair)}
+\]
+
+
+<<bayes-pval-equivalent, message=FALSE>>=
+pr.fair.pval = pd.pval * pr.data / pr.data_fair
+pr.fair.pval
+@ 
+
+Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 0.03$ virutally the same value as the $p$ value from before!
+
+
+
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+opts_knit$set(out.format='latex')
+knit('/Users/jaime/PHD/stat-rethink/hw2ashander.Rnw') ## to run
+@ 
+
+
+\end{document}
