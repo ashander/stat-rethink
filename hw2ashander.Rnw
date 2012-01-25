@@ -70,10 +70,9 @@ total.births = length(c(birth1,birth2))
 pb.h0 <- 0.5 #0th step: specify the null
 pb.mle <- boys.born/total.births# first step: compute the observed MLE of p.b which in this case is just the proportion of boy births (more generally we could compute P(D | M) assuming we could writedown the likelihood 
 # second step: compute the probability of observing a range of possible boys born from 0 to totalbirths (roughly implying pb.mle from 0 to 1) _if the null were true_
-boys.possible <- seq(from=0, to=total.births)
-p.b.observing <- dbinom(boys.possible, size=total.births, prob = pb.h0)
+p.b.observing <- dbinom(boys.born:total.births, size=total.births, prob = pb.h0)
 # third step: compute the p value by "summing over the tail" of possible boys as great or greater (111 to 200) 
-pb.pval <- sum(p.b.observing[111:200])
+pb.pval <- sum(p.b.observing)
 pb.pval
 @
 
@@ -127,14 +126,13 @@ As in Problem 1, we compute the $p$ value by assuming the null:
 
 <<die-pval,message=FALSE>>=
 pd.h0 <- 1/6
-pd.mle <- die.succ/die.trails
-die.possible <- seq(0,die.trials)
-pd.under.null <- dbinom(die.possible, size=die.trails, prob=pd.h0)
-pd.pval <- sum(pd.under.null[18:65])
+pd.mle <- die.succ/die.trials
+pd.under.null <- dbinom(die.succ:die.trials, size=die.trials, prob=pd.h0)
+pd.pval <- sum(pd.under.null)
 pd.pval
 @ 
 
-With $p = 0.03 < 0.05$, NHST suggests we should reject the null in favor of the alternative hypothesis: {\tt p.d > 1/6}. 
+With $p = 0.017< 0.05$, NHST suggests we should reject the null in favor of the alternative hypothesis: {\tt p.d > 1/6}. 
 
 So the die is not fair!
 
@@ -159,7 +157,16 @@ pr.fair_data <- pr.data_fair*pr.fair/pr.data
 pr.fair_data
 @ 
 
-By this analysis, there is $\approx 0.50$ probability that the die is fair. Perhaps we should run some more trials before roughing up the suspected cheater!
+Need to normalize:
+
+<<bayes-die-loaded, message=FALSE>>=
+pr.loaded_data <-pr.data_loaded*pr.loaded/pr.data
+pr.loaded_data
+pr.fair_data.norm <- pr.fair_data/(pr.fair_data + pr.loaded_data)
+pr.fair_data.norm
+@ 
+
+By this analysis, there is $\approx 0.98$ probability that the die is fair. Perhaps we should think twice before roughing up the suspected cheater!
 
 \subsection*{Problem 3}
 \label{problem3}
@@ -168,7 +175,7 @@ Our null, $H_0$ is that the die is fair.
 We want to compute the value of $Pr(fair)$ such that
 
 \[
-Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)} = 0.03
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)} = 0.017
 \]
 
 (Our $p$ value from Problem 2(a).)
@@ -176,7 +183,7 @@ Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded
 Thus, compute
 
 \[
-Pr(fair) = \frac{ 0.03 \cdot \left(Pr(data|fair)+ Pr(data|loaded)\right)}{Pr(data | fair)}
+Pr(fair) = \frac{ 0.017 \cdot \left(Pr(data|fair)+ Pr(data|loaded)\right)}{Pr(data | fair)}
 \]
 
 
@@ -185,7 +192,7 @@ pr.fair.pval = pd.pval * pr.data / pr.data_fair
 pr.fair.pval
 @ 
 
-Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 0.03$ virutally the same value as the $p$ value from before!
+Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 0.017$ virutally the same value as the $p$ value from before!
 
 
 
