@@ -4,6 +4,8 @@
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
 \geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
@@ -27,8 +29,7 @@
 
 \begin{document}
 
-% \SweaveOpts{fig.path=fig/hw2-,fig.align=center,fig.show=hold,dev=png,fig.width=4,fig.height=3}
-
+% \SweaveOpts{fig.path=fig/hw2-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
 
 <<setup,echo=FALSE,results=hide,message=FALSE>>=
 options(replace.assign=TRUE,width=90)
@@ -141,7 +142,7 @@ So the die is not fair!
 To use the Bayesian suggestion, we apply Bayes' theorem.
 
 \[
-Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)}
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)Pr(fair)+ Pr(data|loaded)Pr(loaded)}
 \]
 
 Here, as before, the data are 18 rolls of ``1'' in 65 tries.
@@ -152,21 +153,63 @@ pd.loaded = 0.5
 pr.fair <- pr.loaded <- 0.5
 pr.data_fair <- dbinom(die.succ, size=die.trials, prob = pd.fair)
 pr.data_loaded <- dbinom(die.succ, size=die.trials, prob = pd.loaded)
-pr.data <- pr.data_fair + pr.data_loaded
+pr.data <- pr.data_fair*pr.fair + pr.data_loaded*pr.loaded
 pr.fair_data <- pr.data_fair*pr.fair/pr.data
 pr.fair_data
+18/65
 @ 
 
-Need to normalize:
 
-<<bayes-die-loaded, message=FALSE>>=
-pr.loaded_data <-pr.data_loaded*pr.loaded/pr.data
-pr.loaded_data
-pr.fair_data.norm <- pr.fair_data/(pr.fair_data + pr.loaded_data)
-pr.fair_data.norm
+By this analysis, there is $\approx 0.98$ probability that the die is fair. 
+Quite a different result than NHST. 
+If we're assuming only these two models, we should conclude the die is fair (if we're willing to risk a 2\% chance of being wrong.
+
+But we still have reason to be nervous. 
+This test and the one from part (a) are not the same. 
+NHST tests fair against everything else while the Bayesian procedure tests fair against one value of loaded. 
+So we should be cautious in accepting the Bayesian result uncrticially.
+
+To assess how our observation compares to expected variabilty under our inference about the die,  we can use posterior predictive simulation.
+
+
+
+<<flat-pps, message=FALSE,fig=TRUE>>=
+prob.samples = sample(c(1/6, 1/2), size=1e6, replace=TRUE, prob=c(pr.fair_data, 1-pr.fair_data))
+ones.sims = rbinom(1e6, size=die.trials, prob=prob.samples)
+dens(ones.sims,adj=5, xlab='ones rolled')
+abline(v=18)
+abline(v=HPDI(ones.sims, 0.95), lty=2)
+abline(v=HPDI(ones.sims, 0.97), lty=3)
 @ 
+The red line is our observation, which falls outside the 0.95 (dashed) density interval and right on the edge of the 0.97 (dotted) interval. 
 
-By this analysis, there is $\approx 0.98$ probability that the die is fair. Perhaps we should think twice before roughing up the suspected cheater!
+Even assuming the high posterior probability given to fairness in the ``two model'' Bayesian test, the observation is an extereme event. 
+Our high posterior simply owes to the fact that our observation would be {\em much more unlikely} if the die were loaded to even odds of rolling a one.
+
+To construct a more direct Bayesian analogue of the NHST, we could proceed by calculating the posterior assuming a flat prior over all possible models. 
+This distribution should have a peak at $\tfrac{18}{65}$, but it's width could  help inform our final decision.
+
+<<flat-check, message=FALSE, fig=TRUE>>=
+pri = rep(1/1000, 1000)
+mdls = seq(0, 1, length.out=1000)
+lik = dbinom(die.succ, die.trials, prob=mdls)
+post = pri*lik
+post = post/sum(post)
+plot(post~mdls, type='l', xlab="models", ylab="posterior")
+abline(v=1/6, col='red')
+hella.samples = sample(mdls, size=1e6, replace=TRUE, prob=post)
+abline(v = HPDI(hella.samples, 0.95), lty=2)
+abline(v = HPDI(hella.samples, 0.99), lty=3)
+@ 
+The red is a fair die, which falls between the 0.95 (dashed) and 0.99 (dotted) HPDI intervals. 
+This procedure suggests that the posterior probability of fairness is rather low. 
+
+Overall, the above results show that our assumptions about the prior and number of models are influencing the results of our tests.
+This suggest we have insufficient data to conclude one way or another on the fairness of the die. 
+If possible, we should attempt to collect more data. 
+
+Of course, if we have very strong reasons to assume only two models, then we should still conclude the die is fair. 
+For example, if we know that the only type of loaded die widely manufactured has even odds of rolling a one \dots 
 
 \subsection*{Problem 3}
 \label{problem3}
@@ -175,24 +218,32 @@ Our null, $H_0$ is that the die is fair.
 We want to compute the value of $Pr(fair)$ such that
 
 \[
-Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)} = 0.017
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)Pr(fair)+ Pr(data|loaded)Pr(loaded)} = 0.017
 \]
 
 (Our $p$ value from Problem 2(a).)
 
-Thus, compute
+Both $Pr(fair)$ and $Pr(loaded)$ are unknown, but sum to unity. 
+Multiplying through by the denominator and simplyfying to solve for $Pr(fair)$ \dots
 
-\[
-Pr(fair) = \frac{ 0.017 \cdot \left(Pr(data|fair)+ Pr(data|loaded)\right)}{Pr(data | fair)}
-\]
+\begin{align*}
+&Pr(fair) Pr(data | fair) = 0.017 \cdot \left(Pr(data|fair)Pr(fair)+ Pr(data|loaded)(1-Pr(fair))\right)\\
+ &\implies Pr(fair) \left[ Pr(data|fair) \cdot (1 - 0.017) + 0.017 \cdot Pr(data|loaded)\right] = 0.017 \cdot Pr(data|loaded)\\
+ &\implies Pr(fair) = \frac{0.017 \cdot Pr(data|loaded)}{\left[ Pr(data|fair) \cdot (1 - 0.017) + 0.017 \cdot Pr(data|loaded)\right]}
+\end{align*}
 
 
 <<bayes-pval-equivalent, message=FALSE>>=
-pr.fair.pval = pd.pval * pr.data / pr.data_fair
+pr.fair.pval = pd.pval * pr.data_loaded/( pr.data_fair*(1-pd.pval) + pd.pval*pr.data_loaded)
 pr.fair.pval
 @ 
 
-Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 0.017$ virutally the same value as the $p$ value from before!
+Thus, the prior probabilty of the null must be {\em very, very} low $Pr(H_0 | Data) = 2.6\times10^{-4}$ to obtain a prior probability equal to the $p$ value from above.
+
+<<bayse-pval-check, message=FALSE>>=
+post.check = pr.fair.pval*pr.data_fair/(pr.data_fair*pr.fair.pval + pr.data_loaded*(1-pr.fair.pval))
+post.check
+@ 
 
 
 
@@ -201,7 +252,6 @@ Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 
 
 <<runit,eval=FALSE>>=
 require(knitr) ### the package
-opts_knit$set(out.format='latex')
 knit('/Users/jaime/PHD/stat-rethink/hw2ashander.Rnw') ## to run
 @ 
 

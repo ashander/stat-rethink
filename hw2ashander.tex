@@ -384,6 +384,8 @@
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
 \geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
@@ -408,7 +410,6 @@
 \begin{document}
 
 % 
-
 
 
 
@@ -476,11 +477,7 @@ Although it does fall within the 90\% HPDI  (not shown) it falls outside the 50\
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
-
-
-\centering{}\includegraphics{fig/hw2-null-v-prior} 
-
-\end{kframe}}
+\includegraphics{null-v-prior} \end{kframe}}
 \end{knitrout}
 
 
@@ -546,7 +543,7 @@ So the die is not fair!
 To use the Bayesian suggestion, we apply Bayes' theorem.
 
 \[
-Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)}
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)Pr(fair)+ Pr(data|loaded)Pr(loaded)}
 \]
 
 Here, as before, the data are 18 rolls of ``1'' in 65 tries.
@@ -560,45 +557,93 @@ Here, as before, the data are 18 rolls of ``1'' in 65 tries.
 \hlstd{}\hlsymbol{pr.fair}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.loaded}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0.5}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlsymbol{die.succ}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{die.trials}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{pd.fair}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlsymbol{die.succ}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{die.trials}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{pd.loaded}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{pr.data}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}{\ }\hlkeyword{+}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{pr.data}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.fair}{\ }\hlkeyword{+}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.loaded}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.fair}\hlkeyword{/}\hlsymbol{pr.data}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## [1] 0.4929
+## [1] 0.9857
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlnumber{18}\hlkeyword{/}\hlnumber{65}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+## [1] 0.2769
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
 
-Need to normalize:
+
+By this analysis, there is $\approx 0.98$ probability that the die is fair. 
+Quite a different result than NHST. 
+If we're assuming only these two models, we should conclude the die is fair (if we're willing to risk a 2\% chance of being wrong.
+
+But we still have reason to be nervous. 
+This test and the one from part (a) are not the same. 
+NHST tests fair against everything else while the Bayesian procedure tests fair against one value of loaded. 
+So we should be cautious in accepting the Bayesian result uncrticially.
+
+To assess how our observation compares to expected variabilty under our inference about the die,  we can use posterior predictive simulation.
+
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{pr.loaded\usebox{\hlnormalsizeboxunderscore}data}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.loaded}\hlkeyword{/}\hlsymbol{pr.data}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{pr.loaded\usebox{\hlnormalsizeboxunderscore}data}\mbox{}
+\hlsymbol{prob.samples}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{/}\hlnumber{6}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{/}\hlnumber{2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{1e+06}\hlkeyword{,}{\ }\hlargument{replace}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data}\hlkeyword{,}{\ }\hlnumber{1}{\ }\hlkeyword{-}{\ }\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{ones.sims}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rbinom}\hlkeyword{(}\hlnumber{1e+06}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{die.trials}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{prob.samples}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{ones.sims}\hlkeyword{,}{\ }\hlargument{adj}{\ }\hlargument{=}{\ }\hlnumber{5}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"ones{\ }rolled"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{v}{\ }\hlargument{=}{\ }\hlnumber{18}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{v}{\ }\hlargument{=}{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{ones.sims}\hlkeyword{,}{\ }\hlnumber{0.95}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{v}{\ }\hlargument{=}{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{ones.sims}\hlkeyword{,}{\ }\hlnumber{0.97}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\begin{verbatim}
-## [1] 0.007145
-\end{verbatim}
-\begin{flushleft}
-\ttfamily\noindent
-\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data.norm}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data}\hlkeyword{/}\hlkeyword{(}\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data}{\ }\hlkeyword{+}{\ }\hlsymbol{pr.loaded\usebox{\hlnormalsizeboxunderscore}data}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{pr.fair\usebox{\hlnormalsizeboxunderscore}data.norm}\mbox{}
-\normalfont
-\end{flushleft}
-\begin{verbatim}
-## [1] 0.9857
-\end{verbatim}
-\end{kframe}}
+\includegraphics{flat-pps} \end{kframe}}
 \end{knitrout}
 
+The red line is our observation, which falls outside the 0.95 (dashed) density interval and right on the edge of the 0.97 (dotted) interval. 
 
-By this analysis, there is $\approx 0.98$ probability that the die is fair. Perhaps we should think twice before roughing up the suspected cheater!
+Even assuming the high posterior probability given to fairness in the ``two model'' Bayesian test, the observation is an extereme event. 
+Our high posterior simply owes to the fact that our observation would be {\em much more unlikely} if the die were loaded to even odds of rolling a one.
+
+To construct a more direct Bayesian analogue of the NHST, we could proceed by calculating the posterior assuming a flat prior over all possible models. 
+This distribution should have a peak at $\tfrac{18}{65}$, but it's width could  help inform our final decision.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{pri}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rep}\hlkeyword{(}\hlnumber{1}\hlkeyword{/}\hlnumber{1000}\hlkeyword{,}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mdls}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{lik}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlsymbol{die.succ}\hlkeyword{,}{\ }\hlsymbol{die.trials}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{mdls}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pri}{\ }\hlkeyword{*}{\ }\hlsymbol{lik}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post}\hlkeyword{/}\hlfunctioncall{sum}\hlkeyword{(}\hlsymbol{post}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{post}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{mdls}\hlkeyword{,}{\ }\hlargument{type}{\ }\hlargument{=}{\ }\hlstring{"l"}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"models"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"posterior"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{v}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{/}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"red"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{hella.samples}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample}\hlkeyword{(}\hlsymbol{mdls}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{1e+06}\hlkeyword{,}{\ }\hlargument{replace}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{post}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{v}{\ }\hlargument{=}{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{hella.samples}\hlkeyword{,}{\ }\hlnumber{0.95}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{v}{\ }\hlargument{=}{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{hella.samples}\hlkeyword{,}{\ }\hlnumber{0.99}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{flat-check} \end{kframe}}
+\end{knitrout}
+
+The red is a fair die, which falls between the 0.95 (dashed) and 0.99 (dotted) HPDI intervals. 
+This procedure suggests that the posterior probability of fairness is rather low. 
+
+Overall, the above results show that our assumptions about the prior and number of models are influencing the results of our tests.
+This suggest we have insufficient data to conclude one way or another on the fairness of the die. 
+If possible, we should attempt to collect more data. 
+
+Of course, if we have very strong reasons to assume only two models, then we should still conclude the die is fair. 
+For example, if we know that the only type of loaded die widely manufactured has even odds of rolling a one \dots 
 
 \subsection*{Problem 3}
 \label{problem3}
@@ -607,34 +652,54 @@ Our null, $H_0$ is that the die is fair.
 We want to compute the value of $Pr(fair)$ such that
 
 \[
-Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)+ Pr(data|loaded)} = 0.017
+Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)Pr(fair)+ Pr(data|loaded)Pr(loaded)} = 0.017
 \]
 
 (Our $p$ value from Problem 2(a).)
 
-Thus, compute
+Both $Pr(fair)$ and $Pr(loaded)$ are unknown, but sum to unity. 
+Multiplying through by the denominator and simplyfying to solve for $Pr(fair)$ \dots
 
-\[
-Pr(fair) = \frac{ 0.017 \cdot \left(Pr(data|fair)+ Pr(data|loaded)\right)}{Pr(data | fair)}
-\]
+\begin{align*}
+&Pr(fair) Pr(data | fair) = 0.017 \cdot \left(Pr(data|fair)Pr(fair)+ Pr(data|loaded)(1-Pr(fair))\right)\\
+ &\implies Pr(fair) \left[ Pr(data|fair) \cdot (1 - 0.017) + 0.017 \cdot Pr(data|loaded)\right] = 0.017 \cdot Pr(data|loaded)\\
+ &\implies Pr(fair) = \frac{0.017 \cdot Pr(data|loaded)}{\left[ Pr(data|fair) \cdot (1 - 0.017) + 0.017 \cdot Pr(data|loaded)\right]}
+\end{align*}
 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{pr.fair.pval}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pd.pval}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.data}\hlkeyword{/}\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}\hspace*{\fill}\\
+\hlsymbol{pr.fair.pval}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pd.pval}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}\hlkeyword{/}\hlkeyword{(}\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{(}\hlnumber{1}{\ }\hlkeyword{-}{\ }\hlsymbol{pd.pval}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlsymbol{pd.pval}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{pr.fair.pval}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## [1] 0.01777
+## [1] 0.0002584
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
 
-Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 0.017$ virutally the same value as the $p$ value from before!
+Thus, the prior probabilty of the null must be {\em very, very} low $Pr(H_0 | Data) = 2.6\times10^{-4}$ to obtain a prior probability equal to the $p$ value from above.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{post.check}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pr.fair.pval}{\ }\hlkeyword{*}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}\hlkeyword{/}\hlkeyword{(}\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}fair}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{pr.fair.pval}{\ }\hlkeyword{+}{\ }\hlsymbol{pr.data\usebox{\hlnormalsizeboxunderscore}loaded}{\ }\hlkeyword{*}{\ }\hlkeyword{(}\hlnumber{1}{\ }\hlkeyword{-}{\ }\hlsymbol{pr.fair.pval}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post.check}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+## [1] 0.01752
+\end{verbatim}
+\end{kframe}}
+\end{knitrout}
+
 
 
 
@@ -646,8 +711,7 @@ Thus, the prior probabilty of the null must be {\em very low} $Pr(H_0 | Data) = 
 \begin{flushleft}
 \ttfamily\noindent
 \hlfunctioncall{require}\hlkeyword{(}\hlsymbol{knitr}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }package}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{opts\usebox{\hlnormalsizeboxunderscore}knit}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlfunctioncall{set}\hlkeyword{(}\hlargument{out.format}{\ }\hlargument{=}{\ }\hlstring{"{}latex"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlstring{"{}/Users/jaime/PHD/stat-rethink/hw2ashander.Rnw"{}}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run}\mbox{}
+\hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlstring{"/Users/jaime/PHD/stat-rethink/hw2ashander.Rnw"}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run}\mbox{}
 \normalfont
 \end{flushleft}
 \end{kframe}}
