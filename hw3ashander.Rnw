@@ -1,4 +1,4 @@
-%% LyX 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass{article}
 \usepackage[sc]{mathpazo}
@@ -66,7 +66,7 @@ with $\mu_i = \alpha + \beta w_i$
 
 Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data frame `d2`. 
 
-<<height-weight,message=FALSE>>=
+<<height-weight,message=FALSE,warning=FALSE>>=
 mle.hw <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=d2, start=list(alpha=mean(d2$height), beta=0, sigma=sd(d2$height)))
 known.weights <- c(46.95,43.72,64.78,32.59,54.63)
 post.samples <- as.data.frame(mvrnorm(length(d2$height) , mu=coef(mle.hw), Sigma=vcov(mle.hw)))
@@ -80,7 +80,7 @@ height.table
 \subsubsection{a}
 
 
-<<message=FALSE>>=
+<<message=FALSE,warning=FALSE>>=
 dY <- Howell1[Howell1$age <18,]
 mle.hwY <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=dY, start=list(alpha=mean(d2$height), beta=0, sigma=sd(d2$height)))
 precis(mle.hwY)
@@ -97,12 +97,17 @@ A simple interpretation of the coefficients implies:
 
 
 <<pi-youth, fig=TRUE,message=FALSE>>=
-# calculate CI for mean
+#sample posterior
 postY.samples <- as.data.frame(mvrnorm(length(dY$height) , mu=coef(mle.hwY), Sigma=vcov(mle.hwY)))
+
+# calculate CI for mean
 weight.range = seq(min(dY$weight), max(dY$weight), 0.2)
 heightY.CI = sapply(weight.range, function(x){HPDI(postY.samples$alpha + postY.samples$beta*x)})
+# calculate PI for mean
 heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY.samples$alpha + postY.samples$beta*x),sd=postY.samples$sigma))})
-plot(height~weight, data=dY)
+
+# plot TODO: clean this up, maybe rewrite as ggplot
+plot(height~weight, data=dY, col=col.alpha('slateblue',0.4))
 abline(a = coef(mle.hwY)['alpha'], b = coef(mle.hwY)['beta'])
 lines(heightY.CI['lower',]~weight.range, lty=2)
 lines(heightY.CI['upper',]~weight.range, lty=2)
@@ -126,26 +131,56 @@ One could also transform the data\dots
 
 \subsection*{Problem 3}
 
-Suppose a colleague of yours, who works on allometry, glances at the homework problems just above. Your colleague exclaims, “That’s silly. Everyone knows that it’s only the logarithm of body weight that scales with height!”
+For the Howell dataset (n=544 individuals) we  model the relationship between height (cm) and the natural logarithm of weight (log-kg). 
+\[\begin{split}h_i \sim Normal(\mu_i, \sigma)\\ \mu_i =\alpha+\beta \log(w_i),\end{split}\]
+where $h_i$ is the height (in cm), and $w_i$ the weight (in kg), of individual i. 
+n
+We use the entire Howell1 data frame, all 544 rows, adults and non-adults. 
 
-(a) I want you to model the relationship between height (cm) and the natural logarithm of weight (log-kg). Use the entire Howell1 data frame, all 544 rows, adults and non-adults. Fit this model, using qua- dratic approximation:
-\[h_i \sim Normal(\mu_i, \sigma), \mu_i =\alpha+\beta \log(w_i),\]
+\subsubsection{(a)}
 
-where hi is the height of individual i and wi is the weight (in kg) of individual i. The function for computing a natural log in R is just log.
+First, we fit model, using a quadratic approximation of the likelihood
 
-(b) Begin with this plot:
-<<all-data,fig=TRUE>>=
-plot(height ~ weight , data=Howell1 , col=col.alpha('slateblue',0.4))
+<<log-fit,warning=FALSE,message=FALSE>>=
+pd.f = Howell1
+mle.loghw <- mle2(height ~ dnorm(mean=alpha + beta*log(weight), sd=sigma), data=d.f, start=list(alpha=mean(d.f$weight), beta=0, sigma=sd(d.f$height)))
+precis(mle.loghw)
 @ 
 
+\subsubsection{(b)}
 
-Then use samples from the naive posterior of the model in (a) to su- perimpose on the plot (1) the predicted mean height as a function of weight, (2) the 95\% HPDI for the mean, and (3) the 95\% HPDI for predicted heights. The trick here lies in appreciating that the model was fit using log(weight) but that you must plot the predictions using raw weight as the horizontal axis. Remember that the opposite of log is exp.
+<<all-data,fig=TRUE>>=
+#sample posterior
+post.full.samples <- as.data.frame(mvrnorm(length(d.f$height) , mu=coef(mle.loghw), Sigma=vcov(mle.loghw)))
+
+# calculate CI for mean
+weight.range = seq(min(d.f$weight), max(d.f$weight), 0.2) 
+heightf.CI = sapply(weight.range, function(x){HPDI(post.full.samples$alpha + post.full.samples$beta*log(x), 0.95)})
+# calculate PI for mean
+heightf.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(post.full.samples$alpha + post.full.samples$beta*log(x)),sd=post.full.samples$sigma), 0.95)})
+
+# plot TODO: clean this up, maybe rewrite as ggplot
+plot(height ~ weight , data=Howell1 , col=col.alpha('slateblue',0.4))
+Pred.fn <- function(x){
+  coef(mle.loghw)['alpha']+log(x)*coef(mle.loghw)['beta']
+}
+curve(Pred.fn, from=min(d.f$weight), to=max(d.f$weight), add=T)
+lines(heightf.CI['lower',]~weight.range, lty=2)
+lines(heightf.CI['upper',]~weight.range, lty=2)
+lines(heightf.PI['upper',]~weight.range, lty=3)
+lines(heightf.PI['lower',]~weight.range, lty=3)
+
+@ 
+
+Then use samples from the naive posterior of the model in (a) to superimpose on the plot (1) the predicted mean height as a function of weight, (2) the 95\% HPDI for the mean, and (3) the 95\% HPDI for predicted heights. 
+The trick here lies in appreciating that the model was fit using log(weight) but that you must plot the predictions using raw weight as the horizontal axis. 
+Remember that the opposite of log is exp.
 
 \subsection*{Colophon}
 
 <<runit,eval=FALSE>>=
 require(knitr) ### the package
-knit('/Users/jaime/PHD/stat-rethink/hw3ashander.Rnw') ## to run
+knit(paste(getwd(),'hw3ashander.Rnw',sep='/')) ## to run
 @ 
 
 
