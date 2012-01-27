@@ -70,7 +70,7 @@ boys.born = sum(c(birth1,birth2))
 total.births = length(c(birth1,birth2))
 pb.h0 <- 0.5 #0th step: specify the null
 pb.mle <- boys.born/total.births# first step: compute the observed MLE of p.b which in this case is just the proportion of boy births (more generally we could compute P(D | M) assuming we could writedown the likelihood 
-# second step: compute the probability of observing a range of possible boys born from 0 to totalbirths (roughly implying pb.mle from 0 to 1) _if the null were true_
+# second step: compute the tail probabilities of observing a range of possible boys born from those observed to totalbirths (roughly implying pb.mle  _if the null were true_
 p.b.observing <- dbinom(boys.born:total.births, size=total.births, prob = pb.h0)
 # third step: compute the p value by "summing over the tail" of possible boys as great or greater (111 to 200) 
 pb.pval <- sum(p.b.observing)
@@ -108,7 +108,7 @@ The question: is a die loaded such that $Pr(die =1) = 1/2$ instead of typical $P
 The data: 65 tosses, with 18 ``1''s. 
 
 We model the data as random binomial trials, with the rolls assumed independent. 
-Define a roll of 1 as a success, and let the probabilty of success {\tt p.d}. 
+Define a roll of 1 as a success, and let the probabilty of success {\tt pd}. 
 
 <<die-data,message=FALSE>>=
 die.succ <- 18
@@ -128,8 +128,8 @@ As in Problem 1, we compute the $p$ value by assuming the null:
 <<die-pval,message=FALSE>>=
 pd.h0 <- 1/6
 pd.mle <- die.succ/die.trials
-pd.under.null <- dbinom(die.succ:die.trials, size=die.trials, prob=pd.h0)
-pd.pval <- sum(pd.under.null)
+probability.under.null <- dbinom(die.succ:die.trials, size=die.trials, prob=pd.h0)
+pd.pval <- sum(probability.under.null)
 pd.pval
 @ 
 
@@ -145,36 +145,34 @@ To use the Bayesian suggestion, we apply Bayes' theorem.
 Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)Pr(fair)+ Pr(data|loaded)Pr(loaded)}
 \]
 
-Here, as before, the data are 18 rolls of ``1'' in 65 tries.
+Here, as before, the data are 18 rolls of ``1'' in 65 tries. 
+The main difference is now we are assuming two models, ``fair'' and ``loaded''
 
 <<bayes-die, message=FALSE>>=
-pd.fair = 1/6
-pd.loaded = 0.5
-pr.fair <- pr.loaded <- 0.5
-pr.data_fair <- dbinom(die.succ, size=die.trials, prob = pd.fair)
-pr.data_loaded <- dbinom(die.succ, size=die.trials, prob = pd.loaded)
-pr.data <- pr.data_fair*pr.fair + pr.data_loaded*pr.loaded
-pr.fair_data <- pr.data_fair*pr.fair/pr.data
-pr.fair_data
-18/65
+models <- c(fair = 1/6, loaded = 0.5)
+prior <- c(fair = 0.5, loaded = 0.5)
+pr.data_models <- dbinom(die.succ, size=die.trials, prob = models)
+pr.data <- sum(pr.data_models* prior)
+pr.models_data <- pr.data_models* prior/pr.data
+pr.models_data
+
 @ 
 
 
 By this analysis, there is $\approx 0.98$ probability that the die is fair. 
 Quite a different result than NHST. 
-If we're assuming only these two models, we should conclude the die is fair (if we're willing to risk a 2\% chance of being wrong.
+If we're assuming only these two models, we should conclude the die is fair.
+(So long as we're willing to risk a 2\% chance of being wrong.)
 
-But we still have reason to be nervous. 
-This test and the one from part (a) are not the same. 
-NHST tests fair against everything else while the Bayesian procedure tests fair against one value of loaded. 
-So we should be cautious in accepting the Bayesian result uncrticially.
+But  we still have reason to be nervous. 
+Our choice to use only two models may have influenced the one we choose in the Bayesian procedure. 
 
-To assess how our observation compares to expected variabilty under our inference about the die,  we can use posterior predictive simulation.
-
-
+One way to check is to assess how our observation compares to expected variabilty under our inference about the die,  we can use posterior predictive simulation.
 
 <<flat-pps, message=FALSE,fig=TRUE>>=
-prob.samples = sample(c(1/6, 1/2), size=1e6, replace=TRUE, prob=c(pr.fair_data, 1-pr.fair_data))
+pr.data_fair <- pr.data_models[1]
+pr.data_loaded <- pr.data_models[2]
+prob.samples = sample(models, size=1e6, replace=TRUE, prob=pr.models_data)
 ones.sims = rbinom(1e6, size=die.trials, prob=prob.samples)
 dens(ones.sims,adj=5, xlab='ones rolled')
 abline(v=18)
@@ -183,10 +181,10 @@ abline(v=HPDI(ones.sims, 0.97), lty=3)
 @ 
 The red line is our observation, which falls outside the 0.95 (dashed) density interval and right on the edge of the 0.97 (dotted) interval. 
 
-Even assuming the high posterior probability given to fairness in the ``two model'' Bayesian test, the observation is an extereme event. 
-Our high posterior simply owes to the fact that our observation would be {\em much more unlikely} if the die were loaded to even odds of rolling a one.
+Assuming the posterior probability given to fair in the ``two model'' Bayesian test, the observation is an extereme event. 
+In some sense, our high posterior owes to the fact that our observation would be {\em much more unlikely} if the die were loaded to even odds of rolling a one.
 
-To construct a more direct Bayesian analogue of the NHST, we could proceed by calculating the posterior assuming a flat prior over all possible models. 
+To construct a more conservative Bayesian test, we could proceed by calculating the posterior assuming a flat prior over all possible models. 
 This distribution should have a peak at $\tfrac{18}{65}$, but it's width could  help inform our final decision.
 
 <<flat-check, message=FALSE, fig=TRUE>>=
@@ -214,8 +212,12 @@ For example, if we know that the only type of loaded die widely manufactured has
 \subsection*{Problem 3}
 \label{problem3}
 
+
+To understand the bias of the NHST in Problem 2, we want to find a prior such that the posterior equials the $P$ value from Problem 2(a). 
 Our null, $H_0$ is that the die is fair. 
-We want to compute the value of $Pr(fair)$ such that
+We also consider the possibility of a loaded die ($Pr(1) = 1/2$). 
+
+Specifically, we want to compute the value of $Pr(fair)$ such that
 
 \[
 Pr( fair | data)  = \frac{Pr(data | fair)Pr(fair)}{Pr(data|fair)Pr(fair)+ Pr(data|loaded)Pr(loaded)} = 0.017
@@ -235,6 +237,7 @@ Multiplying through by the denominator and simplyfying to solve for $Pr(fair)$ \
 
 <<bayes-pval-equivalent, message=FALSE>>=
 pr.fair.pval = pd.pval * pr.data_loaded/( pr.data_fair*(1-pd.pval) + pd.pval*pr.data_loaded)
+names(pr.fair.pval) = "fair"
 pr.fair.pval
 @ 
 

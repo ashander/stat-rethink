@@ -1,0 +1,152 @@
+%% LyX 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+\begin{center}
+  {\bf \Large Homework 3, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+
+
+\subsection*{Problem 1}
+\label{problem1}
+
+
+<<d2-load,message=FALSE>>=
+data(Howell1) 
+d2 <- Howell1[ Howell1$age >= 18 , ]
+@ 
+
+Model the relationship between height $h_i$ and weight $w_i$ as
+\[
+h_i  ~ {\rm Normal}\left ( \mu_i, \sigma \right). 
+\]
+
+with $\mu_i = \alpha + \beta w_i$
+
+Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data frame `d2`. 
+
+<<height-weight,message=FALSE>>=
+mle.hw <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=d2, start=list(alpha=mean(d2$height), beta=0, sigma=sd(d2$height)))
+known.weights <- c(46.95,43.72,64.78,32.59,54.63)
+post.samples <- as.data.frame(mvrnorm(length(d2$height) , mu=coef(mle.hw), Sigma=vcov(mle.hw)))
+Pred.mean <- function(x){ret = coef(mle.hw)['alpha'] + coef(mle.hw)['beta']* x; names(ret) = c(''); ret}
+height.CI = sapply(known.weights, function(x){HPDI(post.samples$alpha + post.samples$beta*x)})
+height.mean = sapply(known.weights, Pred.mean)
+height.table = cbind(individual=1:5,known.weights,expected.height=height.mean, lower.90=height.CI[1,], upper.90=height.CI[2,])
+height.table
+@ 
+
+\subsubsection{a}
+
+
+<<message=FALSE>>=
+dY <- Howell1[Howell1$age <18,]
+mle.hwY <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=dY, start=list(alpha=mean(d2$height), beta=0, sigma=sd(d2$height)))
+precis(mle.hwY)
+@ 
+
+A simple interpretation of the coefficients implies:
+
+\begin{itemize}
+  \item on average a child gains 20.72 units in height
+  \item a child of zero weight is 58.23 units tall
+\end{itemize}
+
+\subsubsection{b}
+
+
+<<pi-youth, fig=TRUE,message=FALSE>>=
+# calculate CI for mean
+postY.samples <- as.data.frame(mvrnorm(length(dY$height) , mu=coef(mle.hwY), Sigma=vcov(mle.hwY)))
+weight.range = seq(min(dY$weight), max(dY$weight), 0.2)
+heightY.CI = sapply(weight.range, function(x){HPDI(postY.samples$alpha + postY.samples$beta*x)})
+heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY.samples$alpha + postY.samples$beta*x),sd=postY.samples$sigma))})
+plot(height~weight, data=dY)
+abline(a = coef(mle.hwY)['alpha'], b = coef(mle.hwY)['beta'])
+lines(heightY.CI['lower',]~weight.range, lty=2)
+lines(heightY.CI['upper',]~weight.range, lty=2)
+lines(heightY.PI['upper',]~weight.range, lty=3)
+lines(heightY.PI['lower',]~weight.range, lty=3)
+@ 
+
+\subsubsection{c}
+
+Most concerned by the performance of the fit at low and high weights. 
+In particular, the model underpredicts height at the upper end of the weight range, and overpredicts at lower end of the range.
+I expect these poblems arise because the linear model cannot accommodate the biological reality of growth and development; the amount of energy (weight) allocated height may change over development. 
+Further, height levels off at low weights.
+
+To accommodate biological reality, I would use a model where growth has  non-linear relationship with weight.
+Maybe a sinusoid: non-growth development early, then even develoment/height, then leveling off to maintenance.
+Would like to keep intercept at zero though
+
+One could also transform the data\dots 
+
+
+\subsection*{Problem 3}
+
+Suppose a colleague of yours, who works on allometry, glances at the homework problems just above. Your colleague exclaims, “That’s silly. Everyone knows that it’s only the logarithm of body weight that scales with height!”
+
+(a) I want you to model the relationship between height (cm) and the natural logarithm of weight (log-kg). Use the entire Howell1 data frame, all 544 rows, adults and non-adults. Fit this model, using qua- dratic approximation:
+\[h_i \sim Normal(\mu_i, \sigma), \mu_i =\alpha+\beta \log(w_i),\]
+
+where hi is the height of individual i and wi is the weight (in kg) of individual i. The function for computing a natural log in R is just log.
+
+(b) Begin with this plot:
+<<all-data,fig=TRUE>>=
+plot(height ~ weight , data=Howell1 , col=col.alpha('slateblue',0.4))
+@ 
+
+
+Then use samples from the naive posterior of the model in (a) to su- perimpose on the plot (1) the predicted mean height as a function of weight, (2) the 95\% HPDI for the mean, and (3) the 95\% HPDI for predicted heights. The trick here lies in appreciating that the model was fit using log(weight) but that you must plot the predictions using raw weight as the horizontal axis. Remember that the opposite of log is exp.
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit('/Users/jaime/PHD/stat-rethink/hw3ashander.Rnw') ## to run
+@ 
+
+
+\end{document}
