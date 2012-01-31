@@ -59,7 +59,7 @@ d2 <- Howell1[ Howell1$age >= 18 , ]
 
 Model the relationship between height $h_i$ and weight $w_i$ as
 \[
-h_i  ~ {\rm Normal}\left ( \mu_i, \sigma \right). 
+h_i  \sim {\rm Normal}\left ( \mu_i, \sigma \right). 
 \]
 
 with $\mu_i = \alpha + \beta w_i$
@@ -71,11 +71,15 @@ mle.hw <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=d2, star
 known.weights <- c(46.95,43.72,64.78,32.59,54.63)
 post.samples <- as.data.frame(mvrnorm(length(d2$height) , mu=coef(mle.hw), Sigma=vcov(mle.hw)))
 Pred.mean <- function(x){ret = coef(mle.hw)['alpha'] + coef(mle.hw)['beta']* x; names(ret) = c(''); ret}
-height.CI = sapply(known.weights, function(x){HPDI(post.samples$alpha + post.samples$beta*x)})
+
+height.PI = sapply(known.weights, function(x){HPDI(rnorm(n = 1e4, mean=post.samples$alpha + post.samples$beta*x, sd=post.samples$sigma), prob=0.9)})
 height.mean = sapply(known.weights, Pred.mean)
-height.table = cbind(individual=1:5,known.weights,expected.height=height.mean, lower.90=height.CI[1,], upper.90=height.CI[2,])
+
+height.table = cbind(individual=1:5,known.weights,expected.height=height.mean, lower.90=height.PI[1,], upper.90=height.PI[2,])
 height.table
 @ 
+
+The above provides 90\% {\em PREDICTION } intervals (i.e., confidence intervals on the predictions)
 
 \subsubsection{a}
 
@@ -89,7 +93,7 @@ precis(mle.hwY)
 A simple interpretation of the coefficients implies:
 
 \begin{itemize}
-  \item on average a child gains 20.72 units in height
+  \item on average a child gains 27.2 units in height for each gain of 10 units in weight
   \item a child of zero weight is 58.23 units tall
 \end{itemize}
 
@@ -102,9 +106,9 @@ postY.samples <- as.data.frame(mvrnorm(length(dY$height) , mu=coef(mle.hwY), Sig
 
 # calculate CI for mean
 weight.range = seq(min(dY$weight), max(dY$weight), 0.2)
-heightY.CI = sapply(weight.range, function(x){HPDI(postY.samples$alpha + postY.samples$beta*x)})
+heightY.CI = sapply(weight.range, function(x){HPDI(postY.samples$alpha + postY.samples$beta*x, prob=0.9)})
 # calculate PI for mean
-heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY.samples$alpha + postY.samples$beta*x),sd=postY.samples$sigma))})
+heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY.samples$alpha + postY.samples$beta*x),sd=postY.samples$sigma), prob=0.90)})
 
 # plot TODO: clean this up, maybe rewrite as ggplot
 plot(height~weight, data=dY, col=col.alpha('slateblue',0.4))
@@ -134,7 +138,7 @@ One could also transform the data\dots
 For the Howell dataset (n=544 individuals) we  model the relationship between height (cm) and the natural logarithm of weight (log-kg). 
 \[\begin{split}h_i \sim Normal(\mu_i, \sigma)\\ \mu_i =\alpha+\beta \log(w_i),\end{split}\]
 where $h_i$ is the height (in cm), and $w_i$ the weight (in kg), of individual i. 
-n
+
 We use the entire Howell1 data frame, all 544 rows, adults and non-adults. 
 
 \subsubsection{(a)}
@@ -142,8 +146,9 @@ We use the entire Howell1 data frame, all 544 rows, adults and non-adults.
 First, we fit model, using a quadratic approximation of the likelihood
 
 <<log-fit,warning=FALSE,message=FALSE>>=
-pd.f = Howell1
-mle.loghw <- mle2(height ~ dnorm(mean=alpha + beta*log(weight), sd=sigma), data=d.f, start=list(alpha=mean(d.f$weight), beta=0, sigma=sd(d.f$height)))
+d.f = Howell1
+d.f$logw = log(d.f$weight)
+mle.loghw <- mle2(height ~ dnorm(mean=alpha + beta*logw, sd=sigma), data=d.f, start=list(alpha=mean(d.f$height), beta=0, sigma=sd(d.f$height)))
 precis(mle.loghw)
 @ 
 
@@ -155,9 +160,9 @@ post.full.samples <- as.data.frame(mvrnorm(length(d.f$height) , mu=coef(mle.logh
 
 # calculate CI for mean
 weight.range = seq(min(d.f$weight), max(d.f$weight), 0.2) 
-heightf.CI = sapply(weight.range, function(x){HPDI(post.full.samples$alpha + post.full.samples$beta*log(x), 0.95)})
+heightf.CI = sapply(weight.range, function(x){HPDI(post.full.samples$alpha + post.full.samples$beta*log(x), prob=0.95)})
 # calculate PI for mean
-heightf.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(post.full.samples$alpha + post.full.samples$beta*log(x)),sd=post.full.samples$sigma), 0.95)})
+heightf.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(post.full.samples$alpha + post.full.samples$beta*log(x)),sd=post.full.samples$sigma), prob=0.95)})
 
 # plot TODO: clean this up, maybe rewrite as ggplot
 plot(height ~ weight , data=Howell1 , col=col.alpha('slateblue',0.4))
