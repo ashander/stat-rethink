@@ -77,6 +77,7 @@ height.mean = sapply(known.weights, Pred.mean)
 
 height.table = cbind(individual=1:5,known.weights,expected.height=height.mean, lower.90=height.PI[1,], upper.90=height.PI[2,])
 height.table
+
 @ 
 
 The above provides 90\% {\em PREDICTION } intervals (i.e., confidence intervals on the predictions)
@@ -88,6 +89,7 @@ The above provides 90\% {\em PREDICTION } intervals (i.e., confidence intervals 
 dY <- Howell1[Howell1$age <18,]
 mle.hwY <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=dY, start=list(alpha=mean(d2$height), beta=0, sigma=sd(d2$height)))
 precis(mle.hwY)
+
 @ 
 
 A simple interpretation of the coefficients implies:
@@ -102,21 +104,30 @@ A simple interpretation of the coefficients implies:
 
 <<pi-youth, fig=TRUE,message=FALSE>>=
 #sample posterior
-postY <- as.data.frame(mvrnorm(length(dY$height) , mu=coef(mle.hwY), Sigma=vcov(mle.hwY)))
+postY <- as.data.frame(mvrnorm(1e4 , mu=coef(mle.hwY), Sigma=vcov(mle.hwY)))
 
 # calculate CI for mean
-weight.range = seq(min(dY$weight), max(dY$weight), 0.2)
+weight.range = seq(min(dY$weight), max(dY$weight), length.out=nrow(dY))
 heightY.CI = sapply(weight.range, function(x){HPDI(postY$alpha + postY$beta*x, prob=0.9)})
-# calculate PI for mean
+row.names(heightY.CI) = paste(row.names(heightY.CI),"CI")
+# calculate PI
 heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY$alpha + postY$beta*x),sd=postY$sigma), prob=0.90)})
+row.names(heightY.PI) = paste(row.names(heightY.PI),"PI")
+dY <- as.data.frame(cbind(dY, t(heightY.CI), t(heightY.PI),w=weight.range))
 
-# plot TODO: clean this up, maybe rewrite as ggplot
-plot(height~weight, data=dY, col=col.alpha('slateblue',0.4))
-abline(a = coef(mle.hwY)['alpha'], b = coef(mle.hwY)['beta'])
-lines(heightY.CI['lower',]~weight.range, lty=2)
-lines(heightY.CI['upper',]~weight.range, lty=2)
-lines(heightY.PI['upper',]~weight.range, lty=3)
-lines(heightY.PI['lower',]~weight.range, lty=3)
+dY.m <- melt(dY, id.vars=c('weight', 'w', 'age', 'male', 'height'))
+
+p <- ggplot(data=dY.m) + 
+  geom_point(aes(weight,height)) + 
+  geom_abline(intercept=coef(mle.hwY)['alpha'], slope=coef(mle.hwY)['beta']) + 
+  geom_line(aes(w,value,color=variable)) #annoying that unique colors for each need to get gg to plot both at once, solution with row.names=rep("CI",2) doesn't plot _Both_ lines... 
+p                
+
+## lines(heightY.CI['lower',]~weight.range, lty=2)
+## lines(heightY.CI['upper',]~weight.range, lty=2)
+## lines(heightY.PI['upper',]~weight.range, lty=3)
+## lines(heightY.PI['lower',]~weight.range, lty=3)
+
 @ 
 
 \subsubsection{c}

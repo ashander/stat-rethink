@@ -477,11 +477,11 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 \end{flushleft}
 \begin{verbatim}
 ##  individual known.weights expected.height lower.90 upper.90
-##           1         46.95           156.4    147.8    164.3
-##           2         43.72           153.4    145.0    161.5
-##           3         64.78           172.5    163.7    180.9
-##           4         32.59           143.4    135.2    151.8
-##           5         54.63           163.3    154.8    171.4
+##           1         46.95           156.4    148.0    164.6
+##           2         43.72           153.4    145.2    161.6
+##           3         64.78           172.5    163.8    180.8
+##           4         32.59           143.4    134.9    151.8
+##           5         54.63           163.3    154.9    171.6
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -528,31 +528,43 @@ A simple interpretation of the coefficients implies:
 \begin{flushleft}
 \ttfamily\noindent
 \hlcomment{\usebox{\hlnormalsizeboxhash}sample{\ }posterior}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{postY}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{postY}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }CI{\ }for{\ }mean}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{weight.range}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlnumber{0.2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{weight.range}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{heightY.CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }PI{\ }for{\ }mean}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{row.names}\hlkeyword{(}\hlsymbol{heightY.CI}\hlkeyword{)}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{row.names}\hlkeyword{(}\hlsymbol{heightY.CI}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"CI"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }PI}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{heightY.PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlkeyword{(}\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{row.names}\hlkeyword{(}\hlsymbol{heightY.PI}\hlkeyword{)}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{row.names}\hlkeyword{(}\hlsymbol{heightY.PI}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"PI"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{dY}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{cbind}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{,}{\ }\hlfunctioncall{t}\hlkeyword{(}\hlsymbol{heightY.CI}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{t}\hlkeyword{(}\hlsymbol{heightY.PI}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{w}{\ }\hlargument{=}{\ }\hlsymbol{weight.range}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }plot{\ }TODO:{\ }clean{\ }this{\ }up,{\ }maybe{\ }rewrite{\ }as{\ }ggplot}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{dY}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"slateblue"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.4}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{b}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightY.CI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightY.CI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightY.PI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightY.PI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{dY.m}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{melt}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{,}{\ }\hlargument{id.vars}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"weight"}\hlkeyword{,}{\ }\hlstring{"w"}\hlkeyword{,}{\ }\hlstring{"age"}\hlkeyword{,}{\ }\hlstring{"male"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"height"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{dY.m}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{weight}\hlkeyword{,}{\ }\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}abline}\hlkeyword{(}\hlargument{intercept}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{slope}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}line}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{w}\hlkeyword{,}{\ }\hlsymbol{value}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlsymbol{variable}\hlkeyword{)}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}annoying{\ }that{\ }unique{\ }colors{\ }for{\ }each{\ }need{\ }to{\ }get{\ }gg{\ }to{\ }plot{\ }both{\ }at{\ }once,{\ }solution{\ }with{\ }row.names=rep(\usebox{\hlnormalsizeboxsinglequote}CI\usebox{\hlnormalsizeboxsinglequote},2){\ }doesn\usebox{\hlnormalsizeboxsinglequote}t{\ }plot{\ }\usebox{\hlnormalsizeboxunderscore}Both\usebox{\hlnormalsizeboxunderscore}{\ }lines...}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{p}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{pi-youth} \end{kframe}}
+\includegraphics{pi-youth} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.CI[\usebox{\hlnormalsizeboxsinglequote}lower\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=2)}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.CI[\usebox{\hlnormalsizeboxsinglequote}upper\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=2)}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.PI[\usebox{\hlnormalsizeboxsinglequote}upper\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=3)}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.PI[\usebox{\hlnormalsizeboxsinglequote}lower\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=3)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
 \end{knitrout}
 
 
