@@ -456,8 +456,8 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d2}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{known.weights}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{46.95}\hlkeyword{,}{\ }\hlnumber{43.72}\hlkeyword{,}{\ }\hlnumber{64.78}\hlkeyword{,}{\ }\hlnumber{32.59}\hlkeyword{,}{\ }\hlnumber{54.63}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{post.samples}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{d2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hw}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.hw}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{d2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hw}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.hw}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{Pred.mean}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{ret}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hw}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hw}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{ret}\hlkeyword{)}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{""}\hlkeyword{)}\hspace*{\fill}\\
@@ -465,8 +465,8 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{height.PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{known.weights}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{post.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{post.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{height.mean}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{known.weights}\hlkeyword{,}{\ }\hlsymbol{Pred.mean}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
@@ -477,11 +477,11 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 \end{flushleft}
 \begin{verbatim}
 ##  individual known.weights expected.height lower.90 upper.90
-##           1         46.95           156.4    147.8    164.6
-##           2         43.72           153.4    144.6    161.3
-##           3         64.78           172.5    164.1    180.8
-##           4         32.59           143.4    134.7    151.4
-##           5         54.63           163.3    155.2    171.8
+##           1         46.95           156.4    147.8    164.3
+##           2         43.72           153.4    145.0    161.5
+##           3         64.78           172.5    163.7    180.9
+##           4         32.59           143.4    135.2    151.8
+##           5         54.63           163.3    154.8    171.4
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -528,18 +528,18 @@ A simple interpretation of the coefficients implies:
 \begin{flushleft}
 \ttfamily\noindent
 \hlcomment{\usebox{\hlnormalsizeboxhash}sample{\ }posterior}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{postY.samples}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{postY}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.hwY}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }CI{\ }for{\ }mean}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{weight.range}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{dY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlnumber{0.2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{heightY.CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{postY.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{postY.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }PI{\ }for{\ }mean}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{heightY.PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlkeyword{(}\hlsymbol{postY.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{postY.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{x}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{postY.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlkeyword{(}\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{postY}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.9}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }plot{\ }TODO:{\ }clean{\ }this{\ }up,{\ }maybe{\ }rewrite{\ }as{\ }ggplot}\hspace*{\fill}\\
@@ -586,11 +586,11 @@ First, we fit model, using a quadratic approximation of the likelihood
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{d.f}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{Howell1}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{logw}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mle.loghw}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{logw}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d.f}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlsymbol{d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{Howell1}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{log.w}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mle.loghw}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{log.w}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
@@ -606,47 +606,97 @@ First, we fit model, using a quadratic approximation of the likelihood
 
 \subsubsection{(b)}
 
+The model above is equivalent to
+
+\[\begin{split}h_i \sim Normal(\mu_i, \sigma)\\ \mu_i =\alpha+\beta y_i\\ y_i = \log(w_i),\end{split}\]
+where $h_i$ is the height (in cm), and $w_i$ the weight (in kg) and $y_i$ log weight (in log-kg), of individual $i$. 
+
+
+Now we plot observations $h_i$ against $w_i$, as well as predicted means and 95\% HPDI for mean and predicted heights. 
+In practice, this means plotting
+\begin{itemize}
+  \item $h_i$ against $\exp(y_i)$
+  \item HPDIs computed for each $y_i$ against $\exp(y_i)$
+\end{itemize}
+
+For the mean prediction, however, we directly plot the curve
+\[
+\bar h = \alpha + \beta \log(w_i)
+\]
+
+    
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlcomment{\usebox{\hlnormalsizeboxhash}sample{\ }posterior}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{post.full.samples}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }CI{\ }for{\ }mean}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{weight.range}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlnumber{0.2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{heightf.CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post.full.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post.full.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.95}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{log.w.range}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{log.w}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{log.w}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlnumber{60}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{heightf.CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.95}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }calculate{\ }PI{\ }for{\ }mean}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{heightf.PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlkeyword{(}\hlsymbol{post.full.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post.full.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{post.full.samples}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.95}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{heightf.PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.95}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }plot{\ }TODO:{\ }clean{\ }this{\ }up,{\ }maybe{\ }rewrite{\ }as{\ }ggplot}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{Howell1}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"slateblue"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"slateblue"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.4}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{Pred.fn}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{mle.loghw}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlsymbol{Pred.fn}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d.f}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlsymbol{Pred.fn}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.CI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.CI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}other{\ }way..}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{log.w}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{weight.range}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlnumber{60}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{heightf.CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.95}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{heightf.PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlfunctioncall{rnorm}\hlkeyword{(}\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlkeyword{(}\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlnumber{0.95}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"orange"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.4}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.CI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.CI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{all-data} \end{kframe}}
+\includegraphics{all-data} \begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
 \end{knitrout}
 
 
-Then use samples from the naive posterior of the model in (a) to superimpose on the plot (1) the predicted mean height as a function of weight, (2) the 95\% HPDI for the mean, and (3) the 95\% HPDI for predicted heights. 
-The trick here lies in appreciating that the model was fit using log(weight) but that you must plot the predictions using raw weight as the horizontal axis. 
-Remember that the opposite of log is exp.
 
 \subsection*{Colophon}
 

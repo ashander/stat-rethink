@@ -69,10 +69,10 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 <<height-weight,message=FALSE,warning=FALSE>>=
 mle.hw <- mle2(height ~ dnorm(mean=alpha + beta*weight, sd=sigma), data=d2, start=list(alpha=mean(d2$height), beta=0, sigma=sd(d2$height)))
 known.weights <- c(46.95,43.72,64.78,32.59,54.63)
-post.samples <- as.data.frame(mvrnorm(length(d2$height) , mu=coef(mle.hw), Sigma=vcov(mle.hw)))
+post <- as.data.frame(mvrnorm(length(d2$height) , mu=coef(mle.hw), Sigma=vcov(mle.hw)))
 Pred.mean <- function(x){ret = coef(mle.hw)['alpha'] + coef(mle.hw)['beta']* x; names(ret) = c(''); ret}
 
-height.PI = sapply(known.weights, function(x){HPDI(rnorm(n = 1e4, mean=post.samples$alpha + post.samples$beta*x, sd=post.samples$sigma), prob=0.9)})
+height.PI = sapply(known.weights, function(x){HPDI(rnorm(n = 1e4, mean=post$alpha + post$beta*x, sd=post$sigma), prob=0.9)})
 height.mean = sapply(known.weights, Pred.mean)
 
 height.table = cbind(individual=1:5,known.weights,expected.height=height.mean, lower.90=height.PI[1,], upper.90=height.PI[2,])
@@ -102,13 +102,13 @@ A simple interpretation of the coefficients implies:
 
 <<pi-youth, fig=TRUE,message=FALSE>>=
 #sample posterior
-postY.samples <- as.data.frame(mvrnorm(length(dY$height) , mu=coef(mle.hwY), Sigma=vcov(mle.hwY)))
+postY <- as.data.frame(mvrnorm(length(dY$height) , mu=coef(mle.hwY), Sigma=vcov(mle.hwY)))
 
 # calculate CI for mean
 weight.range = seq(min(dY$weight), max(dY$weight), 0.2)
-heightY.CI = sapply(weight.range, function(x){HPDI(postY.samples$alpha + postY.samples$beta*x, prob=0.9)})
+heightY.CI = sapply(weight.range, function(x){HPDI(postY$alpha + postY$beta*x, prob=0.9)})
 # calculate PI for mean
-heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY.samples$alpha + postY.samples$beta*x),sd=postY.samples$sigma), prob=0.90)})
+heightY.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(postY$alpha + postY$beta*x),sd=postY$sigma), prob=0.90)})
 
 # plot TODO: clean this up, maybe rewrite as ggplot
 plot(height~weight, data=dY, col=col.alpha('slateblue',0.4))
@@ -146,40 +146,79 @@ We use the entire Howell1 data frame, all 544 rows, adults and non-adults.
 First, we fit model, using a quadratic approximation of the likelihood
 
 <<log-fit,warning=FALSE,message=FALSE>>=
-d.f = Howell1
-d.f$logw = log(d.f$weight)
-mle.loghw <- mle2(height ~ dnorm(mean=alpha + beta*logw, sd=sigma), data=d.f, start=list(alpha=mean(d.f$height), beta=0, sigma=sd(d.f$height)))
+d = Howell1
+d$log.w = log(d$weight)
+mle.loghw <- mle2(height ~ dnorm(mean=alpha + beta*log.w, sd=sigma), data=d, start=list(alpha=mean(d$height), beta=0, sigma=sd(d$height)))
 precis(mle.loghw)
+
 @ 
 
 \subsubsection{(b)}
 
-<<all-data,fig=TRUE>>=
+The model above is equivalent to
+
+\[\begin{split}h_i \sim Normal(\mu_i, \sigma)\\ \mu_i =\alpha+\beta y_i\\ y_i = \log(w_i),\end{split}\]
+where $h_i$ is the height (in cm), and $w_i$ the weight (in kg) and $y_i$ log weight (in log-kg), of individual $i$. 
+
+
+Now we plot observations $h_i$ against $w_i$, as well as predicted means and 95\% HPDI for mean and predicted heights. 
+In practice, this means plotting
+\begin{itemize}
+  \item $h_i$ against $\exp(y_i)$
+  \item HPDIs computed for each $y_i$ against $\exp(y_i)$
+\end{itemize}
+
+For the mean prediction, however, we directly plot the curve
+\[
+\bar h = \alpha + \beta \log(w_i)
+\]
+
+    
+<<all-data,fig=TRUE,warning=FALSE>>=
 #sample posterior
-post.full.samples <- as.data.frame(mvrnorm(length(d.f$height) , mu=coef(mle.loghw), Sigma=vcov(mle.loghw)))
+post <- as.data.frame(mvrnorm(length(d$height) , mu=coef(mle.loghw), Sigma=vcov(mle.loghw)))
 
 # calculate CI for mean
-weight.range = seq(min(d.f$weight), max(d.f$weight), 0.2) 
-heightf.CI = sapply(weight.range, function(x){HPDI(post.full.samples$alpha + post.full.samples$beta*log(x), prob=0.95)})
+log.w.range = seq(min(d$log.w), max(d$log.w), length.out=60) 
+heightf.CI = sapply(log.w.range, function(x){HPDI(post$alpha + post$beta*x, prob=0.95)})
 # calculate PI for mean
-heightf.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(post.full.samples$alpha + post.full.samples$beta*log(x)),sd=post.full.samples$sigma), prob=0.95)})
+heightf.PI = sapply(log.w.range, function(x){HPDI(rnorm(1e4, mean=(post$alpha + post$beta*x),sd=post$sigma), prob=0.95)})
 
 # plot TODO: clean this up, maybe rewrite as ggplot
-plot(height ~ weight , data=Howell1 , col=col.alpha('slateblue',0.4))
+op <- par(mfrow=c(1,2))
+plot(height ~ exp(log.w) , data=d , col=col.alpha('slateblue',0.4))
 Pred.fn <- function(x){
-  coef(mle.loghw)['alpha']+log(x)*coef(mle.loghw)['beta']
+  a = coef(mle.loghw)['alpha']
+  b = coef(mle.loghw)['beta']
+  a + b*log(x)
 }
-curve(Pred.fn, from=min(d.f$weight), to=max(d.f$weight), add=T)
+curve(Pred.fn, from=min(d$weight), to=max(d$weight), add=T)
+lines(heightf.CI['lower',]~exp(log.w.range), lty=2)
+lines(heightf.CI['upper',]~exp(log.w.range), lty=2)
+lines(heightf.PI['upper',]~exp(log.w.range), lty=3)
+lines(heightf.PI['lower',]~exp(log.w.range), lty=3)
+
+
+#other way.. 
+m2 <- mle2(height ~ dnorm(mean=alpha + beta*log.w, sd=sigma), data=d, start=list(alpha=mean(d$height), beta=0, sigma=sd(d$height)))
+
+post2 <- as.data.frame(mvrnorm(length(d$height) , mu=coef(m2), Sigma=vcov(m2)))
+
+weight.range = seq(min(d$weight), max(d$weight), length.out=60) 
+heightf.CI = sapply(weight.range, function(x){HPDI(post2$alpha + post2$beta*log(x), prob=0.95)})
+
+heightf.PI = sapply(weight.range, function(x){HPDI(rnorm(1e4, mean=(post2$alpha + post2$beta*log(x)), sd=post2$sigma), prob=0.95)})
+
+plot(height~weight, data=d,  col=col.alpha('orange',0.4))
+curve(coef(m2)['alpha']+log(x)*coef(m2)['beta'], from=min(d$weight), to=max(d$weight), add=T)
 lines(heightf.CI['lower',]~weight.range, lty=2)
 lines(heightf.CI['upper',]~weight.range, lty=2)
 lines(heightf.PI['upper',]~weight.range, lty=3)
 lines(heightf.PI['lower',]~weight.range, lty=3)
+par(op)
 
 @ 
 
-Then use samples from the naive posterior of the model in (a) to superimpose on the plot (1) the predicted mean height as a function of weight, (2) the 95\% HPDI for the mean, and (3) the 95\% HPDI for predicted heights. 
-The trick here lies in appreciating that the model was fit using log(weight) but that you must plot the predictions using raw weight as the horizontal axis. 
-Remember that the opposite of log is exp.
 
 \subsection*{Colophon}
 
