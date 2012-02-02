@@ -426,6 +426,7 @@
 \subsection*{Problem 1}
 \label{problem1}
 
+Using the Howell dataset, adults only
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -439,12 +440,12 @@
 \end{knitrout}
 
 
-Model the relationship between height $h_i$ and weight $w_i$ as
+we model the relationship between height $h_i$ and weight $w_i$ as
 \[
 h_i  \sim {\rm Normal}\left ( \mu_i, \sigma \right). 
 \]
 
-with $\mu_i = \alpha + \beta w_i$
+with $\mu_i = \alpha + \beta w_i$.
 
 Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data frame `d2`. 
 
@@ -477,10 +478,10 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 \end{flushleft}
 \begin{verbatim}
 ##  individual known.weights expected.height lower.90 upper.90
-##           1         46.95           156.4    148.0    164.6
-##           2         43.72           153.4    145.2    161.6
-##           3         64.78           172.5    163.8    180.8
-##           4         32.59           143.4    134.9    151.8
+##           1         46.95           156.4    147.8    164.5
+##           2         43.72           153.4    144.9    161.3
+##           3         64.78           172.5    163.9    180.6
+##           4         32.59           143.4    134.9    151.7
 ##           5         54.63           163.3    154.9    171.6
 \end{verbatim}
 \end{kframe}}
@@ -491,6 +492,7 @@ The above provides 90\% {\em PREDICTION } intervals (i.e., confidence intervals 
 
 \subsubsection{a}
 
+Now, we apply the same model to  youth in the Howell dataset, 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -570,16 +572,17 @@ A simple interpretation of the coefficients implies:
 
 \subsubsection{c}
 
-Most concerned by the performance of the fit at low and high weights. 
+The plot above shows raw data, predicted mean heights (black), prediction intervals (PI), and confidence intervals (CI). 
+ I'm most concerned by the performance of the fit at low and high weights. 
 In particular, the model underpredicts height at the upper end of the weight range, and overpredicts at lower end of the range.
 I expect these poblems arise because the linear model cannot accommodate the biological reality of growth and development; the amount of energy (weight) allocated height may change over development. 
 Further, height levels off at low weights.
 
 To accommodate biological reality, I would use a model where growth has  non-linear relationship with weight.
-Maybe a sinusoid: non-growth development early, then even develoment/height, then leveling off to maintenance.
-Would like to keep intercept at zero though
+One possibility is a sinusoid: non-growth development early, then even develoment/height, then leveling off to maintenance.
+I would like to keep intercept at zero though. 
 
-One could also transform the data\dots 
+Another possibility is to transform the data\dots 
 
 
 \subsection*{Problem 3}
@@ -633,8 +636,9 @@ In practice, this means plotting
 
 For the mean prediction, however, we directly plot the curve
 \[
-\bar h = \alpha + \beta \log(w_i)
+\bar h = \alpha + \beta \log(w_i).
 \]
+
 
     
 \begin{knitrout}
@@ -657,7 +661,6 @@ For the mean prediction, however, we directly plot the curve
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }plot{\ }TODO:{\ }clean{\ }this{\ }up,{\ }maybe{\ }rewrite{\ }as{\ }ggplot}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"slateblue"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.4}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{Pred.fn}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
@@ -670,10 +673,22 @@ For the mean prediction, however, we directly plot the curve
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.CI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.CI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}other{\ }way..}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{log.w.range}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{all-data} \end{kframe}}
+\end{knitrout}
+
+
+
+Equivalently, it seems, we can directly fit the model from {\bf (a)} and obtain indistinguishable estimates and plots \dots 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlcomment{\usebox{\hlnormalsizeboxhash}other{\ }way..}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{log.w}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
@@ -700,12 +715,7 @@ For the mean prediction, however, we directly plot the curve
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{heightf.PI}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{weight.range}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{all-data} \begin{flushleft}
-\ttfamily\noindent
-\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\end{kframe}}
+\includegraphics{all-data2} \end{kframe}}
 \end{knitrout}
 
 

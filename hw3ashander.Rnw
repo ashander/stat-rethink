@@ -51,18 +51,19 @@ require(ggplot2)
 \subsection*{Problem 1}
 \label{problem1}
 
+Using the Howell dataset, adults only
 
 <<d2-load,message=FALSE>>=
 data(Howell1) 
 d2 <- Howell1[ Howell1$age >= 18 , ]
 @ 
 
-Model the relationship between height $h_i$ and weight $w_i$ as
+we model the relationship between height $h_i$ and weight $w_i$ as
 \[
 h_i  \sim {\rm Normal}\left ( \mu_i, \sigma \right). 
 \]
 
-with $\mu_i = \alpha + \beta w_i$
+with $\mu_i = \alpha + \beta w_i$.
 
 Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data frame `d2`. 
 
@@ -84,6 +85,7 @@ The above provides 90\% {\em PREDICTION } intervals (i.e., confidence intervals 
 
 \subsubsection{a}
 
+Now, we apply the same model to  youth in the Howell dataset, 
 
 <<message=FALSE,warning=FALSE>>=
 dY <- Howell1[Howell1$age <18,]
@@ -132,16 +134,17 @@ p
 
 \subsubsection{c}
 
-Most concerned by the performance of the fit at low and high weights. 
+The plot above shows raw data, predicted mean heights (black), prediction intervals (PI), and confidence intervals (CI). 
+ I'm most concerned by the performance of the fit at low and high weights. 
 In particular, the model underpredicts height at the upper end of the weight range, and overpredicts at lower end of the range.
 I expect these poblems arise because the linear model cannot accommodate the biological reality of growth and development; the amount of energy (weight) allocated height may change over development. 
 Further, height levels off at low weights.
 
 To accommodate biological reality, I would use a model where growth has  non-linear relationship with weight.
-Maybe a sinusoid: non-growth development early, then even develoment/height, then leveling off to maintenance.
-Would like to keep intercept at zero though
+One possibility is a sinusoid: non-growth development early, then even develoment/height, then leveling off to maintenance.
+I would like to keep intercept at zero though. 
 
-One could also transform the data\dots 
+Another possibility is to transform the data\dots 
 
 
 \subsection*{Problem 3}
@@ -181,8 +184,9 @@ In practice, this means plotting
 
 For the mean prediction, however, we directly plot the curve
 \[
-\bar h = \alpha + \beta \log(w_i)
+\bar h = \alpha + \beta \log(w_i).
 \]
+
 
     
 <<all-data,fig=TRUE,warning=FALSE>>=
@@ -196,7 +200,6 @@ heightf.CI = sapply(log.w.range, function(x){HPDI(post$alpha + post$beta*x, prob
 heightf.PI = sapply(log.w.range, function(x){HPDI(rnorm(1e4, mean=(post$alpha + post$beta*x),sd=post$sigma), prob=0.95)})
 
 # plot TODO: clean this up, maybe rewrite as ggplot
-op <- par(mfrow=c(1,2))
 plot(height ~ exp(log.w) , data=d , col=col.alpha('slateblue',0.4))
 Pred.fn <- function(x){
   a = coef(mle.loghw)['alpha']
@@ -209,7 +212,13 @@ lines(heightf.CI['upper',]~exp(log.w.range), lty=2)
 lines(heightf.PI['upper',]~exp(log.w.range), lty=3)
 lines(heightf.PI['lower',]~exp(log.w.range), lty=3)
 
+@ 
 
+
+Equivalently, it seems, we can directly fit the model from {\bf (a)} and obtain indistinguishable estimates and plots \dots 
+
+
+<<all-data2,fig=TRUE,warning=FALSE>>=
 #other way.. 
 m2 <- mle2(height ~ dnorm(mean=alpha + beta*log.w, sd=sigma), data=d, start=list(alpha=mean(d$height), beta=0, sigma=sd(d$height)))
 
@@ -226,7 +235,6 @@ lines(heightf.CI['lower',]~weight.range, lty=2)
 lines(heightf.CI['upper',]~weight.range, lty=2)
 lines(heightf.PI['upper',]~weight.range, lty=3)
 lines(heightf.PI['lower',]~weight.range, lty=3)
-par(op)
 
 @ 
 
