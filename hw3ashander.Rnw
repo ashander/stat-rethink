@@ -119,16 +119,11 @@ dY <- as.data.frame(cbind(dY, t(heightY.CI), t(heightY.PI),w=weight.range))
 
 dY.m <- melt(dY, id.vars=c('weight', 'w', 'age', 'male', 'height'))
 
-p <- ggplot(data=dY.m) + 
+p <- ggplot(data=dY.m) +
   geom_point(aes(weight,height)) + 
   geom_abline(intercept=coef(mle.hwY)['alpha'], slope=coef(mle.hwY)['beta']) + 
   geom_line(aes(w,value,color=variable)) #annoying that unique colors for each need to get gg to plot both at once, solution with row.names=rep("CI",2) doesn't plot _Both_ lines... 
 p                
-
-## lines(heightY.CI['lower',]~weight.range, lty=2)
-## lines(heightY.CI['upper',]~weight.range, lty=2)
-## lines(heightY.PI['upper',]~weight.range, lty=3)
-## lines(heightY.PI['lower',]~weight.range, lty=3)
 
 @ 
 
@@ -220,7 +215,7 @@ Equivalently, it seems, we can directly fit the model from {\bf (a)} and obtain 
 
 <<all-data2,fig=TRUE,warning=FALSE>>=
 #other way.. 
-m2 <- mle2(height ~ dnorm(mean=alpha + beta*log.w, sd=sigma), data=d, start=list(alpha=mean(d$height), beta=0, sigma=sd(d$height)))
+m2 <- mle2(height ~ dnorm(mean=alpha + beta*log(weight), sd=sigma), data=d, start=list(alpha=mean(d$height), beta=0, sigma=sd(d$height)))
 
 post2 <- as.data.frame(mvrnorm(length(d$height) , mu=coef(m2), Sigma=vcov(m2)))
 

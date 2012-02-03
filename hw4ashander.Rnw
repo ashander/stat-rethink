@@ -1,0 +1,245 @@
+%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+\begin{center}
+  {\bf \Large Homework 4, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+We are working with data on urban foxes
+
+<<load,message=FALSE>>=
+d <- read.csv('foxes.csv')
+head(d)
+@ 
+
+There are five columns: 
+\begin{enumerate}
+  \item {\tt group}: Number of the social group the individual fox belongs to. This is just an identify label.
+  \item {\tt avgfood}: The average amount of food available in the territory. 
+  \item {\tt groupsize}: The number of foxes in the social group. 
+  \item {\tt area}: Size of the territory. 
+  \item {\tt weight}: Body weight of the individual fox.
+\end{enumerate}
+
+<<pair-glance>>=
+cor(d)
+@ 
+
+A glance at the correlation matrix hints that we could be on the look out with problems from correlated predictors.
+The tightly corrrelated set of predictors ({\tt avgfood, groupsize, area}) are just on the boundary of correlations where we begin to expect problems ($\approx 90$), so things may work out.
+
+\subsection*{Problem 1}
+\label{problem1}
+
+Denoting body weight as $w_i$, territory size $a_i$ (for area), and group size $g_i$, we fit two models: 
+
+(1) modelling body weight as a normal random variable based on area
+\[
+\begin{split}
+w_i \sim {\rm Normal} (\mu_i, \sigma)\\
+\mu_i  = \alpha_a + \beta_a a_i
+\end{split}
+\]
+
+
+<<weight-area,cache=TRUE>>=
+wa.mle <- mle2(weight~dnorm(mean=alpha + beta*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), beta=0, sigma=sd(d$weight)))
+post <-sample.naive.posterior(wa.mle)
+area.rng <- seq(min(d$area), max(d$area), len=1000)
+mu.ci <- sapply(area.rng, function(x){
+  HPDI(post$alpha + post$beta*x)})
+
+plot(weight~area, data=d)
+curve(coef(wa.mle)['beta']*x + coef(wa.mle)['alpha'], add=T, from=min(d$area), to = max(d$area))
+lines(mu.ci['lower',]~area.rng, data=d, lty=2)
+lines(mu.ci['upper',]~area.rng, data=d, lty=2)
+precis(wa.mle)
+@ 
+
+
+(2) modelling body weight as a normal random variable based on group size
+\[
+\begin{split}
+w_i \sim {\rm Normal} (\mu_i, \sigma)\\
+\mu_i  = \alpha_g + \beta_g g_i
+\end{split}
+\]
+
+<<weight-groupsize,cache=TRUE>>=
+wg.mle <- mle2(weight~dnorm(mean=alpha + beta*groupsize, sd=sigma), data=d, start=list(alpha=mean(d$weight), beta=0, sigma=sd(d$weight)))
+post <-sample.naive.posterior(wg.mle)
+groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
+mu.ci <- sapply(groupsize.rng, function(x){
+  HPDI(post$alpha + post$beta*x)})
+
+plot(weight~groupsize, data=d)
+curve(coef(wg.mle)['beta']*x + coef(wg.mle)['alpha'], add=T, from=min(d$groupsize), to = max(d$groupsize))
+lines(mu.ci['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci['upper',]~groupsize.rng, data=d, lty=2)
+precis(wg.mle)
+@ 
+
+Neither group size (`groupsize`) nor area of territory (`area`) appear to unequivocal predictors of body weight. 
+Area seems weakly positive on weight, while group size seems weakly negative. 
+
+
+\subsection*{Problem 2}
+\label{problem2}
+
+Now, modelling body weight as a normal random variable based on group size and area of territory
+\[
+\begin{split}
+w_i \sim {\rm Normal} (\mu_i, \sigma)\\
+\mu_i  = \alpha + \beta_g g_i + \beta_a a_i
+\end{split}
+\]
+
+<<weight-groupsize-area,warning=FALSE,cache=TRUE>>=
+wga.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize + b.a*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, b.a=0, sigma=sd(d$weight)))
+
+
+op <- par(mfrow=c(1,2))
+post <-sample.naive.posterior(wga.mle)
+
+## fix groupsize and do area effects
+mean.groupsize <- mean(d$groupsize)
+area.rng <- seq(min(d$area), max(d$area), len=1000)
+
+mu.ci <- sapply(area.rng, function(x){
+  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.a*x)})
+plot(weight~area, data=d)
+curve(coef(wga.mle)['b.g']*mean.groupsize + coef(wga.mle)['alpha'] + coef(wga.mle)['b.a']*x, add=T, from=min(d$area), to = max(d$area))
+
+lines(mu.ci['lower',]~area.rng, data=d, lty=2)
+lines(mu.ci['upper',]~area.rng, data=d, lty=2)
+
+## fix area and do groupsize effects
+mean.area <- mean(d$area)
+groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
+
+mu.ci <- sapply(groupsize.rng, function(x){
+  HPDI(post$alpha + post$b.g*x + post$b.a*mean.area)})
+plot(weight~groupsize, data=d)
+curve(coef(wga.mle)['b.g']*x + coef(wga.mle)['alpha'] + coef(wga.mle)['b.a']*mean.area, add=T, from=min(d$groupsize), to = max(d$groupsize))
+
+lines(mu.ci['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci['upper',]~groupsize.rng, data=d, lty=2)
+
+par(op)
+
+precis(wga.mle)
+@ 
+
+Now the estimates are both awesome.
+Tight CIs around the mean, clear evidence that as group size increases, weight decreases and that as area increases so does weight. 
+
+
+\subsection*{Problem 3}
+\label{problem3}
+
+
+Closing the loop \dots 
+
+(1)
+Now, modelling body weight as a normal random variable based on group size and average food
+\[
+\begin{split}
+w_i \sim {\rm Normal} (\mu_i, \sigma)\\
+\mu_i  = \alpha + \beta_g g_i + \beta_v v_i
+\end{split}
+\]
+
+<<weight-groupsize-avgfood,warning=FALSE,cache=TRUE>>=
+wgv.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize + b.v*avgfood, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, b.v=0, sigma=sd(d$weight)))
+
+
+op <- par(mfrow=c(1,2))
+post <-sample.naive.posterior(wgv.mle)
+
+## fix groupsize and do avgfood effects
+mean.groupsize <- mean(d$groupsize)
+avgfood.rng <- seq(min(d$avgfood), max(d$avgfood), len=1000)
+
+mu.ci <- sapply(avgfood.rng, function(x){
+  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.v*x)})
+plot(weight~avgfood, data=d)
+curve(coef(wgv.mle)['b.g']*mean.groupsize + coef(wgv.mle)['alpha'] + coef(wgv.mle)['b.v']*x, add=T, from=min(d$avgfood), to = max(d$avgfood))
+
+lines(mu.ci['lower',]~avgfood.rng, data=d, lty=2)
+lines(mu.ci['upper',]~avgfood.rng, data=d, lty=2)
+
+## fix avgfood and do groupsize effects
+mean.avgfood <- mean(d$avgfood)
+groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
+
+mu.ci <- sapply(groupsize.rng, function(x){
+  HPDI(post$alpha + post$b.g*x + post$b.v*mean.avgfood)})
+plot(weight~groupsize, data=d)
+curve(coef(wgv.mle)['b.g']*x + coef(wgv.mle)['alpha'] + coef(wgv.mle)['b.v']*mean.avgfood, add=T, from=min(d$groupsize), to = max(d$groupsize))
+
+lines(mu.ci['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci['upper',]~groupsize.rng, data=d, lty=2)
+
+par(op)
+
+precis(wgv.mle)
+
+@ 
+
+The estimates are still awesome.
+Tight CIs around the mean, clear evidence that as group size increases, weight decreases and that as avgfood increases so does weight. 
+
+
+\subsection{(a)}
+
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE,cache=TRUE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'hw4ashander.Rnw',sep='/')) ## to run
+@ 
+
+
+\end{document}

@@ -478,11 +478,11 @@ Note that $h_i$ is column `height` and $w_i$ is column `weight` in the data fram
 \end{flushleft}
 \begin{verbatim}
 ##  individual known.weights expected.height lower.90 upper.90
-##           1         46.95           156.4    147.8    164.5
-##           2         43.72           153.4    144.9    161.3
-##           3         64.78           172.5    163.9    180.6
-##           4         32.59           143.4    134.9    151.7
-##           5         54.63           163.3    154.9    171.6
+##           1         46.95           156.4    148.0    164.4
+##           2         43.72           153.4    145.3    161.8
+##           3         64.78           172.5    164.3    181.4
+##           4         32.59           143.4    135.0    151.8
+##           5         54.63           163.3    154.7    171.7
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -557,16 +557,7 @@ A simple interpretation of the coefficients implies:
 \hlstd{}\hlsymbol{p}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{pi-youth} \begin{flushleft}
-\ttfamily\noindent
-\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.CI[\usebox{\hlnormalsizeboxsinglequote}lower\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=2)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.CI[\usebox{\hlnormalsizeboxsinglequote}upper\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=2)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.PI[\usebox{\hlnormalsizeboxsinglequote}upper\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=3)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(heightY.PI[\usebox{\hlnormalsizeboxsinglequote}lower\usebox{\hlnormalsizeboxsinglequote},]\urltilda{}weight.range,{\ }lty=3)}\mbox{}
-\normalfont
-\end{flushleft}
-\end{kframe}}
+\includegraphics{pi-youth} \end{kframe}}
 \end{knitrout}
 
 
@@ -689,8 +680,9 @@ Equivalently, it seems, we can directly fit the model from {\bf (a)} and obtain 
 \begin{flushleft}
 \ttfamily\noindent
 \hlcomment{\usebox{\hlnormalsizeboxhash}other{\ }way..}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{log.w}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{height}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{post2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{height}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{vcov}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
