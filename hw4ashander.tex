@@ -428,17 +428,14 @@ We are working with data on urban foxes
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{read.csv}\hlkeyword{(}\hlstring{"foxes.csv"}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{head}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{ID}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{group}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{group}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }NULL\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{head}\hlkeyword{(}\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##   group avgfood groupsize area weight
-## 1     1    0.37         2 1.09   5.02
-## 2     1    0.37         2 1.09   2.84
-## 3     2    0.53         2 2.05   5.33
-## 4     2    0.53         2 2.05   6.07
-## 5     3    0.49         2 2.12   5.85
-## 6     3    0.49         2 2.12   3.25
+##   avgfood groupsize area weight ID
+## 1    0.37         2 1.09   5.02  1
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -446,11 +443,11 @@ We are working with data on urban foxes
 
 There are five columns: 
 \begin{enumerate}
-  \item {\tt group}: Number of the social group the individual fox belongs to. This is just an identify label.
-  \item {\tt avgfood}: The average amount of food available in the territory. 
-  \item {\tt groupsize}: The number of foxes in the social group. 
-  \item {\tt area}: Size of the territory. 
-  \item {\tt weight}: Body weight of the individual fox.
+  \item {\tt ID}: ID Number of the social group the individual fox (renamed from {\tt group}
+  \item {\tt avgfood}: average amount of food available {\em in the territory}. 
+  \item {\tt groupsize}: number of foxes in the social group. 
+  \item {\tt area}: size of the territory. 
+  \item {\tt weight}: body weight of the individual fox.
 \end{enumerate}
 
 \begin{knitrout}
@@ -461,12 +458,12 @@ There are five columns:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##             group  avgfood groupsize    area   weight
-## group      1.0000  0.34084    0.4010 0.37777 -0.15190
-## avgfood    0.3408  1.00000    0.9015 0.88310 -0.02504
-## groupsize  0.4010  0.90148    1.0000 0.82759 -0.16099
-## area       0.3778  0.88310    0.8276 1.00000  0.01948
-## weight    -0.1519 -0.02504   -0.1610 0.01948  1.00000
+##            avgfood groupsize    area   weight      ID
+## avgfood    1.00000    0.9015 0.88310 -0.02504  0.3408
+## groupsize  0.90148    1.0000 0.82759 -0.16099  0.4010
+## area       0.88310    0.8276 1.00000  0.01948  0.3778
+## weight    -0.02504   -0.1610 0.01948  1.00000 -0.1519
+## ID         0.34084    0.4010 0.37777 -0.15190  1.0000
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -493,20 +490,20 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{wa.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{area}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlsymbol{wa.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{area}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{b.a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{wa.mle}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{area.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wa}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wa.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wa.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{reg}{\ }\hlargument{=}{\ }\hlsymbol{wa.mle}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wa}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wa}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \includegraphics{weight-area} \begin{flushleft}
@@ -517,7 +514,7 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \begin{verbatim}
 ##       Estimate Std. Error    2.5%  97.5%
 ## alpha  4.45094    0.39021  3.6861 5.2157
-## beta   0.02484    0.11819 -0.2068 0.2565
+## b.a    0.02484    0.11819 -0.2068 0.2565
 ## sigma  1.17868    0.07738  1.0270 1.3304
 \end{verbatim}
 \end{kframe}}
@@ -537,28 +534,21 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{wg.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{groupsize}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{beta}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\begin{verbatim}
-## Warning message: NaNs produced
-\end{verbatim}
-\begin{flushleft}
-\ttfamily\noindent
-\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{wg.mle}\hlkeyword{)}\hspace*{\fill}\\
+\hlsymbol{wg.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{groupsize}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{b.g}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{wg.mle}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{groupsize.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{beta}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wg}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wg.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"beta"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wg.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{abline}\hlkeyword{(}\hlargument{reg}{\ }\hlargument{=}{\ }\hlsymbol{wg.mle}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wg}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wg}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \includegraphics{weight-groupsize} \begin{flushleft}
@@ -569,14 +559,14 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \begin{verbatim}
 ##       Estimate Std. Error    2.5%   97.5%
 ## alpha   5.0680    0.32488  4.4312 5.70472
-## beta   -0.1239    0.07052 -0.2621 0.01431
+## b.g    -0.1239    0.07052 -0.2621 0.01431
 ## sigma   1.1635    0.07639  1.0138 1.31325
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
 
-Neither group size (`groupsize`) nor area of territory (`area`) appear to unequivocal predictors of body weight. 
+Neither group size  nor area of territory are great predictors of body weight. 
 Area seems weakly positive on weight, while group size seems weakly negative. 
 
 
@@ -591,6 +581,8 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{split}
 \]
 
+Let $ M_{ga}$ denote this model.
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
@@ -603,35 +595,37 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }groupsize{\ }and{\ }do{\ }area{\ }effects}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mean.groupsize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{area.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }area{\ }and{\ }do{\ }groupsize{\ }effects}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mean.area}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{groupsize.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wga\usebox{\hlnormalsizeboxunderscore}g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.area}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.area}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wga\usebox{\hlnormalsizeboxunderscore}g}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wga\usebox{\hlnormalsizeboxunderscore}g}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }groupsize{\ }and{\ }do{\ }area{\ }effects}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.groupsize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{area.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wga\usebox{\hlnormalsizeboxunderscore}a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wga\usebox{\hlnormalsizeboxunderscore}a}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wga\usebox{\hlnormalsizeboxunderscore}a}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \includegraphics{weight-groupsize-area} \begin{flushleft}
@@ -653,9 +647,8 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{knitrout}
 
 
-Now the estimates are both awesome.
-Tight CIs around the mean, clear evidence that as group size increases, weight decreases and that as area increases so does weight. 
-
+Now the estimates both look good with tight CIs around the mean. 
+These models provide strong evidence that as group size increases, weight decreases,  while weight increases as area  of territory increases.
 
 \subsection*{Problem 3}
 \label{problem3}
@@ -672,6 +665,9 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{split}
 \]
 
+Let $M_{gv}$  denote this model.
+
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
@@ -684,43 +680,241 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }groupsize{\ }and{\ }do{\ }avgfood{\ }effects}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mean.groupsize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{avgfood.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.v}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }avgfood{\ }and{\ }do{\ }groupsize{\ }effects}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mean.avgfood}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{groupsize.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wgv\usebox{\hlnormalsizeboxunderscore}g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.v}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.avgfood}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.avgfood}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgv\usebox{\hlnormalsizeboxunderscore}g}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgv\usebox{\hlnormalsizeboxunderscore}g}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }groupsize{\ }and{\ }do{\ }avgfood{\ }effects}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.groupsize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{avgfood.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wgv\usebox{\hlnormalsizeboxunderscore}v}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.v}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgv\usebox{\hlnormalsizeboxunderscore}v}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgv\usebox{\hlnormalsizeboxunderscore}v}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \includegraphics{weight-groupsize-avgfood} \begin{flushleft}
 \ttfamily\noindent
 \hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
+\end{knitrout}
+
+
+The estimates are very good with this model.
+Here, average food has replaced area of territory, but otherwise the plots look much the same.
+
+
+(2)
+
+Now, modelling body weight as a normal random variable based on group size, average food, {\em and} area size
+\[
+\begin{split}
+w_i \sim {\rm Normal} (\mu_i, \sigma)\\
+\mu_i  = \alpha + \beta_g g_i + \beta_v v_i + \beta_a a_i
+\end{split}
+\]
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{wgva.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dnorm}\hlkeyword{(}\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{groupsize}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{b.v}{\ }\hlkeyword{*}{\ }\hlsymbol{avgfood}{\ }\hlkeyword{+}{\ }\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{area}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlsymbol{sigma}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{alpha}{\ }\hlargument{=}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{b.g}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b.v}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b.a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{sigma}{\ }\hlargument{=}{\ }\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{3}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }avgfood{\ }and{\ }area{\ }and{\ }do{\ }groupsize{\ }effects}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.avgfood}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.area}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{groupsize.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.v}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.avgfood}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{mean.area}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.area}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.avgfood}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}g}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}g}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{groupsize.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }groupsize{\ }and{\ }area{\ }and{\ }do{\ }avgfood{\ }effects}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.groupsize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.area}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{avgfood.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}v}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.v}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{mean.area}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.area}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}v}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}v}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }fix{\ }avgfood{\ }and{\ }groupsize{\ }and{\ }do{\ }area{\ }effects}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.avgfood}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mean.groupsize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{area.rng}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{len}{\ }\hlargument{=}{\ }\hlnumber{1000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{HPDI}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{alpha}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.g}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.a}{\ }\hlkeyword{*}{\ }\hlsymbol{x}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.v}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{mean.avgfood}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{curve}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{mean.avgfood}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{mean.groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{x}\hlkeyword{,}{\ }\hlargument{add}{\ }\hlargument{=}{\ }\hlsymbol{T}\hlkeyword{,}{\ }\hlargument{from}{\ }\hlargument{=}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{to}{\ }\hlargument{=}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}a}\hlkeyword{[}\hlstring{"lower"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu.ci.wgva\usebox{\hlnormalsizeboxunderscore}a}\hlkeyword{[}\hlstring{"upper"}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{area.rng}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{weight-groupsize-avgfood-area} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
+\end{knitrout}
+
+
+Comparing the results, we see that the estimated effect of group size in the three-variable model remains similar, if a bit increased. 
+
+The estimated effects of area and average food, however, are muddied. 
+Relative to the earlier models, the variance around the mean estimates is inflated. 
+The models cannot tell whether these variables have a postive or negative effect on weight. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }area}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##       Estimate Std. Error    2.5%   97.5%
+## alpha   4.4502    0.37087  3.7233  5.1771
+## b.g    -0.4326    0.12077 -0.6693 -0.1959
+## b.a     0.6182    0.20014  0.2259  1.0104
+## sigma   1.1185    0.07343  0.9745  1.2624
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }avgfood}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##       Estimate Std. Error    2.5%   97.5%
+## alpha   4.1232    0.43229  3.2759  4.9704
+## b.g    -0.5687    0.15637 -0.8751 -0.2622
+## b.v     3.8275    1.21306  1.4500  6.2051
+## sigma   1.1166    0.07331  0.9729  1.2603
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{wgva.mle}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }avgfood{\ }+{\ }area}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##       Estimate Std. Error     2.5%   97.5%
+## alpha   4.0638     0.4291  3.22274  4.9049
+## b.g    -0.6077     0.1565 -0.91455 -0.3009
+## b.v     2.5089     1.4530 -0.33883  5.3567
+## b.a     0.3851     0.2393 -0.08401  0.8541
+## sigma   1.1043     0.0725  0.96224  1.2465
+\end{verbatim}
+\end{kframe}}
+\end{knitrout}
+
+
+
+
+
+\subsection{(a)}
+
+
+We'd like to know if {\tt avgfood} or {\tt area}  is a better predictor of body weight.
+
+We know from above that area alone is a poor predictor. 
+Due to the strong correlation between area and avgfood, we'd assume it alone is also a bad predictor. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlfunctioncall{lm}\hlkeyword{(}\hlsymbol{weight}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{avgfood}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##             Estimate Std. Error   2.5%  97.5%
+## (Intercept)   4.6420     0.4345  3.790 5.4936
+## avgfood      -0.1495     0.5590 -1.245 0.9461
+\end{verbatim}
+\end{kframe}}
+\end{knitrout}
+
+
+Looks like it is (sorry for cheating with {\tt lm} here but time is tight).
+
+We saw above that $M_{ga}$ and $M_{gv}$ both seem decent: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }area}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##       Estimate Std. Error    2.5%   97.5%
+## alpha   4.4502    0.37087  3.7233  5.1771
+## b.g    -0.4326    0.12077 -0.6693 -0.1959
+## b.a     0.6182    0.20014  0.2259  1.0104
+## sigma   1.1185    0.07343  0.9745  1.2624
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }avgfood}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
@@ -734,16 +928,85 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{knitrout}
 
 
-The estimates are still awesome.
-Tight CIs around the mean, clear evidence that as group size increases, weight decreases and that as avgfood increases so does weight. 
+To compare the two predictors, we will plot the data versus predicted. 
+In each case, we will use the model with {\tt groupsize} to correct for group size. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{pred.wga}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wga.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.a"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{area}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{residuals}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pred.wga}{\ }\hlkeyword{-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{residuals}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{pred.wga}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"predicted"}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{"area"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{pred.wgv}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.g"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{groupsize}{\ }\hlkeyword{+}{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"alpha"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{wgv.mle}\hlkeyword{)}\hlkeyword{[}\hlstring{"b.v"}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{avgfood}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{residuals}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{pred.wgv}{\ }\hlkeyword{-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{residuals}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{pred.wgv}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"predicted"}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{"avgfood"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"darkgray"}\hlkeyword{,}{\ }\hlnumber{0.8}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{area-vs-avgfood-resid} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
+\end{knitrout}
 
 
-\subsection{(a)}
+Plots of the residuasl versus predicted show that the {\tt area} model  $M_{ga}$ behaves slightly less well. 
+The variance appears to decrease with higher fitted values (though this could be a sampling effect as there only a few points at the higest predicted value.
+
+Computing $R^2$, the model with {\tt avgfood}, $M_{gv}$, has a {\em very slight} edge
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{cor}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{,}{\ }\hlsymbol{pred.wga}\hlkeyword{)}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }area}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+## [1] 0.09994
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{cor}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{weight}\hlkeyword{,}{\ }\hlsymbol{pred.wgv}\hlkeyword{)}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }weight{\ }\urltilda{}{\ }groupsize{\ }+{\ }avgfood}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+## [1] 0.1029
+\end{verbatim}
+\end{kframe}}
+\end{knitrout}
 
 
-Finally, consider the avgfood variable. Fit two more multiple regres- sions: (1) body weight as an additive function of avgfood and group- size, and (2) body weight as an additive function of all three variables, avgfood and groupsize and area. Compare the results of these models to the previous models you’ve fit, in problems 1 and 2.
-(a) Is avgfood or area a better predictor of body weight? If you had to choose one or the other to include in a model, which would it be? Support your assessment with any tables or plots you choose. In other words, you are on a long leash for this problem. I just want to see what you do.
-(b) When both avgfood or area are in the same model, their effects are reduced (closer to zero) and their standard errors are larger than when they are included in separate models. Can you explain this re- sult?
+On the whole, the models have almost identical goodness of fit, but the slight weirdness in the residuals leads me to favor $M_{gv}$. 
+Average food in the home range is a better predictor of weight than area of the range.
+
+This aligns with our mechanistic expectation that food = weight. Area just happens to perform alright as it's strongly correlated with average food. 
+I remain unsure about why the residuals of the area model are strange. 
+
+
+\subsection{(b)}
+
+The predictors average food and area are strongly correlated, as we saw early on with correlation 0.88. 
+Further, these two variables have the same direction of effect on weight. 
+Thus, when both are included in a model, there is a problem with identifiability on the coefficients $\beta_{area}$ and $\beta_{avgfood}$: different combinations of values of these coefficients give the same result.
+Because of this, inclusion of both results in inflated variance in predictions and predicted means.
+
+On the other hand, both of these variables are also correlated with group size. The correlation between groupsize is especially strong (0.90). 
+In this case, however, the effect of group size and both of area and average food are opposite. 
+Thus, including both unmasks influences rather than leading to identifiability issues. 
+
+
 
 
 \subsection*{Colophon}

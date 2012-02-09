@@ -48,21 +48,23 @@ require(ggplot2)
 
 We are working with data on urban foxes
 
-<<load,message=FALSE>>=
+<<load,message=FALSE,cache=TRUE>>=
 d <- read.csv('foxes.csv')
-head(d)
+d$ID <- d$group
+d$group <- NULL
+head(d,n=1)
 @ 
 
 There are five columns: 
 \begin{enumerate}
-  \item {\tt group}: Number of the social group the individual fox belongs to. This is just an identify label.
-  \item {\tt avgfood}: The average amount of food available in the territory. 
-  \item {\tt groupsize}: The number of foxes in the social group. 
-  \item {\tt area}: Size of the territory. 
-  \item {\tt weight}: Body weight of the individual fox.
+  \item {\tt ID}: ID Number of the social group the individual fox (renamed from {\tt group}
+  \item {\tt avgfood}: average amount of food available {\em in the territory}. 
+  \item {\tt groupsize}: number of foxes in the social group. 
+  \item {\tt area}: size of the territory. 
+  \item {\tt weight}: body weight of the individual fox.
 \end{enumerate}
 
-<<pair-glance>>=
+<<pair-glance,cache=TRUE>>=
 cor(d)
 @ 
 
@@ -83,17 +85,17 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \]
 
 
-<<weight-area,cache=TRUE>>=
-wa.mle <- mle2(weight~dnorm(mean=alpha + beta*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), beta=0, sigma=sd(d$weight)))
+<<weight-area,cache=TRUE,warning=FALSE>>=
+wa.mle <- mle2(weight~dnorm(mean=alpha + b.a*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.a=0, sigma=sd(d$weight)))
 post <-sample.naive.posterior(wa.mle)
 area.rng <- seq(min(d$area), max(d$area), len=1000)
-mu.ci <- sapply(area.rng, function(x){
-  HPDI(post$alpha + post$beta*x)})
+mu.ci.wa <- sapply(area.rng, function(x){
+  HPDI(post$alpha + post$b.a*x)})
 
-plot(weight~area, data=d)
-curve(coef(wa.mle)['beta']*x + coef(wa.mle)['alpha'], add=T, from=min(d$area), to = max(d$area))
-lines(mu.ci['lower',]~area.rng, data=d, lty=2)
-lines(mu.ci['upper',]~area.rng, data=d, lty=2)
+plot(weight~area, data=d, col=col.alpha('darkgray', 0.8))
+abline(reg=wa.mle)
+lines(mu.ci.wa['lower',]~area.rng, data=d, lty=2)
+lines(mu.ci.wa['upper',]~area.rng, data=d, lty=2)
 precis(wa.mle)
 @ 
 
@@ -106,21 +108,21 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{split}
 \]
 
-<<weight-groupsize,cache=TRUE>>=
-wg.mle <- mle2(weight~dnorm(mean=alpha + beta*groupsize, sd=sigma), data=d, start=list(alpha=mean(d$weight), beta=0, sigma=sd(d$weight)))
+<<weight-groupsize,cache=TRUE,warning=FALSE>>=
+wg.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, sigma=sd(d$weight)))
 post <-sample.naive.posterior(wg.mle)
 groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
-mu.ci <- sapply(groupsize.rng, function(x){
-  HPDI(post$alpha + post$beta*x)})
+mu.ci.wg <- sapply(groupsize.rng, function(x){
+  HPDI(post$alpha + post$b.g*x)})
 
-plot(weight~groupsize, data=d)
-curve(coef(wg.mle)['beta']*x + coef(wg.mle)['alpha'], add=T, from=min(d$groupsize), to = max(d$groupsize))
-lines(mu.ci['lower',]~groupsize.rng, data=d, lty=2)
-lines(mu.ci['upper',]~groupsize.rng, data=d, lty=2)
+plot(weight~groupsize, data=d, col=col.alpha('darkgray', 0.8))
+abline(reg=wg.mle)
+lines(mu.ci.wg['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci.wg['upper',]~groupsize.rng, data=d, lty=2)
 precis(wg.mle)
 @ 
 
-Neither group size (`groupsize`) nor area of territory (`area`) appear to unequivocal predictors of body weight. 
+Neither group size  nor area of territory are great predictors of body weight. 
 Area seems weakly positive on weight, while group size seems weakly negative. 
 
 
@@ -135,45 +137,46 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{split}
 \]
 
+Let $ M_{ga}$ denote this model.
+
 <<weight-groupsize-area,warning=FALSE,cache=TRUE>>=
-wga.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize + b.a*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, b.a=0, sigma=sd(d$weight)))
+wga.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize  +  b.a*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, b.a=0, sigma=sd(d$weight)))
 
 
 op <- par(mfrow=c(1,2))
 post <-sample.naive.posterior(wga.mle)
 
-## fix groupsize and do area effects
-mean.groupsize <- mean(d$groupsize)
-area.rng <- seq(min(d$area), max(d$area), len=1000)
-
-mu.ci <- sapply(area.rng, function(x){
-  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.a*x)})
-plot(weight~area, data=d)
-curve(coef(wga.mle)['b.g']*mean.groupsize + coef(wga.mle)['alpha'] + coef(wga.mle)['b.a']*x, add=T, from=min(d$area), to = max(d$area))
-
-lines(mu.ci['lower',]~area.rng, data=d, lty=2)
-lines(mu.ci['upper',]~area.rng, data=d, lty=2)
-
 ## fix area and do groupsize effects
 mean.area <- mean(d$area)
 groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
 
-mu.ci <- sapply(groupsize.rng, function(x){
+mu.ci.wga_g <- sapply(groupsize.rng, function(x){
   HPDI(post$alpha + post$b.g*x + post$b.a*mean.area)})
-plot(weight~groupsize, data=d)
+plot(weight~groupsize, data=d, col=col.alpha('darkgray', 0.8))
 curve(coef(wga.mle)['b.g']*x + coef(wga.mle)['alpha'] + coef(wga.mle)['b.a']*mean.area, add=T, from=min(d$groupsize), to = max(d$groupsize))
 
-lines(mu.ci['lower',]~groupsize.rng, data=d, lty=2)
-lines(mu.ci['upper',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci.wga_g['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci.wga_g['upper',]~groupsize.rng, data=d, lty=2)
+
+## fix groupsize and do area effects
+mean.groupsize <- mean(d$groupsize)
+area.rng <- seq(min(d$area), max(d$area), len=1000)
+
+mu.ci.wga_a <- sapply(area.rng, function(x){
+  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.a*x)})
+plot(weight~area, data=d, col=col.alpha('darkgray', 0.8))
+curve(coef(wga.mle)['b.g']*mean.groupsize + coef(wga.mle)['alpha'] + coef(wga.mle)['b.a']*x, add=T, from=min(d$area), to = max(d$area))
+
+lines(mu.ci.wga_a['lower',]~area.rng, data=d, lty=2)
+lines(mu.ci.wga_a['upper',]~area.rng, data=d, lty=2)
 
 par(op)
 
 precis(wga.mle)
 @ 
 
-Now the estimates are both awesome.
-Tight CIs around the mean, clear evidence that as group size increases, weight decreases and that as area increases so does weight. 
-
+Now the estimates both look good with tight CIs around the mean. 
+These models provide strong evidence that as group size increases, weight decreases,  while weight increases as area  of territory increases.
 
 \subsection*{Problem 3}
 \label{problem3}
@@ -190,6 +193,9 @@ w_i \sim {\rm Normal} (\mu_i, \sigma)\\
 \end{split}
 \]
 
+Let $M_{gv}$  denote this model.
+
+
 <<weight-groupsize-avgfood,warning=FALSE,cache=TRUE>>=
 wgv.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize + b.v*avgfood, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, b.v=0, sigma=sd(d$weight)))
 
@@ -197,51 +203,187 @@ wgv.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize + b.v*avgfood, sd=sigma)
 op <- par(mfrow=c(1,2))
 post <-sample.naive.posterior(wgv.mle)
 
-## fix groupsize and do avgfood effects
-mean.groupsize <- mean(d$groupsize)
-avgfood.rng <- seq(min(d$avgfood), max(d$avgfood), len=1000)
-
-mu.ci <- sapply(avgfood.rng, function(x){
-  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.v*x)})
-plot(weight~avgfood, data=d)
-curve(coef(wgv.mle)['b.g']*mean.groupsize + coef(wgv.mle)['alpha'] + coef(wgv.mle)['b.v']*x, add=T, from=min(d$avgfood), to = max(d$avgfood))
-
-lines(mu.ci['lower',]~avgfood.rng, data=d, lty=2)
-lines(mu.ci['upper',]~avgfood.rng, data=d, lty=2)
 
 ## fix avgfood and do groupsize effects
 mean.avgfood <- mean(d$avgfood)
 groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
 
-mu.ci <- sapply(groupsize.rng, function(x){
+mu.ci.wgv_g <- sapply(groupsize.rng, function(x){
   HPDI(post$alpha + post$b.g*x + post$b.v*mean.avgfood)})
-plot(weight~groupsize, data=d)
+plot(weight~groupsize, data=d, col=col.alpha('darkgray', 0.8))
 curve(coef(wgv.mle)['b.g']*x + coef(wgv.mle)['alpha'] + coef(wgv.mle)['b.v']*mean.avgfood, add=T, from=min(d$groupsize), to = max(d$groupsize))
 
-lines(mu.ci['lower',]~groupsize.rng, data=d, lty=2)
-lines(mu.ci['upper',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci.wgv_g['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci.wgv_g['upper',]~groupsize.rng, data=d, lty=2)
+
+## fix groupsize and do avgfood effects
+mean.groupsize <- mean(d$groupsize)
+avgfood.rng <- seq(min(d$avgfood), max(d$avgfood), len=1000)
+
+mu.ci.wgv_v <- sapply(avgfood.rng, function(x){
+  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.v*x)})
+plot(weight~avgfood, data=d, col=col.alpha('darkgray', 0.8))
+curve(coef(wgv.mle)['b.g']*mean.groupsize + coef(wgv.mle)['alpha'] + coef(wgv.mle)['b.v']*x, add=T, from=min(d$avgfood), to = max(d$avgfood))
+
+lines(mu.ci.wgv_v['lower',]~avgfood.rng, data=d, lty=2)
+lines(mu.ci.wgv_v['upper',]~avgfood.rng, data=d, lty=2)
+
+par(op)
+@ 
+
+The estimates are very good with this model.
+Here, average food has replaced area of territory, but otherwise the plots look much the same.
+
+
+(2)
+
+Now, modelling body weight as a normal random variable based on group size, average food, {\em and} area size
+\[
+\begin{split}
+w_i \sim {\rm Normal} (\mu_i, \sigma)\\
+\mu_i  = \alpha + \beta_g g_i + \beta_v v_i + \beta_a a_i
+\end{split}
+\]
+
+<<weight-groupsize-avgfood-area,warning=FALSE,cache=TRUE>>=
+wgva.mle <- mle2(weight~dnorm(mean=alpha + b.g*groupsize + b.v*avgfood+b.a*area, sd=sigma), data=d, start=list(alpha=mean(d$weight), b.g=0, b.v=0, b.a=0, sigma=sd(d$weight)))
+
+op <- par(mfrow=c(1,3))
+post <-sample.naive.posterior(wgva.mle)
+
+## fix avgfood and area and do groupsize effects
+mean.avgfood <- mean(d$avgfood)
+mean.area <- mean(d$area)
+groupsize.rng <- seq(min(d$groupsize), max(d$groupsize), len=1000)
+
+mu.ci.wgva_g <- sapply(groupsize.rng, function(x){
+  HPDI(post$alpha + post$b.g*x + post$b.v*mean.avgfood + post$b.a*mean.area)})
+plot(weight~groupsize, data=d, col=col.alpha('darkgray', 0.8))
+curve(coef(wgva.mle)['b.g']*x + coef(wgva.mle)['alpha'] + coef(wgva.mle)['b.a']*mean.area +coef(wgva.mle)['b.v']*mean.avgfood, add=T, from=min(d$groupsize), to = max(d$groupsize))
+
+lines(mu.ci.wgva_g['lower',]~groupsize.rng, data=d, lty=2)
+lines(mu.ci.wgva_g['upper',]~groupsize.rng, data=d, lty=2)
+
+## fix groupsize and area and do avgfood effects
+mean.groupsize <- mean(d$groupsize)
+mean.area <- mean(d$area)
+avgfood.rng <- seq(min(d$avgfood), max(d$avgfood), len=1000)
+
+mu.ci.wgva_v<- sapply(avgfood.rng, function(x){
+  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.v*x + post$b.a*mean.area)})
+plot(weight~avgfood, data=d, col=col.alpha('darkgray', 0.8))
+curve(coef(wgva.mle)['b.a']*mean.area + coef(wgva.mle)['b.g']*mean.groupsize + coef(wgva.mle)['alpha'] + coef(wgva.mle)['b.v']*x, add=T, from=min(d$avgfood), to = max(d$avgfood))
+
+lines(mu.ci.wgva_v['lower',]~avgfood.rng, data=d, lty=2)
+lines(mu.ci.wgva_v['upper',]~avgfood.rng, data=d, lty=2)
+
+
+## fix avgfood and groupsize and do area effects
+mean.avgfood <- mean(d$avgfood)
+mean.groupsize <- mean(d$groupsize)
+area.rng <- seq(min(d$area), max(d$area), len=1000)
+
+mu.ci.wgva_a <- sapply(area.rng, function(x){
+  HPDI(post$alpha + post$b.g*mean.groupsize + post$b.a*x + post$b.v*mean.avgfood)})
+plot(weight~area, data=d, col=col.alpha('darkgray', 0.8))
+curve(coef(wgva.mle)['b.v']*mean.avgfood + coef(wgva.mle)['b.g']*mean.groupsize + coef(wgva.mle)['alpha'] + coef(wgva.mle)['b.a']*x, add=T, from=min(d$area), to = max(d$area))
+
+lines(mu.ci.wgva_a['lower',]~area.rng, data=d, lty=2)
+lines(mu.ci.wgva_a['upper',]~area.rng, data=d, lty=2)
 
 par(op)
 
-precis(wgv.mle)
-
 @ 
 
-The estimates are still awesome.
-Tight CIs around the mean, clear evidence that as group size increases, weight decreases and that as avgfood increases so does weight. 
+Comparing the results, we see that the estimated effect of group size in the three-variable model remains similar, if a bit increased. 
+
+The estimated effects of area and average food, however, are muddied. 
+Relative to the earlier models, the variance around the mean estimates is inflated. 
+The models cannot tell whether these variables have a postive or negative effect on weight. 
+
+<<allmodels,message=FALSE,cache=TRUE>>=
+precis(wga.mle) ## weight ~ groupsize + area 
+precis(wgv.mle) ## weight ~ groupsize + avgfood
+precis(wgva.mle) ## weight ~ groupsize + avgfood + area
+@ 
+
+
 
 
 \subsection{(a)}
 
 
-Finally, consider the avgfood variable. Fit two more multiple regres- sions: (1) body weight as an additive function of avgfood and group- size, and (2) body weight as an additive function of all three variables, avgfood and groupsize and area. Compare the results of these models to the previous models you’ve fit, in problems 1 and 2.
-(a) Is avgfood or area a better predictor of body weight? If you had to choose one or the other to include in a model, which would it be? Support your assessment with any tables or plots you choose. In other words, you are on a long leash for this problem. I just want to see what you do.
-(b) When both avgfood or area are in the same model, their effects are reduced (closer to zero) and their standard errors are larger than when they are included in separate models. Can you explain this re- sult?
+We'd like to know if {\tt avgfood} or {\tt area}  is a better predictor of body weight.
+
+We know from above that area alone is a poor predictor. 
+Due to the strong correlation between area and avgfood, we'd assume it alone is also a bad predictor. 
+
+<<avgfood-alone, message=FALSE,cache=TRUE>>=
+precis(lm(weight ~ avgfood, data=d))
+@ 
+
+Looks like it is (sorry for cheating with {\tt lm} here but time is tight).
+
+We saw above that $M_{ga}$ and $M_{gv}$ both seem decent: 
+
+<<area-or-avgfood,message=FALSE,cache=TRUE>>=
+precis(wga.mle) ## weight ~ groupsize + area 
+precis(wgv.mle) ## weight ~ groupsize + avgfood
+@ 
+
+To compare the two predictors, we will plot the data versus predicted. 
+In each case, we will use the model with {\tt groupsize} to correct for group size. 
+
+<<area-vs-avgfood-resid, message=FALSE,cache=TRUE>>=
+
+op <- par(mfrow=c(1,2))
+
+pred.wga <- coef(wga.mle)["b.g"] * d$groupsize + coef(wga.mle)["alpha"]+ coef(wga.mle)["b.a"] * d$area
+residuals <- pred.wga - d$weight 
+plot(residuals ~ pred.wga, xlab="predicted", main="area", col=col.alpha('darkgray', 0.8))
+
+pred.wgv <- coef(wgv.mle)["b.g"] * d$groupsize + coef(wgv.mle)["alpha"] + coef(wgv.mle)["b.v"] * d$avgfood
+residuals <- pred.wgv - d$weight
+plot(residuals~pred.wgv, xlab="predicted", main="avgfood", col=col.alpha('darkgray', 0.8))
+
+par(op)
+
+@ 
+
+Plots of the residuasl versus predicted show that the {\tt area} model  $M_{ga}$ behaves slightly less well. 
+The variance appears to decrease with higher fitted values (though this could be a sampling effect as there only a few points at the higest predicted value.
+
+Computing $R^2$, the model with {\tt avgfood}, $M_{gv}$, has a {\em very slight} edge
+
+<<area-v-avg, message=FALSE,cache=TRUE>>=
+cor(d$weight,pred.wga)^2  ## weight ~ groupsize + area 
+cor(d$weight,pred.wgv)^2 ## weight ~ groupsize + avgfood
+@ 
+
+On the whole, the models have almost identical goodness of fit, but the slight weirdness in the residuals leads me to favor $M_{gv}$. 
+Average food in the home range is a better predictor of weight than area of the range.
+
+This aligns with our mechanistic expectation that food = weight. Area just happens to perform alright as it's strongly correlated with average food. 
+I remain unsure about why the residuals of the area model are strange. 
+
+
+\subsection{(b)}
+
+The predictors average food and area are strongly correlated, as we saw early on with correlation 0.88. 
+Further, these two variables have the same direction of effect on weight. 
+Thus, when both are included in a model, there is a problem with identifiability on the coefficients $\beta_{area}$ and $\beta_{avgfood}$: different combinations of values of these coefficients give the same result.
+Because of this, inclusion of both results in inflated variance in predictions and predicted means.
+
+On the other hand, both of these variables are also correlated with group size. The correlation between groupsize is especially strong (0.90). 
+In this case, however, the effect of group size and both of area and average food are opposite. 
+Thus, including both unmasks influences rather than leading to identifiability issues. 
+
+
 
 
 \subsection*{Colophon}
 
-<<runit,eval=FALSE,cache=TRUE>>=
+<<runit,eval=FALSE>>=
 require(knitr) ### the package
 knit(paste(getwd(),'hw4ashander.Rnw',sep='/')) ## to run
 @ 
