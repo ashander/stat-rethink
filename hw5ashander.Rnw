@@ -1,0 +1,129 @@
+%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+\begin{center}
+  {\bf \Large Homework 5, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+We are working with Howell data again.
+
+Load the data and center {\tt age}: 
+
+<<load,message=FALSE,cache=TRUE>>=
+data(Howell1)
+d <- Howell1
+d$age <- d$age - mean(d$age)
+@ 
+
+Randomly split the data set: 
+
+<<split,message=FALSE,cache=TRUE>>=
+set.seed(1000)
+i <- sample(1:nrow(d),size=nrow(d)/2)
+d1 <- d[ i , ]
+d2 <- d[ -i , ]
+head(d1, n=1)
+@ 
+
+\subsection*{Problem 1}
+
+Fit a series of models for the relationship between age and height: 
+
+<<height-age,message=FALSE,cache=TRUE,warning=FALSE>>=
+M1 <- mle2(height~dnorm(mean=a + b1*weight, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0))
+M2 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2, sd=sigma ), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0))
+M3 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0))
+M4 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3+ b4*weight^4, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0))
+M5 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3+ b4*weight^4 + b5*weight^5, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0, b5=0))
+M6 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3+ b4*weight^4 + b5*weight^5 + b6*weight^6, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0, b5=0, b6=0))
+
+@ 
+
+\subsubsection*{(a)}
+
+<<m1compare,message=FALSE>>=
+compare(M1,M2,M3,M4,M5,M6, nobs=nrow(d1))
+@ 
+
+Both methods place most weight on M3/M5. 
+
+AICc: weighs about 60:30 on M5 and M3 
+BIC: weighs 95:5 on M3 and M5
+
+
+\subsubsection*{(b)}
+
+Plot model averaged mean, CI and PI at 95\%
+
+\subsection*{Problem 2}
+
+<<deviance,cache=TRUE,message=FALSE>>=
+comptab <- compare(M1,M2,M3,M4,M5,M6, nobs=nrow(d1))
+comptab <- comptab[order(comptab$k),]
+comptab$Deviance <- Inf
+
+models <- list(M1,M2,M3,M4,M5,M6)
+for(i in 1:length(models)){
+  M <- models[[i]]
+  mu.d2 <- predict(M, newdata=d2)
+  M.dev <- -2*sum( dnorm( d2$height, mu.d2, coef(M)["sigma"] , log=TRUE ) )
+  cat("Deviance of M",i, ": ",M.dev , "\n")
+  comptab$Deviance[i] <- M.dev
+  }
+comptab$dDeviance <- comptab$Deviance - min(comptab$Deviance )
+comptab <- comptab[order(comptab$dDeviance),]
+comptab
+
+@ 
+
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'hw5ashander.Rnw',sep='/')) ## to run
+@ 
+
+
+\end{document}
