@@ -71,12 +71,12 @@ head(d1, n=1)
 Fit a series of models for the relationship between age and height: 
 
 <<height-age,message=FALSE,cache=TRUE,warning=FALSE>>=
-M1 <- mle2(height~dnorm(mean=a + b1*weight, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0))
-M2 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2, sd=sigma ), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0))
-M3 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0))
-M4 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3+ b4*weight^4, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0))
-M5 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3+ b4*weight^4 + b5*weight^5, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0, b5=0))
-M6 <- mle2(height~dnorm(mean=a + b1*weight + b2*weight^2 +b3*weight^3+ b4*weight^4 + b5*weight^5 + b6*weight^6, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0, b5=0, b6=0))
+M1 <- mle2(height~dnorm(mean=a + b1*age, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0))
+M2 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2, sd=sigma ), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0))
+M3 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2 +b3*age^3, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0))
+M4 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2 +b3*age^3+ b4*age^4, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0))
+M5 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2 +b3*age^3+ b4*age^4 + b5*age^5, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0, b5=0))
+M6 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2 +b3*age^3+ b4*age^4 + b5*age^5 + b6*age^6, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0, b2=0, b3=0, b4=0, b5=0, b6=0))
 
 @ 
 
@@ -95,6 +95,41 @@ BIC: weighs 95:5 on M3 and M5
 \subsubsection*{(b)}
 
 Plot model averaged mean, CI and PI at 95\%
+
+<<post-avg, message=TRUE,cache=TRUE>>=
+age.seq <- seq(min(d1$age), max(d1$age))
+
+post.BIC <- sample.naive.posterior(list(M1,M2,M3,M4,M5,M6), n=6e4, method="BIC",nobs=nrow(d1))
+mu.BIC.CI <- sapply(age.seq, function(z) with(post.BIC, HPDI(a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6)))
+BIC.PI <- sapply(age.seq, function(z) HPDI(with(post.BIC, rnorm(n=1e4,mean=a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6, sd=sigma))))
+
+post.AICc <- sample.naive.posterior(list(M1,M2,M3,M4,M5,M6), n=6e4, method="AICc",nobs=nrow(d1))
+mu.AICc.CI <- sapply(age.seq, function(z) with(post.AICc, HPDI(a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6)))
+AIC.PI <- sapply(age.seq, function(z) HPDI(with(post.AICc, rnorm(n=1e4,mean=a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6, sd=sigma))))
+
+mean.Howell <- mean(Howell1$age)
+age.seq.H <-  age.seq + mean.Howell
+
+pred.BIC <- as.data.frame(cbind(t(BIC.PI),t(mu.BIC.CI),age=age.seq.H))
+names(pred.BIC)[1:4] <- paste(names(pred.BIC)[1:4], c('PI', 'PI', 'CI', 'CI'))
+
+pred.AICc <- as.data.frame(cbind(t(AICc.PI),t(mu.AICc.CI),age=age.seq.H))
+names(pred.AICc)[1:4] <- paste(names(pred.AICc)[1:4], c('PI', 'PI', 'CI', 'CI'))
+
+@ 
+
+<<predict-avg-BIC, message=TRUE,cache=TRUE>>=
+g <-  ggplot(Howell1) + geom_point(aes(age,height),color="darkgrey")
+g <- g + geom_line(aes(age,`lower PI`), data=pred.BIC, linetype=3) + geom_line(aes(age,`upper PI`), data=pred.BIC, linetype=3)
+g + geom_line(aes(age,`lower CI`), data=pred.BIC, linetype=2) + geom_line(aes(age,`upper CI`), data=pred.BIC, linetype=2)
+@ 
+
+<<pred-avg-AICc, message=TRUE, cache=TRUE>>=
+g <-  ggplot(Howell1) + geom_point(aes(age,height),color="darkgrey")
+g <- g + geom_line(aes(age,`lower PI`), data=pred.AICc, linetype=3) + geom_line(aes(age,`upper PI`), data=pred.AICc, linetype=3)
+g + geom_line(aes(age,`lower CI`), data=pred.AICc, linetype=2) + geom_line(aes(age,`upper CI`), data=pred.AICc, linetype=2)
+
+@ 
 
 \subsection*{Problem 2}
 
