@@ -50,7 +50,7 @@ We are working with Howell data again.
 
 Load the data and center {\tt age}: 
 
-<<load,message=FALSE,cache=TRUE>>=
+<<load,message=FALSE>>=
 data(Howell1)
 d <- Howell1
 d$age <- d$age - mean(d$age)
@@ -58,11 +58,13 @@ d$age <- d$age - mean(d$age)
 
 Randomly split the data set: 
 
-<<split,message=FALSE,cache=TRUE>>=
+<<split,message=FALSE,cache=FALSE>>=
 set.seed(1000)
 i <- sample(1:nrow(d),size=nrow(d)/2)
 d1 <- d[ i , ]
 d2 <- d[ -i , ]
+d$dataset <- "Cross-validation"
+d$dataset[i] <- "Training"
 head(d1, n=1)
 @ 
 
@@ -86,54 +88,71 @@ M6 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2 +b3*age^3+ b4*age^4 + b5*age^
 compare(M1,M2,M3,M4,M5,M6, nobs=nrow(d1))
 @ 
 
-Both methods place most weight on M3/M5. 
+Both methods place most weight on M4-M6, with M4 coming out on top in both cases. 
 
-AICc: weighs about 60:30 on M5 and M3 
-BIC: weighs 95:5 on M3 and M5
+AICc: weighs about 60:25:15 on M4, M5 and M6
+
+BIC: weighs 95:5 on M4 and M5, with only a little weight on M6
 
 
 \subsubsection*{(b)}
 
 Plot model averaged mean, CI and PI at 95\%
 
-<<post-avg, message=TRUE,cache=TRUE>>=
-age.seq <- seq(min(d1$age), max(d1$age))
+<<post-avg,message=TRUE,cache=TRUE>>=
+#warning=FALSE
+age.seq <- seq(min(d1$age), max(d1$age)+15, length.out=250)
 
-post.BIC <- sample.naive.posterior(list(M1,M2,M3,M4,M5,M6), n=6e4, method="BIC",nobs=nrow(d1))
-mu.BIC.CI <- sapply(age.seq, function(z) with(post.BIC, HPDI(a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6)))
-BIC.PI <- sapply(age.seq, function(z) HPDI(with(post.BIC, rnorm(n=1e4,mean=a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6, sd=sigma))))
+NREP = 6e4 ## A check with NREP=600,000 confirms that the parameter averages are the same, despite the extra column in BIC output for n > 30,000
+post.BIC <- sample.naive.posterior(list(M1,M2,M3,M4,M5,M6), n=NREP, method="BIC")
+post.AICc <- sample.naive.posterior(list(M1,M2,M3,M4,M5,M6), n=NREP, method="AICc",nobs=nrow(d1))
 
-post.AICc <- sample.naive.posterior(list(M1,M2,M3,M4,M5,M6), n=6e4, method="AICc",nobs=nrow(d1))
-mu.AICc.CI <- sapply(age.seq, function(z) with(post.AICc, HPDI(a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6)))
-AIC.PI <- sapply(age.seq, function(z) HPDI(with(post.AICc, rnorm(n=1e4,mean=a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6, sd=sigma))))
+mu.coef.BIC <- as.list(apply(X=post.BIC,FUN=mean, MARGIN=2)) #conver to list to use 'with' syntax below
+mu.BIC <- sapply(age.seq, function(z) with(mu.coef.BIC, a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6))
+mu.BIC.CI <- sapply(age.seq, function(z) with(post.BIC, PCI(a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6)))
+BIC.PI <- sapply(age.seq, function(z) PCI(with(post.BIC, rnorm(n=NREP,mean=a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6, sd=sigma))))
+
+mu.coef.AICc <- as.list(apply(X=post.AICc,FUN=mean, MARGIN=2))
+mu.AICc <- sapply(age.seq, function(z) with(mu.coef.AICc, a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6))
+mu.AICc.CI <- sapply(age.seq, function(z) with(post.AICc, PCI(a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6)))
+AICc.PI <- sapply(age.seq, function(z) PCI(with(post.AICc, rnorm(n=NREP,mean=a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6, sd=sigma))))
 
 mean.Howell <- mean(Howell1$age)
 age.seq.H <-  age.seq + mean.Howell
 
-pred.BIC <- as.data.frame(cbind(t(BIC.PI),t(mu.BIC.CI),age=age.seq.H))
+pred.BIC <- as.data.frame(cbind(t(BIC.PI),t(mu.BIC.CI),age=age.seq.H,mean=mu.BIC))
 names(pred.BIC)[1:4] <- paste(names(pred.BIC)[1:4], c('PI', 'PI', 'CI', 'CI'))
 
-pred.AICc <- as.data.frame(cbind(t(AICc.PI),t(mu.AICc.CI),age=age.seq.H))
+pred.AICc <- as.data.frame(cbind(t(AICc.PI),t(mu.AICc.CI),age=age.seq.H,mean=mu.AICc))
 names(pred.AICc)[1:4] <- paste(names(pred.AICc)[1:4], c('PI', 'PI', 'CI', 'CI'))
 
 @ 
 
-<<predict-avg-BIC, message=TRUE,cache=TRUE>>=
-g <-  ggplot(Howell1) + geom_point(aes(age,height),color="darkgrey")
-g <- g + geom_line(aes(age,`lower PI`), data=pred.BIC, linetype=3) + geom_line(aes(age,`upper PI`), data=pred.BIC, linetype=3)
-g + geom_line(aes(age,`lower CI`), data=pred.BIC, linetype=2) + geom_line(aes(age,`upper CI`), data=pred.BIC, linetype=2)
+<<predict-avg, message=TRUE,cache=TRUE>>=
+g.b <-  ggplot(Howell1) + geom_point(aes(log(age),log(height)),color="darkgrey")
+g.b <- g.b + geom_line(aes(log(age),log(`2.5% PI`)), data=pred.BIC, linetype=3) + geom_line(aes(log(age),log(`97.5% PI`)), data=pred.BIC, linetype=3)
+g.b <- g.b + geom_line(aes(log(age),log(`2.5% CI`)), data=pred.BIC, linetype=2) + geom_line(aes(log(age),log(`97.5% CI`)), data=pred.BIC, linetype=2)
+g.b <- g.b + geom_line(aes(log(age),log(mean)), data=pred.BIC)+ylim(c(3.5,5.5))
+
+g.a <-  ggplot(Howell1) + geom_point(aes(log(age),log(height)),color="darkgrey")
+g.a <- g.a + geom_line(aes(log(age),log(`2.5% PI`)), data=pred.AICc, linetype=3) + geom_line(aes(log(age),log(`97.5% PI`)), data=pred.AICc, linetype=3)
+g.a <- g.a + geom_line(aes(log(age),log(`2.5% CI`)), data=pred.AICc, linetype=2) + geom_line(aes(log(age),log(`97.5% CI`)), data=pred.AICc, linetype=2)
+g.a <- g.a + geom_line(aes(log(age),log(mean)), data=pred.AICc)+ylim(c(3.5,5.5))
+require(gridExtra)
+grid.arrange(g.b, g.a, ncol=2)
+
 @ 
 
-<<pred-avg-AICc, message=TRUE, cache=TRUE>>=
-g <-  ggplot(Howell1) + geom_point(aes(age,height),color="darkgrey")
-g <- g + geom_line(aes(age,`lower PI`), data=pred.AICc, linetype=3) + geom_line(aes(age,`upper PI`), data=pred.AICc, linetype=3)
-g + geom_line(aes(age,`lower CI`), data=pred.AICc, linetype=2) + geom_line(aes(age,`upper CI`), data=pred.AICc, linetype=2)
+Model-averaged means (solid lines) with confidence intervals (dashed lines) and prediction intervals (dotted lines) based on weightings from BIC (left) and AICc (right). 
 
-@ 
+Predictions differ {\em very little} under AICc and BIC.
+This is surprising, given the different weighings from AICc and BIC.
+
 
 \subsection*{Problem 2}
 
-<<deviance,cache=TRUE,message=FALSE>>=
+\subsubsection*{(a)}
+<<deviance,message=FALSE,cache=TRUE>>=
 comptab <- compare(M1,M2,M3,M4,M5,M6, nobs=nrow(d1))
 comptab <- comptab[order(comptab$k),]
 comptab$Deviance <- Inf
@@ -142,14 +161,68 @@ models <- list(M1,M2,M3,M4,M5,M6)
 for(i in 1:length(models)){
   M <- models[[i]]
   mu.d2 <- predict(M, newdata=d2)
-  M.dev <- -2*sum( dnorm( d2$height, mu.d2, coef(M)["sigma"] , log=TRUE ) )
+  if(i==2)
+    d2$p2 = mu.d2
+  if(i==4)
+    d2$p4 = mu.d2
+  if(i==5)
+    d2$p5 = mu.d2
+  if(i==6) 
+    d2$p6 = mu.d2
+  M.dev <- -2*sum(dnorm( d2$height, mu.d2, coef(M)["sigma"] , log=TRUE ) )
   cat("Deviance of M",i, ": ",M.dev , "\n")
   comptab$Deviance[i] <- M.dev
   }
 comptab$dDeviance <- comptab$Deviance - min(comptab$Deviance )
 comptab <- comptab[order(comptab$dDeviance),]
-comptab
+comptab[,c('k','dAICc','dBIC','dDeviance')]
 
+@ 
+
+\subsubsection*{(b)}
+
+The table above is sorted by {\tt dDeviance} (the delta above the minimum observed deviance) of model families M1-M5 computed against the remaining half of the data. 
+The model family of sixth-order polynomials in age, M6, did the best job predicting out of sample, but the three highest-order polynomials (M4-M6) all performed similarly, with a large break between these and order 3 or lower.
+
+Both AICc and BIC weighed these three models as the top; however, AICc did a slightly better job matching the out-of-sample prediction ranking provided by deviance. 
+This makes sense, as AIC attempts to minimize uncertainty, while BIC assumes one of the provided models is ``true''.
+
+This is somewhat surprising as ``more complex models do a worse job predicting''. 
+Our cross validation procedure, however, was fairly kind to the higher order polynomials. 
+By randomly sampling, we achieved a representative sample of the extremes of the data in our training set. 
+Because the fitting procedure aligned the flexible high-order polynomial with the training set, the extremes of which roughly match the cross validation set, the out of sample prediction was good.
+
+This dynamic is illustrated in the figure below, polynomials of degree 4 and 6 are ``flexible'' enough to follow the distribution of training data
+Because the training and cross-validation sets are well-mixed, predictions based on the cross-validation set follow the distribution of cross-validation data relatively well.
+
+<<dev-fig,cache=TRUE>>=
+d2.m <-   melt(d2, id.vars=c('age','height','weight','male'))
+g <- ggplot(d) + geom_point(aes(age,height,color=dataset))
+g <- g + geom_line(aes(age,value,linetype=variable),data=d2.m)+labs(linetype='degree')
+g # computed above
+
+@ 
+
+Data from both cross-validation and training set, lines are predictions on cross-validation data set from polynomials of degree 2 and 4-6 as noted in legend.
+
+\subsection*{Problem 3}
+
+
+<<deviance,cache=TRUE,message=FALSE,cache=TRUE>>=
+model.deviances <- comptab[,c('Deviance','dDeviance')]
+
+## use code from pr1a to predict means, this time using cross validation set (d2$age) as predictor variable
+mu.AICc.d2 <- sapply(d2$age, function(z) with(mu.coef.AICc, a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6))
+dev.AICc <- -2*sum(dnorm( d2$height, mu.AICc.d2, mu.coef.AICc$sigma , log=TRUE )) ## deviance from actual height in CV 
+
+mu.BIC.d2 <- sapply(d2$age, function(z) with(mu.coef.BIC, a + b1*z + b2*z^2 + b3*z^3 + b4*z^4 + b5*z^5 + b6*z^6))
+dev.BIC <- -2*sum(dnorm( d2$height, mu.BIC.d2, mu.coef.BIC$sigma , log=TRUE )) 
+
+deviances <- rbind(model.deviances, c(dev.BIC,NA),c(dev.AICc,NA))
+row.names(deviances)[7:8] <- c("Avg.BIC","Avg.AICc")
+deviances$dDeviance <- deviances$Deviance- min(deviances$Deviance)
+deviances <- deviances[order(deviances$dDeviance),]
+deviances
 @ 
 
 
@@ -158,6 +231,13 @@ comptab
 <<runit,eval=FALSE>>=
 require(knitr) ### the package
 knit(paste(getwd(),'hw5ashander.Rnw',sep='/')) ## to run
+
+## to use all cores
+require(snowfall)
+sfInit(parallel=TRUE,cpus=4)
+sfLibrary(rethinking)
+sfExportAll()
+sfStop()
 @ 
 
 
