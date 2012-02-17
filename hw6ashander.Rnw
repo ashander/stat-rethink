@@ -1,0 +1,215 @@
+%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+\begin{center}
+  {\bf \Large Homework 6, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+\subsection*{Problem 1}
+
+First, create a resticted data set and remove missing values
+<<>>=
+data(rugged)
+## condensed data set
+d <- data.frame(country=rugged$country,Africa.i=rugged$cont_africa,log.GDP=log(rugged$rgdppc_2000),rugged=rugged$rugged)
+
+## recentered, condensed, NA-free data set
+d.rc <- na.omit(d) 
+d.rc[,3:4] <- apply(d.rc[,3:4], 2, function(x) x - mean(x))
+
+## removed seychelles
+d.noS <- subset(d.rc, country != 'Seychelles')
+d.noS[,3:4] <- apply(d.noS[,3:4], 2, function(x) x - mean(x))
+@ 
+
+(a) 
+
+Now, I fit the model 
+\[
+\log ({\rm GDP}) \sim {\rm Normal} (\alpha + \alpha_A A_i + \beta_r r_i  + \beta_{rA} A_i R_i)
+\]
+against the data set (all non-missing values) and the data set with Seychelles removed:
+
+<<sey-tab,message=FALSE,warning=FALSE>>=
+m.full <- mle2(log.GDP ~ dnorm(mean=a + a.A*Africa.i + b.r*rugged + b.Ar*Africa.i*rugged, sd=sigma), data=d.rc, start=list(a=mean(d.rc$log.GDP), a.A=0, b.r=0, b.Ar=0, sigma=sd(d.rc$log.GDP)))
+m.nS <- mle2(log.GDP ~ dnorm(mean=a + a.A*Africa.i + b.r*rugged + b.Ar*Africa.i*rugged, sd=sigma), data=d.noS, start=list(a=mean(d.noS$log.GDP), a.A=0, b.r=0, b.Ar=0, sigma=sd(d.noS$log.GDP)))
+
+precis(m.full) # with Seychelles
+precis(m.nS) # without Seychelles
+
+@ 
+
+It seems that removing Seychelles has reduced the interaction of ruggedness with content by about 0.1 units (around 1 SE).
+There does still seem to be an effect (the MLE is positive and 0 is not included in the CI), but the CI now approaches 0. 
+
+(b)
+
+<<sey-models,message=FALSE,cache=TRUE>>=
+rug.seq <- with(d.rc, seq(min(rugged),max(rugged)+2,length.out=100) )
+
+NREP <- 3e4
+# first, with Seychelles
+post.full <- sample.naive.posterior(m.full)
+mu.coef <- as.list(coef(m.full))
+AFRICA=1
+##PI.Afr <- sapply(rug.seq, function(z) PCI(with(post.full, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
+CI.Afr <- sapply(rug.seq, function(z) PCI(with(post.full, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
+mu.Afr <- sapply(rug.seq, function(z) with(mu.coef, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
+
+AFRICA=0
+##PI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.full, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
+CI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.full, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
+mu.noAfr <- sapply(rug.seq, function(z) with(mu.coef, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
+
+post.nS <- sample.naive.posterior(m.nS)
+mu.coef.nS <- as.list(coef(m.nS))
+AFRICA=1
+##PI.Afr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
+CI.Afr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
+mu.Afr.nS <- sapply(rug.seq, function(z) with(mu.coef.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
+
+AFRICA=0
+##PI.noAfr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
+CI.noAfr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
+mu.noAfr.nS <- sapply(rug.seq, function(z) with(mu.coef.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
+@ 
+
+<<with-sey,message=FALSE,cache=TRUE>>=
+op <- par(mfrow=c(1,2))
+plot(log.GDP~rugged, data=d.rc[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
+lines(CI.Afr[1,]~rug.seq, lty=2)
+lines(CI.Afr[2,]~rug.seq, lty=2)
+lines(mu.Afr~rug.seq)
+
+plot(log.GDP~rugged, data=d.rc, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
+lines(CI.noAfr[1,]~rug.seq, lty=2)
+lines(CI.noAfr[2,]~rug.seq, lty=2)
+lines(mu.noAfr~rug.seq)
+par(op)
+@ 
+
+Model with Seychelles
+
+<<no-sey,message=FALSE,cache=TRUE>>=
+op <- par(mfrow=c(1,2))
+plot(log.GDP~rugged, data=d.noS[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
+lines(CI.Afr.nS[1,]~rug.seq, lty=2)
+lines(CI.Afr.nS[2,]~rug.seq, lty=2)
+lines(mu.Afr.nS~rug.seq)
+
+plot(log.GDP~rugged, data=d.noS, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
+lines(CI.noAfr.nS[1,]~rug.seq, lty=2)
+lines(CI.noAfr.nS[2,]~rug.seq, lty=2)
+lines(mu.noAfr.nS~rug.seq)
+par(op)
+@ 
+
+Model without Seychelles
+
+
+(c) 
+
+<<sey-AICc, message=FALSE,cache=TRUE,warning=FALSE>>=
+m1 <- lm.to.mle2(lm(log.GDP ~ rugged, data=d.rc),data=d.rc)
+m2 <- lm.to.mle2(lm(log.GDP ~ Africa.i + rugged, data=d.rc),data=d.rc)
+m3 <- lm.to.mle2(lm(log.GDP ~ Africa.i * rugged, data=d.rc),data=d.rc)
+
+m1.nS <- lm.to.mle2(lm(log.GDP ~ rugged, data=d.noS),data=d.noS)
+m2.nS <- lm.to.mle2(lm(log.GDP ~ Africa.i + rugged , data=d.noS),data=d.noS)
+m3.nS <- lm.to.mle2(lm(log.GDP ~ Africa.i*rugged, data=d.noS),data=d.noS)
+
+#with Seychelles
+compare(m1,m2,m3,nobs=nrow(d.rc))
+#without Seychelles
+compare(m1.nS,m2.nS,m3.nS,nobs=nrow(d.rc))
+
+@ 
+
+<<AICc-avg,message=FALSE,cache=TRUE>>=
+NREP <- 3e5
+post.noS <- sample.naive.posterior(list(m1.nS,m2.nS,m3.nS), n = NREP, method="AICc", nobs=nrow(d.noS))
+
+mu.coef <- as.list(colMeans(post.noS))
+rug.seq <- with(d.noS, seq(min(rugged),max(rugged)+2,length.out=100) )
+
+AFRICA=1
+##PI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
+CI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
+mu.Afr <- sapply(rug.seq, function(z) with(mu.coef,a+b1*AFRICA+b2*z+b3*AFRICA*z))
+
+AFRICA=0
+##PI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
+CI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
+mu.noAfr <- sapply(rug.seq, function(z) with(mu.coef, a+b1*AFRICA+b2*z+b3*AFRICA*z))
+
+op <- par(mfrow=c(1,2))
+plot(log.GDP~rugged, data=d.noS[d.noS$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
+lines(CI.Afr[1,]~rug.seq,lty=2)
+lines(CI.Afr[2,]~rug.seq,lty=2)
+lines(mu.Afr~rug.seq)
+
+plot(log.GDP~rugged, data=d.noS, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
+lines(CI.noAfr[1,]~rug.seq,lty=2)
+lines(CI.noAfr[2,]~rug.seq,lty=2)
+lines(mu.noAfr~rug.seq)
+par(op)
+
+@ 
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'hw6ashander.Rnw',sep='/')) ## to run
+
+## to use all cores
+require(snowfall)
+sfInit(parallel=TRUE,cpus=4)
+sfLibrary(rethinking)
+sfExportAll()
+sfStop()
+@ 
+
+
+\end{document}

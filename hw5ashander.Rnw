@@ -48,7 +48,7 @@ require(ggplot2)
 
 We are working with Howell data again.
 
-Load the data and center {\tt age}: 
+First, we load the data and center {\tt age}: 
 
 <<load,message=FALSE>>=
 data(Howell1)
@@ -56,9 +56,9 @@ d <- Howell1
 d$age <- d$age - mean(d$age)
 @ 
 
-Randomly split the data set: 
+Then, randomly split the data set: 
 
-<<split,message=FALSE,cache=FALSE>>=
+<<split,message=FALSE,cache=TRUE>>=
 set.seed(1000)
 i <- sample(1:nrow(d),size=nrow(d)/2)
 d1 <- d[ i , ]
@@ -70,7 +70,7 @@ head(d1, n=1)
 
 \subsection*{Problem 1}
 
-Fit a series of models for the relationship between age and height: 
+We then fit a series of models for the relationship between age and height: 
 
 <<height-age,message=FALSE,cache=TRUE,warning=FALSE>>=
 M1 <- mle2(height~dnorm(mean=a + b1*age, sd=sigma), data=d1, start=list(a=mean(d1$height), sigma=sd(d1$height), b1=0))
@@ -88,11 +88,9 @@ M6 <- mle2(height~dnorm(mean=a + b1*age + b2*age^2 +b3*age^3+ b4*age^4 + b5*age^
 compare(M1,M2,M3,M4,M5,M6, nobs=nrow(d1))
 @ 
 
-Both methods place most weight on M4-M6, with M4 coming out on top in both cases. 
+Both methods place most weight on M4-M6, with M4 coming out on top in both cases. There is a clear qualitative break between these top three models and the others. 
 
-AICc: weighs about 60:25:15 on M4, M5 and M6
-
-BIC: weighs 95:5 on M4 and M5, with only a little weight on M6
+AICc weighs favor M4, M5 and M6 roughly 60:25:15, while BIC strongly favors M4 (95) with only a little emphasis on M5 (6) and very little on M6.
 
 
 \subsubsection*{(b)}
@@ -129,24 +127,40 @@ names(pred.AICc)[1:4] <- paste(names(pred.AICc)[1:4], c('PI', 'PI', 'CI', 'CI'))
 @ 
 
 <<predict-avg, message=TRUE,cache=TRUE>>=
-g.b <-  ggplot(Howell1) + geom_point(aes(log(age),log(height)),color="darkgrey")
-g.b <- g.b + geom_line(aes(log(age),log(`2.5% PI`)), data=pred.BIC, linetype=3) + geom_line(aes(log(age),log(`97.5% PI`)), data=pred.BIC, linetype=3)
-g.b <- g.b + geom_line(aes(log(age),log(`2.5% CI`)), data=pred.BIC, linetype=2) + geom_line(aes(log(age),log(`97.5% CI`)), data=pred.BIC, linetype=2)
-g.b <- g.b + geom_line(aes(log(age),log(mean)), data=pred.BIC)+ylim(c(3.5,5.5))
+l.g.b <-  ggplot(Howell1) + geom_point(aes(log(age),log(height)),color="darkgrey")
+l.g.b <- l.g.b + geom_line(aes(log(age),log(`2.5% PI`)), data=pred.BIC, linetype=3) + geom_line(aes(log(age),log(`97.5% PI`)), data=pred.BIC, linetype=3)
+l.g.b <- l.g.b + geom_line(aes(log(age),log(`2.5% CI`)), data=pred.BIC, linetype=2) + geom_line(aes(log(age),log(`97.5% CI`)), data=pred.BIC, linetype=2)
+l.g.b <- l.g.b + geom_line(aes(log(age),log(mean)), data=pred.BIC)+ylim(c(3.5,5.5))
 
-g.a <-  ggplot(Howell1) + geom_point(aes(log(age),log(height)),color="darkgrey")
-g.a <- g.a + geom_line(aes(log(age),log(`2.5% PI`)), data=pred.AICc, linetype=3) + geom_line(aes(log(age),log(`97.5% PI`)), data=pred.AICc, linetype=3)
-g.a <- g.a + geom_line(aes(log(age),log(`2.5% CI`)), data=pred.AICc, linetype=2) + geom_line(aes(log(age),log(`97.5% CI`)), data=pred.AICc, linetype=2)
-g.a <- g.a + geom_line(aes(log(age),log(mean)), data=pred.AICc)+ylim(c(3.5,5.5))
-require(gridExtra)
-grid.arrange(g.b, g.a, ncol=2)
+l.g.a <-  ggplot(Howell1) + geom_point(aes(log(age),log(height)),color="darkgrey")
+l.g.a <- l.g.a + geom_line(aes(log(age),log(`2.5% PI`)), data=pred.AICc, linetype=3) + geom_line(aes(log(age),log(`97.5% PI`)), data=pred.AICc, linetype=3)
+l.g.a <- l.g.a + geom_line(aes(log(age),log(`2.5% CI`)), data=pred.AICc, linetype=2) + geom_line(aes(log(age),log(`97.5% CI`)), data=pred.AICc, linetype=2)
+l.g.a <- l.g.a + geom_line(aes(log(age),log(mean)), data=pred.AICc)+ylim(c(3.5,5.5))
+
+g.b <-  ggplot(Howell1) + geom_point(aes(age,height),color="darkgrey")
+g.b <- g.b + geom_line(aes(age,`2.5% PI`), data=pred.BIC, linetype=3) + geom_line(aes(age,`97.5% PI`), data=pred.BIC, linetype=3)
+g.b <- g.b + geom_line(aes(age,`2.5% CI`), data=pred.BIC, linetype=2) + geom_line(aes(age,`97.5% CI`), data=pred.BIC, linetype=2)
+g.b <- g.b + geom_line(aes(age,mean), data=pred.BIC)
+
+g.a <-  ggplot(Howell1) + geom_point(aes(age,height),color="darkgrey")
+g.a <- g.a + geom_line(aes(age,`2.5% PI`), data=pred.AICc, linetype=3) + geom_line(aes(age,`97.5% PI`), data=pred.AICc, linetype=3)
+g.a <- g.a + geom_line(aes(age,`2.5% CI`), data=pred.AICc, linetype=2) + geom_line(aes(age,`97.5% CI`), data=pred.AICc, linetype=2)
+g.a <- g.a + geom_line(aes(age,mean), data=pred.AICc)
+
+grid.arrange(l.g.b, l.g.a, g.b, g.a, ncol=2)
 
 @ 
 
 Model-averaged means (solid lines) with confidence intervals (dashed lines) and prediction intervals (dotted lines) based on weightings from BIC (left) and AICc (right). 
 
-Predictions differ {\em very little} under AICc and BIC.
-This is surprising, given the different weighings from AICc and BIC.
+Predictions differ {\em very little} under AICc and BIC {\em within the range of the training data}. 
+At first, I found this is surprising, given the different weighings from AICc and BIC.
+But given the flexiblity of the polynomial models (described below), the result is less surprising. 
+
+Further, when predictors are extended outside the range of the training data, predictions do differ between BIC and AICc (upper range of graphs shown above). 
+In particular, AICc makes predictions with a wider distribution and has much less confidence about the location of the mean. 
+This is consistent with our interpretation of the weightings above; AICc places more weight on parameter-heavy models that sacrifice out-of-sample accuracy for in-sample fit (i.e. prioritizing {\em variance} over {\em bias}).
+
 
 
 \subsection*{Problem 2}
@@ -170,7 +184,7 @@ for(i in 1:length(models)){
   if(i==6) 
     d2$p6 = mu.d2
   M.dev <- -2*sum(dnorm( d2$height, mu.d2, coef(M)["sigma"] , log=TRUE ) )
-  cat("Deviance of M",i, ": ",M.dev , "\n")
+#  cat("Deviance of M",i, ": ",M.dev , "\n")
   comptab$Deviance[i] <- M.dev
   }
 comptab$dDeviance <- comptab$Deviance - min(comptab$Deviance )
@@ -197,7 +211,7 @@ Because the training and cross-validation sets are well-mixed, predictions based
 
 <<dev-fig,cache=TRUE>>=
 d2.m <-   melt(d2, id.vars=c('age','height','weight','male'))
-g <- ggplot(d) + geom_point(aes(age,height,color=dataset))
+g <- ggplot(d) + geom_point(aes(age,height,color=dataset),size=2, alpha=.7)+theme_bw()
 g <- g + geom_line(aes(age,value,linetype=variable),data=d2.m)+labs(linetype='degree')
 g # computed above
 
@@ -207,6 +221,7 @@ Data from both cross-validation and training set, lines are predictions on cross
 
 \subsection*{Problem 3}
 
+We now compute the out-of-sample deviance for the averaged models (both BIC and AICc) from earlier in the exercise.
 
 <<deviance,cache=TRUE,message=FALSE,cache=TRUE>>=
 model.deviances <- comptab[,c('Deviance','dDeviance')]
@@ -224,6 +239,14 @@ deviances$dDeviance <- deviances$Deviance- min(deviances$Deviance)
 deviances <- deviances[order(deviances$dDeviance),]
 deviances
 @ 
+
+Average models based on AICc and BIC performed equivalently, in terms of out-of-sample deviance.
+Surprisingly, M6 and M4 fared {\em better} than both of the average models. 
+However, all of these models are within very few units of deviance of one another; with M5 close behind. 
+
+I'm still unsure why the averaged models don't perform better than their unaveraged counterparts. 
+In any case, it's unsurprising that the averages are {\em close} to the performance of M5-M6, as most of the weight was on these models and their out-of-sample performance was roughly equivalent. 
+I'll assume one or both of the following: (i) my verbose coding style put the coefficients through a few too many functions and propagated some rounding error, and (ii) this relatively easy (for the models) cross-validation exercise didn't show me averaging's full potential.
 
 
 \subsection*{Colophon}
