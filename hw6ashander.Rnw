@@ -46,7 +46,7 @@ require(ggplot2)
    {\large Jaime Ashander}
 \end{center}
 
-\subsection*{Problem 1}
+\subsection*{No Seychelles}
 
 First, create a resticted data set and remove missing values
 <<>>=
@@ -61,13 +61,14 @@ d.rc[,3:4] <- apply(d.rc[,3:4], 2, function(x) x - mean(x))
 ## removed seychelles
 d.noS <- subset(d.rc, country != 'Seychelles')
 d.noS[,3:4] <- apply(d.noS[,3:4], 2, function(x) x - mean(x))
+
 @ 
 
 (a) 
 
 Now, I fit the model 
 \[
-\log ({\rm GDP}) \sim {\rm Normal} (\alpha + \alpha_A A_i + \beta_r r_i  + \beta_{rA} A_i R_i)
+\log ({\rm GDP}) \sim {\rm Normal} (\alpha + \alpha_A A_i + \beta_r r_i  + \beta_{rA} A_i r_i)
 \]
 against the data set (all non-missing values) and the data set with Seychelles removed:
 
@@ -81,7 +82,7 @@ precis(m.nS) # without Seychelles
 @ 
 
 It seems that removing Seychelles has reduced the interaction of ruggedness with content by about 0.1 units (around 1 SE).
-There does still seem to be an effect (the MLE is positive and 0 is not included in the CI), but the CI now approaches 0. 
+There does still seem to be an interaction (the MLE is positive and 0 is not included in the CI), but the CI now approaches 0. 
 
 (b)
 
@@ -115,7 +116,7 @@ CI.noAfr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, a+a.A*AFRICA+b.r*z+
 mu.noAfr.nS <- sapply(rug.seq, function(z) with(mu.coef.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
 @ 
 
-<<with-sey,message=FALSE,cache=TRUE>>=
+<<with-sey,message=FALSE,cache=TRUE,echo=FALSE>>=
 op <- par(mfrow=c(1,2))
 plot(log.GDP~rugged, data=d.rc[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
 lines(CI.Afr[1,]~rug.seq, lty=2)
@@ -127,11 +128,22 @@ lines(CI.noAfr[1,]~rug.seq, lty=2)
 lines(CI.noAfr[2,]~rug.seq, lty=2)
 lines(mu.noAfr~rug.seq)
 par(op)
-@ 
 
+@ 
 Model with Seychelles
 
-<<no-sey,message=FALSE,cache=TRUE>>=
+<<sey-dens,cache=TRUE,echo=FALSE,messages=FALSE>>=
+
+`non-Africa` <- post.full$b.r + post.full$b.Ar*0
+Africa <- post.full$b.r + post.full$b.Ar*1
+dens(data.frame(Africa,`non-Africa`))
+
+@ 
+Posterior densities for effect of ruggedness inside and outside Africa from model {\em with} Seychelles.
+
+
+
+<<no-sey,message=FALSE,cache=TRUE,echo=FALSE>>=
 op <- par(mfrow=c(1,2))
 plot(log.GDP~rugged, data=d.noS[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
 lines(CI.Afr.nS[1,]~rug.seq, lty=2)
@@ -142,10 +154,20 @@ plot(log.GDP~rugged, data=d.noS, ylim=c(-3.5,3.5), main="non-Africa", col=col.al
 lines(CI.noAfr.nS[1,]~rug.seq, lty=2)
 lines(CI.noAfr.nS[2,]~rug.seq, lty=2)
 lines(mu.noAfr.nS~rug.seq)
+
 par(op)
 @ 
-
 Model without Seychelles
+
+
+<<no-sey-dens,echo=FALSE,cache=TRUE,messages=FALSE>>=
+
+`non-Africa` <- post.nS$b.r + post.nS$b.Ar*0
+Africa <- post.nS$b.r + post.nS$b.Ar*1
+dens(data.frame(Africa, `non-Africa`))
+@ 
+Posterior densities for effect of ruggedness inside and outside Africa from model without Seychelles.
+
 
 
 (c) 
@@ -166,7 +188,7 @@ compare(m1.nS,m2.nS,m3.nS,nobs=nrow(d.rc))
 
 @ 
 
-<<AICc-avg,message=FALSE,cache=TRUE>>=
+<<AICc-avg-calc,message=FALSE,cache=TRUE>>=
 NREP <- 3e5
 post.noS <- sample.naive.posterior(list(m1.nS,m2.nS,m3.nS), n = NREP, method="AICc", nobs=nrow(d.noS))
 
@@ -174,27 +196,152 @@ mu.coef <- as.list(colMeans(post.noS))
 rug.seq <- with(d.noS, seq(min(rugged),max(rugged)+2,length.out=100) )
 
 AFRICA=1
-##PI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
+PI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
 CI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
 mu.Afr <- sapply(rug.seq, function(z) with(mu.coef,a+b1*AFRICA+b2*z+b3*AFRICA*z))
 
 AFRICA=0
-##PI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
+PI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
 CI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
 mu.noAfr <- sapply(rug.seq, function(z) with(mu.coef, a+b1*AFRICA+b2*z+b3*AFRICA*z))
 
+@ 
+
+
+<<AICc-avg,message=FALSE,cache=TRUE,echo=FALSE>>=
 op <- par(mfrow=c(1,2))
 plot(log.GDP~rugged, data=d.noS[d.noS$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
 lines(CI.Afr[1,]~rug.seq,lty=2)
 lines(CI.Afr[2,]~rug.seq,lty=2)
+lines(PI.Afr[1,]~rug.seq,lty=3)
+lines(PI.Afr[2,]~rug.seq,lty=3)
 lines(mu.Afr~rug.seq)
 
 plot(log.GDP~rugged, data=d.noS, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
 lines(CI.noAfr[1,]~rug.seq,lty=2)
 lines(CI.noAfr[2,]~rug.seq,lty=2)
+lines(PI.noAfr[1,]~rug.seq,lty=3)
+lines(PI.noAfr[2,]~rug.seq,lty=3)
 lines(mu.noAfr~rug.seq)
 par(op)
 
+@ 
+Fits to data without Seychelles for averaged model (based on AICc), as well as confidence intervals for the mean and prediction intervals on the 
+
+<<AICc-dens,message=FALSE,cache=TRUE>>=
+
+`non-Africa` <- post.noS$b2 + post.noS$b3*0
+Africa <- post.noS$b2 + post.noS$b3*1
+dens(data.frame(Africa, `non-Africa`))
+
+@ 
+Posterior densities for effect of ruggedness inside and outside Africa from average model (AICc) without Seychelles.
+
+\subsection*{Language diversity }
+
+
+We want to evaluate the hypothesis that language diversity is related to food security. 
+In particular, the causal idea is that productive land and climate lead to smaller ethnic groups, as there is less need for trade.
+
+For this task, we use data from Nettle (1998): 
+
+<<load-lang,message=FALSE>>=
+data(nettle)
+head(nettle,n=1)
+d <- nettle
+d$lang.per.cap <- d$num.lang/d$k.pop
+d$log.lpc <- log(d$lang.per.cap)
+@ 
+
+No pair-wise correlations are super high: 
+<<cor-lang,message=FALSE>>=
+cor(d[,c('log.lpc','area','mean.growing.season','sd.growing.season')])           
+d.rc <- d
+d.rc[,c('mean.growing.season','sd.growing.season')] <- apply(d.rc[,c('mean.growing.season','sd.growing.season')], 2, function(x) x - mean(x))
+@ 
+
+Evaluate the models using mean and standard deviation, their interaction, and logarithm of area as predictors of the log languages per captia: 
+
+(a,b,c)
+
+<<lang-grow,message=FALSE>>=
+m1 <- lm(log(lang.per.cap) ~ mean.growing.season + log(area), data=d.rc)
+precis(m1)
+m2 <- lm(log(lang.per.cap) ~ sd.growing.season + log(area), data=d.rc)
+precis(m2)
+m3 <- lm(log(lang.per.cap) ~ mean.growing.season*sd.growing.season, data=d.rc)
+precis(m3)
+m4 <- lm(log(lang.per.cap) ~ mean.growing.season*sd.growing.season + log(area), data=d.rc)
+precis(m4)
+@ 
+
+After controlling for log area, mean growing season has a positive effect on diversity (m1), while standard deviation in growing season has a weak negative effect (m2). 
+When the main effects of mean and variance of growing season as well as their interaction are consided (m3), we find a negative relationship between language diversity and the standard deviation of growing season, but a positive relationship with the mean growing season, as well as  a negative interaction between the standard deviation and mean of growing season. 
+
+Model selection with AICc and BIC indicates little support for using log(area) as a predictor when considering the interaction (m3 v m4).
+<<areatoo,message=FALSE>>=
+compare(m3,m4,nobs=nrow(d.rc))
+@ 
+
+The model with the interaction had strong support under both AICc and BIC.  
+<<compare-three,message=FALSE>>=
+compare(m1,m2,m3, nobs=nrow(d.rc))
+@ 
+
+To better understand the strength of the interaction in determining the relationship between language diversity and growing season, I picked out below average, average, and above average values of the standard deviation and mean. 
+
+<<sd-mean-dist,message=TRUE,cache=TRUE>>=
+op <- par(mfrow=c(1,2))
+with(d.rc, hist(mean.growing.season))
+with( d.rc, hist(sd.growing.season))
+par(op)
+@ 
+
+These values, based on histograms of the summary statistics, were {\tt sd = -1.5, 0, 1.5} and {\tt mean = -4, 0, 4}. 
+For these values, I plotted the effect of the other predictor on mean prediction for model 3. 
+
+(I was interested to average the models, but including area had a strange effect on output. I wasn't sure that averaging over the coefficients was having the intended effect... )
+
+<<lang-grow-fig,message=TRUE,cache=TRUE>>=
+NREP <- 3e5
+post <- sample.naive.posterior(m3, n=NREP) #, method='AICc', nobs=nrow(d.rc))
+names(post) <- c('a', 'b.mu.gs', 'b.sd.gs', 'b.mu.sd')
+
+mu.coef <- as.list(colMeans(post))
+mean.seq <- with(d.rc, seq(min(mean.growing.season),max(mean.growing.season)+1,length.out=100) )
+sd.seq <- with(d.rc, seq(min(sd.growing.season),max(sd.growing.season)+1,length.out=100) )
+
+op <- par(mfrow=c(2,3))
+for (SD.gs in c(-1.5, 0, 1.5)){
+  CI <- sapply(mean.seq, function(z) PCI(with(post, a+ b.mu.gs*z+b.sd.gs*SD.gs + b.mu.sd*SD.gs*z)))
+  mu <- sapply(mean.seq, function(z) with(mu.coef, a+ b.mu.gs*z+b.sd.gs*SD.gs + b.mu.sd*SD.gs*z))
+  plot(log(lang.per.cap) ~ mean.growing.season,data=d.rc, main=paste("sd=", SD.gs), col=col.alpha('gray', 0.9))
+  lines(CI[1,] ~ mean.seq,lty=2)
+  lines(CI[2,] ~ mean.seq,lty=2)
+  lines(mu~mean.seq, lty=1)
+}
+for (MU.gs in c(-4, 0, 4)){
+  CI <- sapply(sd.seq, function(z) PCI(with(post, a+ b.mu.gs*MU.gs+b.sd.gs*z + b.mu.sd*MU.gs*z)))
+  mu <- sapply(sd.seq, function(z) with(mu.coef, a+ b.mu.gs*MU.gs+b.sd.gs*z + b.mu.sd*MU.gs*z))
+  plot(log(lang.per.cap) ~ sd.growing.season,data=d.rc, main=paste("mean=", MU.gs), col=col.alpha('gray', 0.9))
+  lines(CI[1,] ~ sd.seq,lty=2)
+  lines(CI[2,] ~ sd.seq,lty=2)
+  lines(mu~sd.seq, lty=1)
+}
+
+par(op)
+
+@ 
+
+<<gg-mean,message=TRUE,cache=TRUE>>=
+g <-  ggplot(d.rc)
+g1 <- g + geom_point(aes(mean.growing.season, log(lang.per.cap), size=sd.growing.season))
+g1
+@ 
+
+<<gg-sd,message=TRUE,cache=TRUE>>=
+g2 <- g + geom_point(aes(sd.growing.season, log(lang.per.cap), size=mean.growing.season))
+g2
 @ 
 
 \subsection*{Colophon}
