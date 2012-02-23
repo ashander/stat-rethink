@@ -1,5 +1,4 @@
-%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
+
 \documentclass{article}
 \usepackage{graphicx, color}
 \newcommand{\hlnumber}[1]{\textcolor[rgb]{0,0,0}{#1}}%
@@ -510,39 +509,8 @@ There does still seem to be an interaction (the MLE is positive and 0 is not inc
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }first,{\ }with{\ }Seychelles}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{post.full}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{m.full}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu.coef}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m.full}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{AFRICA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{1}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}PI.Afr{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }sapply(rug.seq,{\ }function(z){\ }PCI(with(post.full,}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{CI.Afr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.full}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.Afr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{AFRICA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}PI.noAfr{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }sapply(rug.seq,{\ }function(z){\ }PCI(with(post.full,}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{CI.noAfr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.full}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.noAfr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{post.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{m.nS}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.coef.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m.nS}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{AFRICA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{1}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}PI.Afr.nS{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }sapply(rug.seq,{\ }function(z){\ }PCI(with(post.nS,}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{CI.Afr.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.nS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.Afr.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef.nS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{AFRICA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}PI.noAfr.nS{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }sapply(rug.seq,{\ }function(z){\ }PCI(with(post.nS,}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{CI.noAfr.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.nS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.noAfr.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef.nS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{mu.coef.nS}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m.nS}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \end{kframe}}
@@ -551,7 +519,30 @@ There does still seem to be an interaction (the MLE is positive and 0 is not inc
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
-\includegraphics{with-sey} \end{kframe}}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{AFRICA}{\ }\hlkeyword{in}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}PI{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }sapply(rug.seq,{\ }function(z){\ }PCI(with(post.full,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.full}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{log.GDP}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rugged}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d.rc}\hlkeyword{[}\hlsymbol{d.rc}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{Africa.i}{\ }=={\ }\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlkeyword{-}\hlnumber{3.5}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{3.5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{"Africa"}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}{\ }\hlnumber{0.9}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{CI}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{CI}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{with-sey} \begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
 \end{knitrout}
 
 Model with Seychelles
@@ -564,14 +555,36 @@ Model with Seychelles
 Posterior densities for effect of ruggedness inside and outside Africa from model {\em with} Seychelles.
 
 
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
-\includegraphics{no-sey} \end{kframe}}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{AFRICA}{\ }\hlkeyword{in}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}PI{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }sapply(rug.seq,{\ }function(z){\ }PCI(with(post.nS,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.nS}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef.nS}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{a.A}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{b.r}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b.Ar}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{log.GDP}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rugged}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d.noS}\hlkeyword{[}\hlsymbol{d.rc}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{Africa.i}{\ }=={\ }\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlkeyword{-}\hlnumber{3.5}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{3.5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{"Africa"}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}{\ }\hlnumber{0.9}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{CI}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{CI}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{no-sey} \begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
 \end{knitrout}
 
 Model without Seychelles
-
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -579,8 +592,6 @@ Model without Seychelles
 \end{knitrout}
 
 Posterior densities for effect of ruggedness inside and outside Africa from model without Seychelles.
-
-
 
 (c) 
 
@@ -643,35 +654,41 @@ Posterior densities for effect of ruggedness inside and outside Africa from mode
 \hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu.coef}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{colMeans}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{rug.seq}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{d.noS}\hlkeyword{,}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{rugged}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{rugged}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{2}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlnumber{100}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{AFRICA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{1}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{PI.Afr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{rnorm}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlsymbol{NREP}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{z}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{/}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{CI.Afr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.Afr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{AFRICA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{PI.noAfr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{rnorm}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlsymbol{NREP}\hlkeyword{,}{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{z}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{/}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{CI.noAfr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{mu.noAfr}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlnumber{100}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \end{kframe}}
 \end{knitrout}
 
 
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
-\includegraphics{AICc-avg} \end{kframe}}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{AFRICA}{\ }\hlkeyword{in}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{PI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{,}{\ }\hlfunctioncall{rnorm}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlsymbol{NREP}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{mean}{\ }\hlargument{=}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{,}{\ }\hlargument{sd}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{/}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{CI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{post.noS}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{mu.coef}\hlkeyword{,}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b1}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{b2}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{b3}{\ }\hlkeyword{*}{\ }\hlsymbol{AFRICA}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{log.GDP}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rugged}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d.noS}\hlkeyword{[}\hlsymbol{d.noS}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{Africa.i}{\ }=={\ }\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlkeyword{-}\hlnumber{3.5}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{3.5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{"Africa"}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}{\ }\hlnumber{0.9}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{CI}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{CI}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{PI}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{PI}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{rug.seq}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{AICc-avg} \begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\end{kframe}}
 \end{knitrout}
 
 Fits to data without Seychelles for averaged model (based on AICc), as well as confidence intervals for the mean and prediction intervals on the 

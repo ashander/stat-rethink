@@ -1,5 +1,4 @@
-%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
+
 \documentclass{article}
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
@@ -93,40 +92,21 @@ NREP <- 3e4
 # first, with Seychelles
 post.full <- sample.naive.posterior(m.full)
 mu.coef <- as.list(coef(m.full))
-AFRICA=1
-##PI.Afr <- sapply(rug.seq, function(z) PCI(with(post.full, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
-CI.Afr <- sapply(rug.seq, function(z) PCI(with(post.full, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
-mu.Afr <- sapply(rug.seq, function(z) with(mu.coef, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
-
-AFRICA=0
-##PI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.full, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
-CI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.full, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
-mu.noAfr <- sapply(rug.seq, function(z) with(mu.coef, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
-
 post.nS <- sample.naive.posterior(m.nS)
 mu.coef.nS <- as.list(coef(m.nS))
-AFRICA=1
-##PI.Afr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
-CI.Afr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
-mu.Afr.nS <- sapply(rug.seq, function(z) with(mu.coef.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
-
-AFRICA=0
-##PI.noAfr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
-CI.noAfr.nS <- sapply(rug.seq, function(z) PCI(with(post.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
-mu.noAfr.nS <- sapply(rug.seq, function(z) with(mu.coef.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
 @ 
 
-<<with-sey,message=FALSE,cache=TRUE,echo=FALSE>>=
+<<with-sey,message=FALSE,cache=TRUE,echo=TRUE>>=
 op <- par(mfrow=c(1,2))
-plot(log.GDP~rugged, data=d.rc[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
-lines(CI.Afr[1,]~rug.seq, lty=2)
-lines(CI.Afr[2,]~rug.seq, lty=2)
-lines(mu.Afr~rug.seq)
-
-plot(log.GDP~rugged, data=d.rc, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
-lines(CI.noAfr[1,]~rug.seq, lty=2)
-lines(CI.noAfr[2,]~rug.seq, lty=2)
-lines(mu.noAfr~rug.seq)
+for(AFRICA in c(1,0)){
+  ##PI <- sapply(rug.seq, function(z) PCI(with(post.full, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
+  CI <- sapply(rug.seq, function(z) PCI(with(post.full, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
+  mu <- sapply(rug.seq, function(z) with(mu.coef, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
+  plot(log.GDP~rugged, data=d.rc[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
+  lines(CI[1,]~rug.seq, lty=2)
+  lines(CI[2,]~rug.seq, lty=2)
+  lines(mu~rug.seq)
+}
 par(op)
 
 @ 
@@ -142,23 +122,21 @@ dens(data.frame(Africa,`non-Africa`))
 Posterior densities for effect of ruggedness inside and outside Africa from model {\em with} Seychelles.
 
 
-
-<<no-sey,message=FALSE,cache=TRUE,echo=FALSE>>=
+<<no-sey,message=FALSE,cache=TRUE,echo=TRUE>>=
 op <- par(mfrow=c(1,2))
-plot(log.GDP~rugged, data=d.noS[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
-lines(CI.Afr.nS[1,]~rug.seq, lty=2)
-lines(CI.Afr.nS[2,]~rug.seq, lty=2)
-lines(mu.Afr.nS~rug.seq)
-
-plot(log.GDP~rugged, data=d.noS, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
-lines(CI.noAfr.nS[1,]~rug.seq, lty=2)
-lines(CI.noAfr.nS[2,]~rug.seq, lty=2)
-lines(mu.noAfr.nS~rug.seq)
-
+for(AFRICA in c(1,0)){
+  ##PI <- sapply(rug.seq, function(z) PCI(with(post.nS, rnorm(n=NREP,mean=a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z,sd=sigma))))
+  CI <- sapply(rug.seq, function(z) PCI(with(post.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z)))
+  mu <- sapply(rug.seq, function(z) with(mu.coef.nS, a+a.A*AFRICA+b.r*z+b.Ar*AFRICA*z))
+  
+  plot(log.GDP~rugged, data=d.noS[d.rc$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
+  lines(CI[1,]~rug.seq, lty=2)
+  lines(CI[2,]~rug.seq, lty=2)
+  lines(mu~rug.seq)
+}
 par(op)
 @ 
 Model without Seychelles
-
 
 <<no-sey-dens,echo=FALSE,cache=TRUE,messages=FALSE>>=
 
@@ -167,8 +145,6 @@ Africa <- post.nS$b.r + post.nS$b.Ar*1
 dens(data.frame(Africa, `non-Africa`))
 @ 
 Posterior densities for effect of ruggedness inside and outside Africa from model without Seychelles.
-
-
 
 (c) 
 
@@ -194,35 +170,21 @@ post.noS <- sample.naive.posterior(list(m1.nS,m2.nS,m3.nS), n = NREP, method="AI
 
 mu.coef <- as.list(colMeans(post.noS))
 rug.seq <- with(d.noS, seq(min(rugged),max(rugged)+2,length.out=100) )
-
-AFRICA=1
-PI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
-CI.Afr <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
-mu.Afr <- sapply(rug.seq, function(z) with(mu.coef,a+b1*AFRICA+b2*z+b3*AFRICA*z))
-
-AFRICA=0
-PI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
-CI.noAfr <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
-mu.noAfr <- sapply(rug.seq, function(z) with(mu.coef, a+b1*AFRICA+b2*z+b3*AFRICA*z))
-
 @ 
 
-
-<<AICc-avg,message=FALSE,cache=TRUE,echo=FALSE>>=
+<<AICc-avg,message=FALSE,cache=TRUE,echo=TRUE>>=
 op <- par(mfrow=c(1,2))
-plot(log.GDP~rugged, data=d.noS[d.noS$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
-lines(CI.Afr[1,]~rug.seq,lty=2)
-lines(CI.Afr[2,]~rug.seq,lty=2)
-lines(PI.Afr[1,]~rug.seq,lty=3)
-lines(PI.Afr[2,]~rug.seq,lty=3)
-lines(mu.Afr~rug.seq)
-
-plot(log.GDP~rugged, data=d.noS, ylim=c(-3.5,3.5), main="non-Africa", col=col.alpha('gray', 0.9))
-lines(CI.noAfr[1,]~rug.seq,lty=2)
-lines(CI.noAfr[2,]~rug.seq,lty=2)
-lines(PI.noAfr[1,]~rug.seq,lty=3)
-lines(PI.noAfr[2,]~rug.seq,lty=3)
-lines(mu.noAfr~rug.seq)
+for(AFRICA in c(1,0)){
+  PI <- sapply(rug.seq, function(z) PCI(with(post.noS, rnorm(n=NREP,mean=a+b1*AFRICA+b2*z+b3*AFRICA*z,sd=1/tau))))
+  CI <- sapply(rug.seq, function(z) PCI(with(post.noS, a+b1*AFRICA+b2*z+b3*AFRICA*z)))
+  mu <- sapply(rug.seq, function(z) with(mu.coef, a+b1*AFRICA+b2*z+b3*AFRICA*z))
+  plot(log.GDP~rugged, data=d.noS[d.noS$Africa.i==1,], ylim=c(-3.5,3.5), main="Africa", col=col.alpha('gray', 0.9))
+  lines(CI[1,]~rug.seq,lty=2)
+  lines(CI[2,]~rug.seq,lty=2)
+  lines(PI[1,]~rug.seq,lty=3)
+  lines(PI[2,]~rug.seq,lty=3)
+  lines(mu~rug.seq)
+}
 par(op)
 
 @ 
