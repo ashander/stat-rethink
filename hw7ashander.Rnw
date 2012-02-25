@@ -93,7 +93,7 @@ p.m1
 When the pirate is small and immature, and the victim is small, the probability of success in an attack is a bit over half (0.65; logistic($\alpha$)).
 A larger or older eagle has a greater chance of success, but being larger is more helpful than being older
 
-<<>>=
+<<probs>>=
 logistic(with(point.est, a)) #small, young v small
 logistic(with(point.est, bA-a)) #small, old v small
 logistic(with(point.est, a+bP)) #large, young v small
@@ -105,26 +105,35 @@ logistic(with(point.est, a+bV)) #small, young v large
 
 The baseline probability of success (i.e. given defalt vales for dummy variables) of 0.65 corresponds to a small, young pirate verus a small victim.
 
-<<pirate-plot-b,message=TRUE,cache=FALSE>>=
+<<pirate-plot-b1,message=TRUE,cache=TRUE>>=
 post <- sample.naive.posterior( m1a)
 
 y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000 , prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] ) , size=d$n[i] ) ) )
 
 y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000 , prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] ) , size=d$n[i] ) ) )
 
+op <- par(mfrow=c(1,2))
 plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31))
 axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
 for(i in 1:8) lines(c(i,i),      c(y.pred.ci[,i]),col='grey')
 points( 1:8 , y.pred ,pch=19,cex=0.5,col='black')
 
+plot( (1:8)+0.2 , d$y/d$n , col="slateblue" , ylab="proportion successful" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,1))
+axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
+for(i in 1:8) lines(c(i,i),      c(y.pred.ci[,i]/d$n[i]),col='grey')
+points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
+
+par(op)
+
 @ 
+
 
 
 \subsection*{Colophon}
 
 <<runit,eval=FALSE>>=
 require(knitr) ### the package
-knit(paste(getwd(),'hw6ashander.Rnw',sep='/')) ## to run
+knit(paste(getwd(),'hw7ashander.Rnw',sep='/')) ## to run
 
 ## to use all cores
 require(snowfall)
