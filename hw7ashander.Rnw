@@ -1,0 +1,138 @@
+
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+\begin{center}
+  {\bf \Large Homework 7, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+\subsection*{Pirating eagles}
+
+<<load,message=FALSE>>=
+data(eagles)
+d <- eagles
+names(d)
+d
+@ 
+
+\begin{itemize}
+  \item y: Number of successful attempts.
+  \item n: Total number of attempts.
+  \item P: Size of pirating eagle (‘L’ = large, ‘S’ = small).
+  \item A: Age of pirating eagle (‘I’ = immature, ‘A’ = adult).
+  \item V: Size of victim eagle (‘L’ = large, ‘S’ = small).
+\end{itemize}
+
+We seek to predict successful pirating attempts based on the size and age of the pirate and the size of the victim.
+
+To do this, we fit the binomial model:
+\[
+\begin{split}
+  y_i \sim {\rm Binomial} ( p_i , n_i)\\
+  \log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i
+\end{split}
+\]
+
+To fit the model, we code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}, $A$: {\tt pirateA}.
+<<var-code,message=FALSE>>=
+d$pirateL <- ifelse(d$P=='L',1,0)
+d$pirateA <- ifelse(d$A=='A',1,0)
+d$victimL <- ifelse(d$V=='L',1,0)
+@ 
+
+To fit the model, we use the logit link function.
+In practice, this means using the logistic (inverse link) tranform on the linear model for the log odds (the RHS of the second equation above):
+
+<<pirate-model,message=FALSE>>=
+m1a <- mle2(y ~ dbinom(prob=logistic(a + bP*pirateL+bV*victimL + bA*pirateA), size=n), data=d, start=list(a=mean(d$y), bP=0, bV=0, bA=0))
+p.m1 <- precis(m1a)
+point.est <- as.data.frame(t(p.m1$Estimate))
+names(point.est) <- row.names(p.m1)
+p.m1
+@ 
+
+When the pirate is small and immature, and the victim is small, the probability of success in an attack is a bit over half (0.65; logistic($\alpha$)).
+A larger or older eagle has a greater chance of success, but being larger is more helpful than being older
+
+<<>>=
+logistic(with(point.est, a)) #small, young v small
+logistic(with(point.est, bA-a)) #small, old v small
+logistic(with(point.est, a+bP)) #large, young v small
+logistic(with(point.est, a+bP+bA)) #large, old v small
+logistic(with(point.est, a+bP+bA+bV)) #large, old v large
+logistic(with(point.est, a+bA+bV)) #small, old v large
+logistic(with(point.est, a+bV)) #small, young v large
+@ 
+
+The baseline probability of success (i.e. given defalt vales for dummy variables) of 0.65 corresponds to a small, young pirate verus a small victim.
+
+<<pirate-plot-b,message=TRUE,cache=FALSE>>=
+post <- sample.naive.posterior( m1a)
+
+y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000 , prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] ) , size=d$n[i] ) ) )
+
+y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000 , prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] ) , size=d$n[i] ) ) )
+
+plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31))
+axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
+for(i in 1:8) lines(c(i,i),      c(y.pred.ci[,i]),col='grey')
+points( 1:8 , y.pred ,pch=19,cex=0.5,col='black')
+
+@ 
+
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'hw6ashander.Rnw',sep='/')) ## to run
+
+## to use all cores
+require(snowfall)
+sfInit(parallel=TRUE,cpus=4)
+sfLibrary(rethinking)
+sfExportAll()
+sfStop()
+@ 
+
+
+\end{document}
