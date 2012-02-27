@@ -1,4 +1,3 @@
-
 \documentclass{article}
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
@@ -29,7 +28,7 @@
 \begin{document}
 
 %% still can't get paths to work ...
-% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
 
 <<setup,echo=FALSE,results=hide,message=FALSE>>=
 options(replace.assign=TRUE,width=90)
@@ -57,20 +56,20 @@ d
 \begin{itemize}
   \item y: Number of successful attempts.
   \item n: Total number of attempts.
-  \item P: Size of pirating eagle (‘L’ = large, ‘S’ = small).
-  \item A: Age of pirating eagle (‘I’ = immature, ‘A’ = adult).
-  \item V: Size of victim eagle (‘L’ = large, ‘S’ = small).
+  \item P: Size of pirating eagle ('L' = large, 'S' = small).
+  \item A: Age of pirating eagle ('I' = immature, 'A' = adult).
+  \item V: Size of victim eagle ('L' = large, 'S' = small).
 \end{itemize}
 
 We seek to predict successful pirating attempts based on the size and age of the pirate and the size of the victim.
 
+\subsubsection*{(A)}
+
 To do this, we fit the binomial model:
-\[
-\begin{split}
-  y_i \sim {\rm Binomial} ( p_i , n_i)\\
-  \log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i
-\end{split}
-\]
+\begin{align*}
+&y_i \sim {\rm Binomial} ( p_i , n_i)\\
+&\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i
+\end{align*}
 
 To fit the model, we code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}, $A$: {\tt pirateA}.
 <<var-code,message=FALSE>>=
@@ -90,20 +89,24 @@ names(point.est) <- row.names(p.m1)
 p.m1
 @ 
 
-When the pirate is small and immature, and the victim is small, the probability of success in an attack is a bit over half (0.65; logistic($\alpha$)).
-A larger or older eagle has a greater chance of success, but being larger is more helpful than being older
+The baseline probability of success (i.e. given default vales for dummy variables) corresponds to a small, young pirate versus a small victim.
+In this case, the probability of success in an attack is a bit over half (0.65 = logistic($\alpha$)).
+A larger or older eagle has a greater chance of success, but being larger is more helpful than being older. 
+An attack on a larger victim is less likely to succeed. 
+The effect of largeness in either the victim or pirate on log-odds of success is about equal (but opposite). 
 
-<<probs>>=
-logistic(with(point.est, a)) #small, young v small
-logistic(with(point.est, bA-a)) #small, old v small
-logistic(with(point.est, a+bP)) #large, young v small
-logistic(with(point.est, a+bP+bA)) #large, old v small
-logistic(with(point.est, a+bP+bA+bV)) #large, old v large
-logistic(with(point.est, a+bA+bV)) #small, old v large
-logistic(with(point.est, a+bV)) #small, young v large
+<<probs,echo=FALSE>>=
+cat('small, young v small',  logistic(with(point.est, a)),'\n')
+cat('small, old v small', logistic(with(point.est, bA+a)), '\n')
+cat('large, young v large', logistic(with(point.est, a+bP+bV)), '\n')
+cat('large, young v small', logistic(with(point.est, a+bP)), '\n')
+cat('large, old v small', logistic(with(point.est, a+bP+bA)), '\n')
+cat('large, old v large',logistic(with(point.est, a+bP+bA+bV)), '\n')
+cat('small, old v large',logistic(with(point.est, a+bA+bV)),'\n')
+cat('small, young v large', logistic(with(point.est, a+bV)), '\n')
 @ 
 
-The baseline probability of success (i.e. given defalt vales for dummy variables) of 0.65 corresponds to a small, young pirate verus a small victim.
+\subsubsection*{(B)}
 
 <<pirate-plot-b1,message=TRUE,cache=TRUE>>=
 post <- sample.naive.posterior( m1a)
@@ -112,22 +115,137 @@ y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000 , prob=logistic(
 
 y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000 , prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] ) , size=d$n[i] ) ) )
 
-op <- par(mfrow=c(1,2))
-plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31))
+#op <- par(mfrow=c(2,1))
+plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31), cex=0.5)
 axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
-for(i in 1:8) lines(c(i,i),      c(y.pred.ci[,i]),col='grey')
+for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]),col='grey')
 points( 1:8 , y.pred ,pch=19,cex=0.5,col='black')
 
-plot( (1:8)+0.2 , d$y/d$n , col="slateblue" , ylab="proportion successful" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,1))
+plot( (1:8)+0.2 , d$y/d$n , col="slateblue" , ylab="proportion successful" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,1), cex=0.5)
 axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
-for(i in 1:8) lines(c(i,i),      c(y.pred.ci[,i]/d$n[i]),col='grey')
+for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]/d$n[i]),col='grey')
 points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
 
-par(op)
+#par(op)
+@ 
+
+Counts of success plot (first figure):
+
+shows heterogeneity in relative frequency of successful attempts across encounter types
+
+confidence intervals and point estimates easier to interpret relative to the data
+
+Proportional plot (second figure): 
+
+shows heterogeneity in probability across encounter types
+
+confidence intervals provide better depiction of uncertainty in outcome
+
+
+
+\subsubsection*{(C)}
+
+We'd like to improve the model, so we  fit the interaction model 
+\begin{align*}
+&y_i \sim {\rm Binomial} ( p_i , n_i)\\
+&\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i + \beta_{PA} P_i \cdot A_i
+\end{align*}
+
+<<better-model,message=FALSE,cache=TRUE>>=
+m1c <- mle2(y ~ dbinom(prob=logistic(a + bP*pirateL + bV*victimL + bA*pirateA + bPA*pirateL*pirateA), size=n), data=d, start=list(a=mean(d$y), bP=0, bV=0, bA=0, bPA=0))
+p.m1c <- precis(m1c)
+
+compare(m1a,m1c, nobs=sum(d$n))
+@ 
+
+
+<<better-model-fig,message=FALSE,cache=TRUE>>=
+rm(list=c('post','y.pred','y.pred.ci'))
+post <- sample.naive.posterior( list(m1a,m1c),method='AICc', nobs=sum(d$n),n=3e4)
+
+y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000, prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] + post$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
+
+y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000, prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] + post$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
+
+#op <- par(mfrow=c(2,1))
+plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31), cex=0.5)
+axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
+for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]),col='grey')
+points( 1:8 , y.pred ,pch=19,cex=0.5,col='black')
+
+plot( (1:8)+0.2 , d$y/d$n , col="slateblue" , ylab="proportion successful" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,1), cex=0.5)
+axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
+for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]/d$n[i]),col='grey')
+points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
+
+#par(op)
+
+@ 
+
+\subsection*{Herptiles}
+
+<<load-herp,message=FALSE>>=
+data(salamanders)
+d <- salamanders
+head(d,n=1)
+@ 
+
+The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
+
+
+
+\subsubsection*{(A)}
+
+I model the count variable SALAMAN as a Poisson variable:
+\begin{align*}
+&S_i \sim {\rm Poisson} ( \lambda_i)\\
+&\log \lambda = \alpha + \beta_P *P_i
+\end{align*}
+where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
+
+<<sal-model,message=FALSE>>=
+m2a <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*PCTCOVER)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0))
+precis(m2a)
+@ 
+
+
+<<sal-fig,message=FALSE,cache=TRUE>>=
+post <- sample.naive.posterior(m2a)
+pct.seq <- 0:100
+
+y.pred <- sapply(pct.seq , function(z) mean(exp(post$a + post$b.P*z)))
+n
+y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z)))
+
+y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z)))) 
+
+
+plot(SALAMAN~PCTCOVER, data=d,col=col.alpha('gray', .9), pch=19)
+lines(pct.seq, y.pred)
+lines(pct.seq, y.pred.ci[1,], lty=2)
+lines(pct.seq, y.pred.ci[2,], lty=2)
+lines(pct.seq, y.pred.pi[1,], lty=3)
+lines(pct.seq, y.pred.pi[2,], lty=3)
+@ 
+
+The model does a good job at low percent ground cover, with all observation falling within the 95\% PI. 
+At very high coverages, however, there are some high counts that are not captured by the model.
+
+
+\subsubsection*{(B)}
+
+<<sal-model,message=FALSE>>=
+m2b <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*PCTCOVER + b.F*FORESTAGE)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0))
+m2c <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*PCTCOVER + b.F*FORESTAGE + b.PF*PCTCOVER*FORESTAGE)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0, b.PF=0))
+m2d <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.F*FORESTAGE)), data=d, start=list(a=log(mean(d$SALAMAN)), b.F=0))
+compare(m2a,m2b,m2c,m2d, nobs=nrow(d))
 
 @ 
 
 
+<<notmuchinfo,message=FALSE,cache=TRUE>>=
+pairs(d[,2:4])
+@ 
 
 \subsection*{Colophon}
 
@@ -142,6 +260,5 @@ sfLibrary(rethinking)
 sfExportAll()
 sfStop()
 @ 
-
 
 \end{document}
