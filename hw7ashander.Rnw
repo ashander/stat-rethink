@@ -188,10 +188,12 @@ points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
 data(salamanders)
 d <- salamanders
 head(d,n=1)
+d$pc <- d$PCTCOVER - mean(d$PCTCOVER)
+d$fs <- d$FORESTAGE - mean(d$FORESTAGE)
 @ 
 
 The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
-
+I recenter the predictors. 
 
 
 \subsubsection*{(A)}
@@ -204,14 +206,14 @@ I model the count variable SALAMAN as a Poisson variable:
 where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 
 <<sal-model,message=FALSE>>=
-m2a <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*PCTCOVER)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0))
+m2a <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*pc)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0))
 precis(m2a)
 @ 
 
 
 <<sal-fig,message=FALSE,cache=TRUE>>=
 post <- sample.naive.posterior(m2a)
-pct.seq <- 0:100
+pct.seq <- seq(min(d$pc),max(d$pc), length.out=100)
 
 y.pred <- sapply(pct.seq , function(z) mean(exp(post$a + post$b.P*z)))
 n
@@ -220,32 +222,77 @@ y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z)))
 y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z)))) 
 
 
-plot(SALAMAN~PCTCOVER, data=d,col=col.alpha('gray', .9), pch=19)
+plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19)
 lines(pct.seq, y.pred)
 lines(pct.seq, y.pred.ci[1,], lty=2)
 lines(pct.seq, y.pred.ci[2,], lty=2)
 lines(pct.seq, y.pred.pi[1,], lty=3)
 lines(pct.seq, y.pred.pi[2,], lty=3)
+#todo rewrite x axis to 0:100, see RM's code above
 @ 
 
 The model does a good job at low percent ground cover, with all observation falling within the 95\% PI. 
 At very high coverages, however, there are some high counts that are not captured by the model.
 
 
+<<notmuchinfo,message=FALSE,cache=TRUE>>=
+pairs(d[,c(2,5,6)])
+@ 
+
+Looking at the pairs plot, we can see perhaps why a model based on pc alone does a bad job at high counts. 
+At high pc, there are counts ranging from 0 to 12 (the maximum), thus there is little information in pc to predict  at these counts. 
+There are a wide range of forestage values at high percent-cover values, however, and if forestage were a strong predictor of salamander count, a model with both variables could work well. 
+
+There's a big problem, however, with forestage as a predictor. This can be seen in the pairs plot.
+
 \subsubsection*{(B)}
 
+We'll see if model selection and averaging bears out our suspicion that forestage can't help much. . . 
+
 <<sal-model,message=FALSE>>=
-m2b <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*PCTCOVER + b.F*FORESTAGE)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0))
-m2c <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*PCTCOVER + b.F*FORESTAGE + b.PF*PCTCOVER*FORESTAGE)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0, b.PF=0))
-m2d <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.F*FORESTAGE)), data=d, start=list(a=log(mean(d$SALAMAN)), b.F=0))
+m2b <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*pc + b.F*fs)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0))
+m2c <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*pc + b.F*fs + b.PF*pc*fs)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0, b.PF=0))
+m2d <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.F*fs)), data=d, start=list(a=log(mean(d$SALAMAN)), b.F=0))
 compare(m2a,m2b,m2c,m2d, nobs=nrow(d))
 
 @ 
 
+There is support for a model that includes both pc and fs, but with more weight on pc alone. 
+(BIC and AICc agree pretty well here, so it shouldn't matter which I use)
+Averaged predictions really show no difference from the predictions using pc alone. 
+This is because forestage is such a poor predictor. 
 
-<<notmuchinfo,message=FALSE,cache=TRUE>>=
-pairs(d[,2:4])
+<<2b-avg, message=FALSE,cache=TRUE>>=
+
+post <- sample.naive.posterior(list(m2a,m2b),n = 5e4, method="AICc", nobs=nrow(d))
+fore.mean <- mean(d$fs)
+
+y.pred <- sapply(pct.seq , function(z) mean(exp(post$a + post$b.P*z + post$b.F*fore.mean)))
+
+y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z + post$b.F*fore.mean)))
+
+y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z + post$b.F*fore.mean)))) 
+
+
+plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19)
+lines(pct.seq, y.pred)
+lines(pct.seq, y.pred.ci[1,], lty=2)
+lines(pct.seq, y.pred.ci[2,], lty=2)
+lines(pct.seq, y.pred.pi[1,], lty=3)
+lines(pct.seq, y.pred.pi[2,], lty=3)
+
 @ 
+
+
+
+<<cor-issue,message=FALSE,cache=TRUE>>=
+d$cover <- factor(ifelse(d$pc >0, "> 60", " < 60"))
+g <- ggplot(d)
+g+geom_boxplot(aes(cover, SALAMAN))+geom_point(aes(cover, SALAMAN,size=FORESTAGE))
+
+@ 
+
+Visualized another way, we see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
 
 \subsection*{Colophon}
 

@@ -593,6 +593,13 @@ Model without Seychelles
 
 Posterior densities for effect of ruggedness inside and outside Africa from model without Seychelles.
 
+From the plots above, of posterior density and mean effect with confidence intervals both with and without the Seychelles, indicate that the effect of ruggedness {\em does depend on continent}. 
+In either case, the effect {\em outside} Africa is strong and negative. 
+Within Africa, the effect depends on whether we include Seychelles. With Seychelles, the effect is positive but not strong (0.2, but with CI overlapping with 0). 
+Without Seychelles, however, the effect is very weak (0.1, CI strongly overlapping 0).
+
+In either case there is an interaction.
+
 (c) 
 
 \begin{knitrout}
@@ -691,7 +698,11 @@ Posterior densities for effect of ruggedness inside and outside Africa from mode
 \end{kframe}}
 \end{knitrout}
 
-Fits to data without Seychelles for averaged model (based on AICc), as well as confidence intervals for the mean and prediction intervals on the 
+Fits to data without Seychelles for averaged model (based on AICc), as well as confidence intervals for the mean and prediction intervals.
+
+The predictions of the averaged model agree with the above inferences, but provide stronger support for no effect of ruggedness within Africa. 
+The effect of ruggedness does, however, change with continent. 
+In all cases, I infer an interaction.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -876,8 +887,8 @@ To better understand the strength of the interaction in determining the relation
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{d.rc}\hlkeyword{,}{\ }\hlfunctioncall{hist}\hlkeyword{(}\hlsymbol{mean.growing.season}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{d.rc}\hlkeyword{,}{\ }\hlfunctioncall{hist}\hlkeyword{(}\hlsymbol{sd.growing.season}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{d.rc}\hlkeyword{,}{\ }\hlfunctioncall{hist}\hlkeyword{(}\hlsymbol{mean.growing.season}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{""}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{d.rc}\hlkeyword{,}{\ }\hlfunctioncall{hist}\hlkeyword{(}\hlsymbol{sd.growing.season}\hlkeyword{,}{\ }\hlargument{main}{\ }\hlargument{=}{\ }\hlstring{""}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \includegraphics{sd-mean-dist} \begin{flushleft}
@@ -942,6 +953,21 @@ For these values, I plotted the effect of the other predictor on mean prediction
 \end{kframe}}
 \end{knitrout}
 
+
+The overall results support for the (vague) hypothesis that language diversity is effected by food security. 
+From the correlational evidence presented here, however, the story is more complex due to an interaction between mean length and standard deviation of growing season.
+The overall picture is shown in the triptych plots above.
+Of the models considered, the model with this interaction is strongly favored.
+
+The result is that for below average to average variability, increases in the mean growing season have the positive hypothesized effect. 
+As variability increases, this effect weakens (top row of figure above).
+For more variable seasons with average to above average length (bottom row), the effect of variability is is negative on language diversity. 
+
+A mechanistic explanation is that stable, productive habitats permit local interactions and isolation of language, while variable habitats require broader ranges of interactions. 
+The effect of variability is espeically strong when habitats are more productive (longer growing season).
+
+
+The relationships picked out in the regression and described above can be seen to some extent in the raw data, visualized in the dot plots below: 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}

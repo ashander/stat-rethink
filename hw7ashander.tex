@@ -476,9 +476,9 @@ To fit the model, we code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{P}{\ }=={\ }\hlstring{"{}L"{}}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{A}{\ }=={\ }\hlstring{"{}A"{}}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{V}{\ }=={\ }\hlstring{"{}L"{}}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\mbox{}
+\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{P}{\ }=={\ }\hlstring{"L"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{A}{\ }=={\ }\hlstring{"A"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{V}{\ }=={\ }\hlstring{"L"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \end{kframe}}
@@ -503,8 +503,8 @@ In practice, this means using the logistic (inverse link) tranform on the linear
 \end{flushleft}
 \begin{verbatim}
 ##    Estimate Std. Error     2.5%  97.5%
-## a    0.6205     0.6797 -0.71179  1.953
-## bP   4.5570     1.0545  2.49024  6.624
+## a    0.6205     0.6797 -0.71177  1.953
+## bP   4.5570     1.0545  2.49025  6.624
 ## bV  -4.9331     1.1193 -7.12690 -2.739
 ## bA   1.0973     0.5465  0.02625  2.168
 \end{verbatim}
@@ -565,29 +565,33 @@ The effect of largeness in either the victim or pirate on log-odds of success is
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}op{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }par(mfrow=c(2,1))}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}slateblue"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}successful{\ }attempts"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}case"{}}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"slateblue"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"successful{\ }attempts"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"case"}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"n"}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{31}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}LAL"{}}\hlkeyword{,}{\ }\hlstring{"{}LAS"{}}\hlkeyword{,}{\ }\hlstring{"{}LIL"{}}\hlkeyword{,}{\ }\hlstring{"{}LIS"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"{}SAL"{}}\hlkeyword{,}{\ }\hlstring{"{}SAS"{}}\hlkeyword{,}{\ }\hlstring{"{}SIL"{}}\hlkeyword{,}{\ }\hlstring{"{}SIS"{}}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}grey"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}black"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}slateblue"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}proportion{\ }successful"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}case"{}}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"LAL"}\hlkeyword{,}{\ }\hlstring{"LAS"}\hlkeyword{,}{\ }\hlstring{"LIL"}\hlkeyword{,}{\ }\hlstring{"LIS"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"SAL"}\hlkeyword{,}{\ }\hlstring{"SAS"}\hlkeyword{,}{\ }\hlstring{"SIL"}\hlkeyword{,}{\ }\hlstring{"SIS"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"grey"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"black"}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{pirate-plot-b11} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"slateblue"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"proportion{\ }successful"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"case"}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"n"}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}LAL"{}}\hlkeyword{,}{\ }\hlstring{"{}LAS"{}}\hlkeyword{,}{\ }\hlstring{"{}LIL"{}}\hlkeyword{,}{\ }\hlstring{"{}LIS"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"{}SAL"{}}\hlkeyword{,}{\ }\hlstring{"{}SAS"{}}\hlkeyword{,}{\ }\hlstring{"{}SIL"{}}\hlkeyword{,}{\ }\hlstring{"{}SIS"{}}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}grey"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}black"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"LAL"}\hlkeyword{,}{\ }\hlstring{"LAS"}\hlkeyword{,}{\ }\hlstring{"LIL"}\hlkeyword{,}{\ }\hlstring{"LIS"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"SAL"}\hlkeyword{,}{\ }\hlstring{"SAS"}\hlkeyword{,}{\ }\hlstring{"SIL"}\hlkeyword{,}{\ }\hlstring{"SIS"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"grey"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"black"}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{pirate-plot-b12} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}par(op)}\mbox{}
 \normalfont
 \end{flushleft}
-
-
-\centering{}\includegraphics{pirate-plot-b11} \includegraphics{pirate-plot-b12} 
-
 \end{kframe}}
 \end{knitrout}
 
@@ -640,7 +644,7 @@ We'd like to improve the model, so we  fit the interaction model
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlfunctioncall{rm}\hlkeyword{(}\hlargument{list}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}post"{}}\hlkeyword{,}{\ }\hlstring{"{}y.pred"{}}\hlkeyword{,}{\ }\hlstring{"{}y.pred.ci"{}}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlfunctioncall{rm}\hlkeyword{(}\hlargument{list}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"post"}\hlkeyword{,}{\ }\hlstring{"y.pred"}\hlkeyword{,}{\ }\hlstring{"y.pred.ci"}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
@@ -654,7 +658,7 @@ We'd like to improve the model, so we  fit the interaction model
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m1a}\hlkeyword{,}{\ }\hlsymbol{m1c}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"{}AICc"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m1a}\hlkeyword{,}{\ }\hlsymbol{m1c}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{sum}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{30000}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
@@ -668,29 +672,33 @@ We'd like to improve the model, so we  fit the interaction model
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}op{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }par(mfrow=c(2,1))}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}slateblue"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}successful{\ }attempts"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}case"{}}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"slateblue"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"successful{\ }attempts"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"case"}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"n"}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{31}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}LAL"{}}\hlkeyword{,}{\ }\hlstring{"{}LAS"{}}\hlkeyword{,}{\ }\hlstring{"{}LIL"{}}\hlkeyword{,}{\ }\hlstring{"{}LIS"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"{}SAL"{}}\hlkeyword{,}{\ }\hlstring{"{}SAS"{}}\hlkeyword{,}{\ }\hlstring{"{}SIL"{}}\hlkeyword{,}{\ }\hlstring{"{}SIS"{}}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}grey"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}black"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}slateblue"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}proportion{\ }successful"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}case"{}}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"LAL"}\hlkeyword{,}{\ }\hlstring{"LAS"}\hlkeyword{,}{\ }\hlstring{"LIL"}\hlkeyword{,}{\ }\hlstring{"LIS"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"SAL"}\hlkeyword{,}{\ }\hlstring{"SAS"}\hlkeyword{,}{\ }\hlstring{"SIL"}\hlkeyword{,}{\ }\hlstring{"SIS"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"grey"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"black"}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{better-model-fig1} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlnumber{0.2}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{y}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"slateblue"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"proportion{\ }successful"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"case"}\hlkeyword{,}{\ }\hlargument{xaxt}{\ }\hlargument{=}{\ }\hlstring{"n"}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.75}\hlkeyword{,}{\ }\hlnumber{8.25}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{16}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}LAL"{}}\hlkeyword{,}{\ }\hlstring{"{}LAS"{}}\hlkeyword{,}{\ }\hlstring{"{}LIL"{}}\hlkeyword{,}{\ }\hlstring{"{}LIS"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"{}SAL"{}}\hlkeyword{,}{\ }\hlstring{"{}SAS"{}}\hlkeyword{,}{\ }\hlstring{"{}SIL"{}}\hlkeyword{,}{\ }\hlstring{"{}SIS"{}}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}grey"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}black"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{axis}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{at}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlargument{labels}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"LAL"}\hlkeyword{,}{\ }\hlstring{"LAS"}\hlkeyword{,}{\ }\hlstring{"LIL"}\hlkeyword{,}{\ }\hlstring{"LIS"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlstring{"SAL"}\hlkeyword{,}{\ }\hlstring{"SAS"}\hlkeyword{,}{\ }\hlstring{"SIL"}\hlkeyword{,}{\ }\hlstring{"SIS"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{i}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{y.pred.ci}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"grey"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{points}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{8}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{cex}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"black"}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{better-model-fig2} \begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}par(op)}\mbox{}
 \normalfont
 \end{flushleft}
-
-
-\centering{}\includegraphics{better-model-fig1} \includegraphics{better-model-fig2} 
-
 \end{kframe}}
 \end{knitrout}
 
@@ -710,12 +718,18 @@ We'd like to improve the model, so we  fit the interaction model
 ##   SITE SALAMAN PCTCOVER FORESTAGE
 ## 1    1      13       85       316
 \end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pc}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{PCTCOVER}{\ }\hlkeyword{-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{PCTCOVER}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{fs}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FORESTAGE}{\ }\hlkeyword{-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FORESTAGE}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
 \end{kframe}}
 \end{knitrout}
 
 
 The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
-
+I recenter the predictors. 
 
 
 \subsubsection*{(A)}
@@ -731,15 +745,15 @@ where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{m2a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{PCTCOVER}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlsymbol{m2a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{pc}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{b.P}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m2a}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##     Estimate Std. Error     2.5%    97.5%
-## a   -1.45475   0.451215 -2.33911 -0.57038
-## b.P  0.03209   0.005341  0.02162  0.04256
+##     Estimate Std. Error   2.5%  97.5%
+## a     0.4262   0.158826 0.1149 0.7375
+## b.P   0.0325   0.005409 0.0219 0.0431
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -751,7 +765,7 @@ where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{m2a}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{pct.seq}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{100}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{pct.seq}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq}\hlkeyword{(}\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pc}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pc}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{length.out}{\ }\hlargument{=}{\ }\hlnumber{100}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
@@ -770,8 +784,8 @@ where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{PCTCOVER}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"{}gray"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.9}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{pc}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}{\ }\hlnumber{0.9}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.ci}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.ci}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
@@ -779,10 +793,11 @@ where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 \hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.pi}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-
-
-\centering{}\includegraphics{sal-fig} 
-
+\includegraphics{sal-fig} \begin{flushleft}
+\ttfamily\noindent
+\hlcomment{\usebox{\hlnormalsizeboxhash}todo{\ }rewrite{\ }x{\ }axis{\ }to{\ }0:100,{\ }see{\ }RM\usebox{\hlnormalsizeboxsinglequote}s{\ }code{\ }above}\mbox{}
+\normalfont
+\end{flushleft}
 \end{kframe}}
 \end{knitrout}
 
@@ -791,32 +806,89 @@ The model does a good job at low percent ground cover, with all observation fall
 At very high coverages, however, there are some high counts that are not captured by the model.
 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{pairs}\hlkeyword{(}\hlsymbol{d}\hlkeyword{[}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{5}\hlkeyword{,}{\ }\hlnumber{6}\hlkeyword{)}\hlkeyword{]}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{notmuchinfo} \end{kframe}}
+\end{knitrout}
+
+
+Looking at the pairs plot, we can see perhaps why a model based on pc alone does a bad job at high counts. 
+At high pc, there are counts ranging from 0 to 12 (the maximum), thus there is little information in pc to predict  at these counts. 
+There are a wide range of forestage values at high percent-cover values, however, and if forestage were a strong predictor of salamander count, a model with both variables could work well. 
+
+There's a big problem, however, with forestage as a predictor. This can be seen in the pairs plot.
+
 \subsubsection*{(B)}
+
+We'll see if model selection and averaging bears out our suspicion that forestage can't help much. . . 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{m2b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{PCTCOVER}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{FORESTAGE}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{b.P}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b.F}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m2c}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{PCTCOVER}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{FORESTAGE}{\ }\hlkeyword{+}{\ }\hlsymbol{b.PF}{\ }\hlkeyword{*}{\ }\hlsymbol{PCTCOVER}{\ }\hlkeyword{*}{\ }\hlsymbol{FORESTAGE}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlsymbol{m2b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{pc}{\ }\hlkeyword{+}{\ }\hlsymbol{b.F}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{fs}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{b.P}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{b.F}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m2c}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{pc}{\ }\hlkeyword{+}{\ }\hlsymbol{b.F}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{fs}{\ }\hlkeyword{+}{\ }\hlsymbol{b.PF}{\ }\hlkeyword{*}{\ }\hlsymbol{pc}{\ }\hlkeyword{*}{\ }\hlsymbol{fs}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{b.P}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b.F}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b.PF}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m2d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{FORESTAGE}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m2d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dpois}\hlkeyword{(}\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fs}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{b.F}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m2a}\hlkeyword{,}{\ }\hlsymbol{m2b}\hlkeyword{,}{\ }\hlsymbol{m2c}\hlkeyword{,}{\ }\hlsymbol{m2d}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
 ##     k  AICc   BIC    w.AICc     w.BIC  dAICc   dBIC
-## m2a 2 210.6 214.1    0.7756    0.8832  0.000  0.000
-## m2b 3 213.1 218.1    0.2244    0.1168  2.481  4.045
-## m2d 2 260.1 263.5 1.416e-11 1.613e-11 49.452 49.452
-## m2c 4 284.2 290.7 < 2.2e-16 < 2.2e-16 73.590 76.610
+## m2a 2 210.6 214.1    0.7596    0.8736  0.000  0.000
+## m2b 3 212.9 217.9    0.2404    0.1264  2.301  3.866
+## m2d 2 260.0 263.4 1.466e-11 1.686e-11 49.342 49.342
+## m2c 4 284.2 290.7 < 2.2e-16 < 2.2e-16 73.593 76.614
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
+
+
+There is support for a model that includes both pc and fs, but with more weight on pc alone. 
+(BIC and AICc agree pretty well here, so it shouldn't matter which I use)
+Averaged predictions really show no difference from the predictions using pc alone. 
+This is because forestage is such a poor predictor. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m2a}\hlkeyword{,}{\ }\hlsymbol{m2b}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{50000}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{fore.mean}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{fs}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{y.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fore.mean}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{y.pred.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fore.mean}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{y.pred.pi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rpois}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{30000}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fore.mean}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{SALAMAN}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{pc}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}{\ }\hlnumber{0.9}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.ci}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.ci}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.pi}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlsymbol{y.pred.pi}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{2b-avg} \end{kframe}}
+\end{knitrout}
+
 
 
 
@@ -824,16 +896,17 @@ At very high coverages, however, there are some high counts that are not capture
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlfunctioncall{pairs}\hlkeyword{(}\hlsymbol{d}\hlkeyword{[}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{:}\hlnumber{4}\hlkeyword{]}\hlkeyword{)}\mbox{}
+\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{cover}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{factor}\hlkeyword{(}\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pc}{\ }\hlkeyword{\usebox{\hlnormalsizeboxgreaterthan}}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlstring{"\usebox{\hlnormalsizeboxgreaterthan}{\ }60"}\hlkeyword{,}{\ }\hlstring{"{\ }\usebox{\hlnormalsizeboxlessthan}{\ }60"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}boxplot}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{cover}\hlkeyword{,}{\ }\hlsymbol{SALAMAN}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{cover}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{SALAMAN}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FORESTAGE}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-
-
-\centering{}\includegraphics{notmuchinfo} 
-
-\end{kframe}}
+\includegraphics{cor-issue} \end{kframe}}
 \end{knitrout}
 
+
+Visualized another way, we see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
 
 \subsection*{Colophon}
 
@@ -842,7 +915,7 @@ At very high coverages, however, there are some high counts that are not capture
 \begin{flushleft}
 \ttfamily\noindent
 \hlfunctioncall{require}\hlkeyword{(}\hlsymbol{knitr}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }package}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{getwd}\hlkeyword{(}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"{}hw7ashander.Rnw"{}}\hlkeyword{,}{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"{}/"{}}\hlkeyword{)}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{getwd}\hlkeyword{(}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"hw7ashander.Rnw"}\hlkeyword{,}{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"/"}\hlkeyword{)}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }use{\ }all{\ }cores}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{require}\hlkeyword{(}\hlsymbol{snowfall}\hlkeyword{)}\hspace*{\fill}\\
