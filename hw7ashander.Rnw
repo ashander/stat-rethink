@@ -53,15 +53,7 @@ names(d)
 d
 @ 
 
-\begin{itemize}
-  \item y: Number of successful attempts.
-  \item n: Total number of attempts.
-  \item P: Size of pirating eagle ('L' = large, 'S' = small).
-  \item A: Age of pirating eagle ('I' = immature, 'A' = adult).
-  \item V: Size of victim eagle ('L' = large, 'S' = small).
-\end{itemize}
-
-We seek to predict successful pirating attempts based on the size and age of the pirate and the size of the victim.
+We seek to predict successful pirating attempts {\tt y} of all attempts {\tt n} based on the size {\tt P} and age {\tt A} of the pirate and the size {\tt V} of the victim.
 
 \subsubsection*{(A)}
 
@@ -129,19 +121,13 @@ points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
 #par(op)
 @ 
 
-Counts of success plot (first figure):
+Across encounter types, the plot of successful counts (top figure), does a better job heterogeneity in relative frequency of successful attempts, while the plot of proportions (bottom figure) shows differences in probability.
+In the count plot, the confidence intervals and point estimates are easier to interpret relative to the data as they are in the same units.
+On the other hand, in the plot of proportions of successs the estimates are interpretable in terms of success probability. 
+Further, in the lower plot, the intervals provide a fuller graphical sense of uncertainty in outcome.
 
-shows heterogeneity in relative frequency of successful attempts across encounter types
-
-confidence intervals and point estimates easier to interpret relative to the data
-
-Proportional plot (second figure): 
-
-shows heterogeneity in probability across encounter types
-
-confidence intervals provide better depiction of uncertainty in outcome
-
-
+Taken together, the two plots give a sense of the total number of various types of encounters in the data set. 
+Neither plot shows this directly. 
 
 \subsubsection*{(C)}
 
@@ -193,7 +179,7 @@ d$fs <- d$FORESTAGE - mean(d$FORESTAGE)
 @ 
 
 The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
-I recenter the predictors. 
+I recenter the predictors PCTCOVER to {\tt pc} and FORESTAGE to {\tt fc}. 
 
 
 \subsubsection*{(A)}
@@ -257,9 +243,9 @@ compare(m2a,m2b,m2c,m2d, nobs=nrow(d))
 
 @ 
 
-There is support for a model that includes both pc and fs, but with more weight on pc alone. 
+There is support for a model that includes both percent cover and forestage, but with more weight on percent cover alone. 
 (BIC and AICc agree pretty well here, so it shouldn't matter which I use)
-Averaged predictions really show no difference from the predictions using pc alone. 
+Averaged predictions really show no difference from the predictions using percent cover alone. 
 This is because forestage is such a poor predictor. 
 
 <<2b-avg, message=FALSE,cache=TRUE>>=
@@ -293,6 +279,15 @@ g+geom_boxplot(aes(cover, SALAMAN))+geom_point(aes(cover, SALAMAN,size=FORESTAGE
 @ 
 
 Visualized another way, we see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
+
+
+The variable SALAMAN binned across values of PCTCOVER.
+Within each bin, SALAMAN displays overdispersion (variance exceeding the mean), while a Poisson distribution always has variance equal to the mean. 
+This means that, even as a Poisson predictor, the single variate PCTCOVER is unable to explain the variance in salamander cuonts. 
+
+If age of the tree cover (FORESTAGE) were a good predictor,  a regression based on both predictors {\em could} do a better job. 
+Tree cover age, however, is a very poor predictor.
+
 
 \subsection*{Colophon}
 
