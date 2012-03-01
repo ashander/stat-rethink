@@ -28,7 +28,7 @@
 \begin{document}
 
 %% still can't get paths to work ...
-\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
+%\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
 
 <<setup,echo=FALSE,results=hide,message=FALSE>>=
 options(replace.assign=TRUE,width=90)
@@ -50,7 +50,7 @@ require(ggplot2)
 data(eagles)
 d <- eagles
 names(d)
-d
+
 @ 
 
 \begin{itemize}
@@ -97,13 +97,13 @@ The effect of largeness in either the victim or pirate on log-odds of success is
 
 <<probs,echo=FALSE>>=
 cat('small, young v small',  logistic(with(point.est, a)),'\n')
-cat('small, old v small', logistic(with(point.est, bA+a)), '\n')
-cat('large, young v large', logistic(with(point.est, a+bP+bV)), '\n')
+#cat('small, old v small', logistic(with(point.est, bA+a)), '\n')
 cat('large, young v small', logistic(with(point.est, a+bP)), '\n')
+cat('large, young v large', logistic(with(point.est, a+bP+bV)), '\n')
 cat('large, old v small', logistic(with(point.est, a+bP+bA)), '\n')
-cat('large, old v large',logistic(with(point.est, a+bP+bA+bV)), '\n')
-cat('small, old v large',logistic(with(point.est, a+bA+bV)),'\n')
-cat('small, young v large', logistic(with(point.est, a+bV)), '\n')
+#cat('large, old v large',logistic(with(point.est, a+bP+bA+bV)), '\n')
+#cat('small, old v large',logistic(with(point.est, a+bA+bV)),'\n')
+#cat('small, young v large', logistic(with(point.est, a+bV)), '\n')
 @ 
 
 \subsubsection*{(B)}
@@ -115,7 +115,7 @@ y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000 , prob=logistic(
 
 y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000 , prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] ) , size=d$n[i] ) ) )
 
-#op <- par(mfrow=c(2,1))
+op <- par(mfrow=c(2,1))
 plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31), cex=0.5)
 axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
 for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]),col='grey')
@@ -126,7 +126,8 @@ axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
 for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]/d$n[i]),col='grey')
 points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
 
-#par(op)
+par(op)
+
 @ 
 
 Counts of success plot (first figure):
@@ -145,7 +146,7 @@ confidence intervals provide better depiction of uncertainty in outcome
 
 \subsubsection*{(C)}
 
-We'd like to improve the model, so we  fit the interaction model 
+We'd like to improve the model, so we  fit a model with an interaction between pirate age and pirate size
 \begin{align*}
 &y_i \sim {\rm Binomial} ( p_i , n_i)\\
 &\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i + \beta_{PA} P_i \cdot A_i
@@ -167,7 +168,7 @@ y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000, prob=logistic( 
 
 y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000, prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] + post$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
 
-#op <- par(mfrow=c(2,1))
+op <- par(mfrow=c(2,1))
 plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31), cex=0.5)
 axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
 for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]),col='grey')
@@ -178,7 +179,7 @@ axis( 1 , at=1:8 , labels=c( "LAL","LAS","LIL","LIS","SAL","SAS","SIL","SIS" ) )
 for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]/d$n[i]),col='grey')
 points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
 
-#par(op)
+par(op)
 
 @ 
 
@@ -190,6 +191,7 @@ d <- salamanders
 head(d,n=1)
 d$pc <- d$PCTCOVER - mean(d$PCTCOVER)
 d$fs <- d$FORESTAGE - mean(d$FORESTAGE)
+
 @ 
 
 The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
@@ -201,7 +203,7 @@ I recenter the predictors.
 I model the count variable SALAMAN as a Poisson variable:
 \begin{align*}
 &S_i \sim {\rm Poisson} ( \lambda_i)\\
-&\log \lambda = \alpha + \beta_P *P_i
+&\log \lambda_i = \alpha + \beta_P *P_i
 \end{align*}
 where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 
@@ -221,23 +223,19 @@ y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z)))
 
 y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z)))) 
 
-
-plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19)
+plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19, xlab='percent cover', xaxt='n')
+axis(1, at=pct.seq[c(1, 20, 40, 60, 80)], labels=c(0,2,4,6,8)*10)
 lines(pct.seq, y.pred)
 lines(pct.seq, y.pred.ci[1,], lty=2)
 lines(pct.seq, y.pred.ci[2,], lty=2)
 lines(pct.seq, y.pred.pi[1,], lty=3)
 lines(pct.seq, y.pred.pi[2,], lty=3)
-#todo rewrite x axis to 0:100, see RM's code above
+
+pairs(d[,c(2:4)])
 @ 
 
 The model does a good job at low percent ground cover, with all observation falling within the 95\% PI. 
 At very high coverages, however, there are some high counts that are not captured by the model.
-
-
-<<notmuchinfo,message=FALSE,cache=TRUE>>=
-pairs(d[,c(2,5,6)])
-@ 
 
 Looking at the pairs plot, we can see perhaps why a model based on pc alone does a bad job at high counts. 
 At high pc, there are counts ranging from 0 to 12 (the maximum), thus there is little information in pc to predict  at these counts. 
@@ -259,10 +257,10 @@ compare(m2a,m2b,m2c,m2d, nobs=nrow(d))
 
 There is support for a model that includes both pc and fs, but with more weight on pc alone. 
 (BIC and AICc agree pretty well here, so it shouldn't matter which I use)
-Averaged predictions really show no difference from the predictions using pc alone. 
-This is because forestage is such a poor predictor. 
+Averaged predictions (not shown) display no difference from the predictions using pc alone. 
+This, in part, because forestage is such a poor predictor. 
 
-<<2b-avg, message=FALSE,cache=TRUE>>=
+<<2b-avg, message=FALSE,cache=TRUE,eval=FALSE>>=
 
 post <- sample.naive.posterior(list(m2a,m2b),n = 5e4, method="AICc", nobs=nrow(d))
 fore.mean <- mean(d$fs)
@@ -273,26 +271,43 @@ y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z + post$b.
 
 y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z + post$b.F*fore.mean)))) 
 
-
-plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19)
-lines(pct.seq, y.pred)
-lines(pct.seq, y.pred.ci[1,], lty=2)
-lines(pct.seq, y.pred.ci[2,], lty=2)
-lines(pct.seq, y.pred.pi[1,], lty=3)
-lines(pct.seq, y.pred.pi[2,], lty=3)
-
+## plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19)
+## lines(pct.seq, y.pred)
+## lines(pct.seq, y.pred.ci[1,], lty=2)
+## lines(pct.seq, y.pred.ci[2,], lty=2)
+## lines(pct.seq, y.pred.pi[1,], lty=3)
+## lines(pct.seq, y.pred.pi[2,], lty=3)
 @ 
-
 
 
 <<cor-issue,message=FALSE,cache=TRUE>>=
 d$cover <- factor(ifelse(d$pc >0, "> 60", " < 60"))
-g <- ggplot(d)
-g+geom_boxplot(aes(cover, SALAMAN))+geom_point(aes(cover, SALAMAN,size=FORESTAGE))
+g1 <- ggplot(d)
+g1 <- g1+geom_boxplot(aes(cover, SALAMAN))+geom_point(aes(cover, SALAMAN,size=FORESTAGE))
 
+rate.param <- function(x){ mean(exp(coef(m2a)['a'] + coef(m2a)['b.P']*x))}
+
+d <- d[order(d$pc),]
+d$cover <- c(rep(0,10), rep(1, 10), rep(2,10), rep(3,10), rep(4,7))
+d$cover <- as.factor(d$cover)
+
+d.q <- data.frame(lambda=tapply(d$SALAMAN, d$cover, rate.param, simplify=TRUE))
+d.q$mean <- tapply(d$SALAMAN, d$cover, mean, simplify=TRUE)
+d.q$variance <-  tapply(d$SALAMAN, d$cover, var, simplify=TRUE)
+
+g2 <- ggplot(d.q)
+g2 <- g2 + geom_abline(intercept=0, slope=1, color='gray')+ geom_point(aes(mean, variance, size=lambda)) + xlim(c(0,20))+ opts(title="salamander count overdispersion")
+require(gridExtra)
+grid.arrange(g1,g2, ncol=1)
 @ 
 
 Visualized another way, we see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
+
+
+So why was the Poisson model bad in teh first place? 
+Over-dispersion. 
+In the Poisson distribution the mean should be equal to the variance. 
+
 
 \subsection*{Colophon}
 
