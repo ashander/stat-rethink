@@ -53,32 +53,26 @@ names(d)
 
 @ 
 
-\begin{itemize}
-  \item y: Number of successful attempts.
-  \item n: Total number of attempts.
-  \item P: Size of pirating eagle ('L' = large, 'S' = small).
-  \item A: Age of pirating eagle ('I' = immature, 'A' = adult).
-  \item V: Size of victim eagle ('L' = large, 'S' = small).
-\end{itemize}
-
-We seek to predict successful pirating attempts based on the size and age of the pirate and the size of the victim.
+I seek to predict successful pirating attempts {\tt y} of all attempts {\tt n} based on the size {\tt P} and age {\tt A} of the pirate and the size {\tt V} of the victim.
 
 \subsubsection*{(A)}
 
-To do this, we fit the binomial model:
+To do this, I fit the binomial model:
 \begin{align*}
 &y_i \sim {\rm Binomial} ( p_i , n_i)\\
 &\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i
 \end{align*}
 
-To fit the model, we code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}, $A$: {\tt pirateA}.
+To fit the model, I code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}, $A$: {\tt pirateA}.
 <<var-code,message=FALSE>>=
 d$pirateL <- ifelse(d$P=='L',1,0)
 d$pirateA <- ifelse(d$A=='A',1,0)
 d$victimL <- ifelse(d$V=='L',1,0)
+d[,6:8] <- apply(d[,6:8], 2, function(x) x-mean(x))
 @ 
+I also recenter the predictors to aid interpretation of interaction coefficients. 
 
-To fit the model, we use the logit link function.
+To fit the model, I use the logit link function.
 In practice, this means using the logistic (inverse link) tranform on the linear model for the log odds (the RHS of the second equation above):
 
 <<pirate-model,message=FALSE>>=
@@ -87,13 +81,14 @@ p.m1 <- precis(m1a)
 point.est <- as.data.frame(t(p.m1$Estimate))
 names(point.est) <- row.names(p.m1)
 p.m1
+
 @ 
 
 The baseline probability of success (i.e. given default vales for dummy variables) corresponds to a small, young pirate versus a small victim.
 In this case, the probability of success in an attack is a bit over half (0.65 = logistic($\alpha$)).
 A larger or older eagle has a greater chance of success, but being larger is more helpful than being older. 
 An attack on a larger victim is less likely to succeed. 
-The effect of largeness in either the victim or pirate on log-odds of success is about equal (but opposite). 
+The effect of largeness in either the victim or pirate on log-odds of success is about equal, or slightly in favor of the victim (but opposite). 
 
 <<probs,echo=FALSE>>=
 cat('small, young v small',  logistic(with(point.est, a)),'\n')
@@ -130,23 +125,17 @@ par(op)
 
 @ 
 
-Counts of success plot (first figure):
+Across encounter types, the plot of successful counts (top figure), does a better job heterogeneity in relative frequency of successful attempts, while the plot of proportions (bottom figure) shows differences in probability.
+In the count plot, the confidence intervals and point estimates are easier to interpret relative to the data as they are in the same units.
+On the other hand, in the plot of proportions of successs the estimates are interpretable in terms of success probability. 
+Further, in the lower plot, the intervals provide a fuller graphical sense of uncertainty in outcome.
 
-shows heterogeneity in relative frequency of successful attempts across encounter types
-
-confidence intervals and point estimates easier to interpret relative to the data
-
-Proportional plot (second figure): 
-
-shows heterogeneity in probability across encounter types
-
-confidence intervals provide better depiction of uncertainty in outcome
-
-
+Taken together, the two plots give a sense of the total number of various types of encounters in the data set. 
+Neither plot shows this directly. 
 
 \subsubsection*{(C)}
 
-We'd like to improve the model, so we  fit a model with an interaction between pirate age and pirate size
+I'd like to improve the model, so I fit a model with an interaction between pirate age and pirate size
 \begin{align*}
 &y_i \sim {\rm Binomial} ( p_i , n_i)\\
 &\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i + \beta_{PA} P_i \cdot A_i
@@ -159,14 +148,15 @@ p.m1c <- precis(m1c)
 compare(m1a,m1c, nobs=sum(d$n))
 @ 
 
+Both BIC and AICc agree that the interaction improves the model. 
+According to both criteria, an averaged model would include about 10 \% of the non-interaction model. 
 
 <<better-model-fig,message=FALSE,cache=TRUE>>=
-rm(list=c('post','y.pred','y.pred.ci'))
-post <- sample.naive.posterior( list(m1a,m1c),method='AICc', nobs=sum(d$n),n=3e4)
+post2 <- sample.naive.posterior( list(m1a,m1c),method='AICc', nobs=sum(d$n),n=3e4)
 
-y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000, prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] + post$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
+y.pred <- sapply( 1:nrow(d) , function(i) mean( rbinom( n=10000, prob=logistic( post2$a + post2$bP*d$pirateL[i] + post2$bV*d$victimL[i] + post2$bA*d$pirateA[i] + post2$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
 
-y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000, prob=logistic( post$a + post$bP*d$pirateL[i] + post$bV*d$victimL[i] + post$bA*d$pirateA[i] + post$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
+y.pred.ci <- sapply( 1:nrow(d) , function(i) PCI( rbinom( n=10000, prob=logistic( post2$a + post2$bP*d$pirateL[i] + post2$bV*d$victimL[i] + post2$bA*d$pirateA[i] + post2$bPA*d$pirateL[i]*d$pirateA[i] ) , size=d$n[i] ) ) )
 
 op <- par(mfrow=c(2,1))
 plot( (1:8)+0.2 , d$y , col="slateblue" , ylab="successful attempts" , xlab="case" , xaxt="n" , xlim=c(0.75,8.25) , pch=16 ,ylim=c(0,31), cex=0.5)
@@ -180,10 +170,22 @@ for(i in 1:8) lines(c(i,i), c(y.pred.ci[,i]/d$n[i]),col='grey')
 points( 1:8 , y.pred/d$n ,pch=19,cex=0.5,col='black')
 
 par(op)
-
+p.m1  # precis of m1a
+p.m1c # precis of m1c
 @ 
 
+As shown in above figures, averaged model (using AICc) does a much better job at prediction.
+Model averaging provides support for an interaction between pirate age and size. 
+
+As indicated by the table of coefficients, the effect of the interaction is negative. 
+This means that the effects of largeness and adultness are non-additive. 
+The improved model estimates a greater effect of size on outcome, and these estimates for either pirate or victim are relatively equal but opposite. 
+A small adult pirate has a better chance than a small immature pirate, but (due to the interaction), this advantage of adulthood disappears at large size. A large adult pirate actually does worse than a large immature pirate.
+
+
 \subsection*{Herptiles}
+
+I'm looking at data for salamander counts per plot from CA. 
 
 <<load-herp,message=FALSE>>=
 data(salamanders)
@@ -195,7 +197,7 @@ d$fs <- d$FORESTAGE - mean(d$FORESTAGE)
 @ 
 
 The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
-I recenter the predictors. 
+I recenter the predictors PCTCOVER to {\tt pc} and FORESTAGE to {\tt fc} in case I want to look at interaction coefficients. 
 
 
 \subsubsection*{(A)}
@@ -218,7 +220,7 @@ post <- sample.naive.posterior(m2a)
 pct.seq <- seq(min(d$pc),max(d$pc), length.out=100)
 
 y.pred <- sapply(pct.seq , function(z) mean(exp(post$a + post$b.P*z)))
-n
+
 y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z)))
 
 y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z)))) 
@@ -237,15 +239,19 @@ pairs(d[,c(2:4)])
 The model does a good job at low percent ground cover, with all observation falling within the 95\% PI. 
 At very high coverages, however, there are some high counts that are not captured by the model.
 
-Looking at the pairs plot, we can see perhaps why a model based on pc alone does a bad job at high counts. 
-At high pc, there are counts ranging from 0 to 12 (the maximum), thus there is little information in pc to predict  at these counts. 
-There are a wide range of forestage values at high percent-cover values, however, and if forestage were a strong predictor of salamander count, a model with both variables could work well. 
+Looking at the pairs plot, I can see perhaps why a model based on percent cover alone does a bad job at high counts. 
+At high percent cover, there are counts ranging from 0 to 12 (the maximum), thus there is little information in percent cover to predict  at these counts. 
 
-There's a big problem, however, with forestage as a predictor. This can be seen in the pairs plot.
+
 
 \subsubsection*{(B)}
 
-We'll see if model selection and averaging bears out our suspicion that forestage can't help much. . . 
+I'll try to improve the model using age of tree cover (FORESTAGE).
+There are a wide range of forestage values at high percent-cover values (in the pairs plot). 
+If forestage were a strong predictor of salamander count, a model with both variables could work well. 
+
+On the other hand, also from the pairs plot, the relationship between forestage and salamander does not seem to strong.
+I'll see if model selection and averaging bears out our suspicion that forestage can't help much. . . 
 
 <<sal-model,message=FALSE>>=
 m2b <- mle2(SALAMAN ~ dpois(lambda=exp(a + b.P*pc + b.F*fs)), data=d, start=list(a=log(mean(d$SALAMAN)), b.P=0, b.F=0))
@@ -255,10 +261,11 @@ compare(m2a,m2b,m2c,m2d, nobs=nrow(d))
 
 @ 
 
-There is support for a model that includes both pc and fs, but with more weight on pc alone. 
-(BIC and AICc agree pretty well here, so it shouldn't matter which I use)
-Averaged predictions (not shown) display no difference from the predictions using pc alone. 
+There is support for a model that includes both percent cover and forestage, but with more weight on percent cover alone. 
+(BIC and AICc agree pretty well here, so it shouldn't matter which I use.)
+Averaged predictions (not shown) display no difference from the predictions using percent cover alone. 
 This, in part, because forestage is such a poor predictor. 
+
 
 <<2b-avg, message=FALSE,cache=TRUE,eval=FALSE>>=
 
@@ -271,12 +278,6 @@ y.pred.ci <- sapply( pct.seq , function(z) PCI(exp(post$a + post$b.P*z + post$b.
 
 y.pred.pi <- sapply( pct.seq , function(z) PCI( rpois( n=3e4, lambda=exp(post$a + post$b.P*z + post$b.F*fore.mean)))) 
 
-## plot(SALAMAN~pc, data=d,col=col.alpha('gray', .9), pch=19)
-## lines(pct.seq, y.pred)
-## lines(pct.seq, y.pred.ci[1,], lty=2)
-## lines(pct.seq, y.pred.ci[2,], lty=2)
-## lines(pct.seq, y.pred.pi[1,], lty=3)
-## lines(pct.seq, y.pred.pi[2,], lty=3)
 @ 
 
 
@@ -301,12 +302,22 @@ require(gridExtra)
 grid.arrange(g1,g2, ncol=1)
 @ 
 
-Visualized another way, we see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
+Visualized another way (top plot), one can see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
+In this light, it's unsurprising that forestage didn't help much. 
 
-
-So why was the Poisson model bad in teh first place? 
-Over-dispersion. 
+But there may also be deeper reasons why the model didn't work, even for our single predictor of percent cover.
 In the Poisson distribution the mean should be equal to the variance. 
+A variance exceeding the mean is called (at least in the parasite literature) over-dispersion.
+
+Salamanders do, in fact, show overdispersion (bottom plot). 
+This figure plots the (sample) variance against mean for SALAMAN binned across increasing values of PCTCOVER (bin width 10).
+Within each bin, SALAMAN displays overdispersion (variance exceeding the mean), while a Poisson distribution always has variance equal to mean (with predicted value lambda shown by dot size). 
+This means that any model for salamander count as a Poisson outcome with a relatively fixed mean for bins of PCTCOVER will be unable to explain the variance in salamander counts. 
+
+So how would one improve this?
+As I pointed out above, if age of the tree cover (FORESTAGE) were a good predictor,  a regression based on both predictors {\em could} do a better job. 
+Tree cover age, however, was a very poor predictor.
+Absent a good predictor, an alternative would be to specifiy a distribution that displays overdispersion, e.g. negative-binomial or some zero-inflated mixture. 
 
 
 \subsection*{Colophon}

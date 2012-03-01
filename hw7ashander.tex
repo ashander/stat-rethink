@@ -437,39 +437,33 @@
 \end{knitrout}
 
 
-\begin{itemize}
-  \item y: Number of successful attempts.
-  \item n: Total number of attempts.
-  \item P: Size of pirating eagle ('L' = large, 'S' = small).
-  \item A: Age of pirating eagle ('I' = immature, 'A' = adult).
-  \item V: Size of victim eagle ('L' = large, 'S' = small).
-\end{itemize}
-
-We seek to predict successful pirating attempts based on the size and age of the pirate and the size of the victim.
+I seek to predict successful pirating attempts {\tt y} of all attempts {\tt n} based on the size {\tt P} and age {\tt A} of the pirate and the size {\tt V} of the victim.
 
 \subsubsection*{(A)}
 
-To do this, we fit the binomial model:
+To do this, I fit the binomial model:
 \begin{align*}
 &y_i \sim {\rm Binomial} ( p_i , n_i)\\
 &\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i
 \end{align*}
 
-To fit the model, we code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}, $A$: {\tt pirateA}.
+To fit the model, I code dummy variables $P$: {\tt pirateL}, $V$: {\tt victimL}, $A$: {\tt pirateA}.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{P}{\ }=={\ }\hlstring{"L"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{A}{\ }=={\ }\hlstring{"A"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{V}{\ }=={\ }\hlstring{"L"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ifelse}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{V}{\ }=={\ }\hlstring{"L"}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{[}\hlkeyword{,}{\ }\hlnumber{6}\hlkeyword{:}\hlnumber{8}\hlkeyword{]}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{apply}\hlkeyword{(}\hlsymbol{d}\hlkeyword{[}\hlkeyword{,}{\ }\hlnumber{6}\hlkeyword{:}\hlnumber{8}\hlkeyword{]}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlsymbol{x}{\ }\hlkeyword{-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \end{kframe}}
 \end{knitrout}
 
+I also recenter the predictors to aid interpretation of interaction coefficients. 
 
-To fit the model, we use the logit link function.
+To fit the model, I use the logit link function.
 In practice, this means using the logistic (inverse link) tranform on the linear model for the log odds (the RHS of the second equation above):
 
 \begin{knitrout}
@@ -487,10 +481,10 @@ In practice, this means using the logistic (inverse link) tranform on the linear
 \end{flushleft}
 \begin{verbatim}
 ##    Estimate Std. Error     2.5%  97.5%
-## a    0.6205     0.6797 -0.71177  1.953
-## bP   4.5570     1.0545  2.49025  6.624
-## bV  -4.9331     1.1193 -7.12690 -2.739
-## bA   1.0973     0.5465  0.02625  2.168
+## a     0.981     0.3192  0.35542  1.607
+## bP    4.557     1.0545  2.49024  6.624
+## bV   -4.933     1.1193 -7.12690 -2.739
+## bA    1.097     0.5465  0.02623  2.168
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -500,21 +494,21 @@ The baseline probability of success (i.e. given default vales for dummy variable
 In this case, the probability of success in an attack is a bit over half (0.65 = logistic($\alpha$)).
 A larger or older eagle has a greater chance of success, but being larger is more helpful than being older. 
 An attack on a larger victim is less likely to succeed. 
-The effect of largeness in either the victim or pirate on log-odds of success is about equal (but opposite). 
+The effect of largeness in either the victim or pirate on log-odds of success is about equal, or slightly in favor of the victim (but opposite). 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{verbatim}
-## small, young v small 0.6503 
+## small, young v small 0.7273 
 \end{verbatim}
 \begin{verbatim}
-## large, young v small 0.9944 
+## large, young v small 0.9961 
 \end{verbatim}
 \begin{verbatim}
-## large, young v large 0.5608 
+## large, young v large 0.6468 
 \end{verbatim}
 \begin{verbatim}
-## large, old v small 0.9981 
+## large, old v small 0.9987 
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -564,23 +558,17 @@ The effect of largeness in either the victim or pirate on log-odds of success is
 \end{knitrout}
 
 
-Counts of success plot (first figure):
+Across encounter types, the plot of successful counts (top figure), does a better job heterogeneity in relative frequency of successful attempts, while the plot of proportions (bottom figure) shows differences in probability.
+In the count plot, the confidence intervals and point estimates are easier to interpret relative to the data as they are in the same units.
+On the other hand, in the plot of proportions of successs the estimates are interpretable in terms of success probability. 
+Further, in the lower plot, the intervals provide a fuller graphical sense of uncertainty in outcome.
 
-shows heterogeneity in relative frequency of successful attempts across encounter types
-
-confidence intervals and point estimates easier to interpret relative to the data
-
-Proportional plot (second figure): 
-
-shows heterogeneity in probability across encounter types
-
-confidence intervals provide better depiction of uncertainty in outcome
-
-
+Taken together, the two plots give a sense of the total number of various types of encounters in the data set. 
+Neither plot shows this directly. 
 
 \subsubsection*{(C)}
 
-We'd like to improve the model, so we  fit a model with an interaction between pirate age and pirate size
+I'd like to improve the model, so I fit a model with an interaction between pirate age and pirate size
 \begin{align*}
 &y_i \sim {\rm Binomial} ( p_i , n_i)\\
 &\log \frac{p_i}{1-p_i} = \alpha + \beta_P P_i + \beta_V V_i + \beta_A A_i + \beta_{PA} P_i \cdot A_i
@@ -607,36 +595,24 @@ We'd like to improve the model, so we  fit a model with an interaction between p
 \end{knitrout}
 
 
+Both BIC and AICc agree that the interaction improves the model. 
+According to both criteria, an averaged model would include about 10 \% of the non-interaction model. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlfunctioncall{rm}\hlkeyword{(}\hlargument{list}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"post"}\hlkeyword{,}{\ }\hlstring{"y.pred"}\hlkeyword{,}{\ }\hlstring{"y.pred.ci"}\hlkeyword{)}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\begin{verbatim}
-## Warning message: object 'post' not found
-\end{verbatim}
-\begin{verbatim}
-## Warning message: object 'y.pred' not found
-\end{verbatim}
-\begin{verbatim}
-## Warning message: object 'y.pred.ci' not found
-\end{verbatim}
-\begin{flushleft}
-\ttfamily\noindent
-\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m1a}\hlkeyword{,}{\ }\hlsymbol{m1c}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}\hspace*{\fill}\\
+\hlsymbol{post2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m1a}\hlkeyword{,}{\ }\hlsymbol{m1c}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{sum}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{30000}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bP}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bV}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bPA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bP}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bV}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bPA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bP}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bV}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bPA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bP}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bV}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{victimL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{+}{\ }\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bPA}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateL}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{pirateA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{n}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
@@ -660,14 +636,46 @@ We'd like to improve the model, so we  fit a model with an interaction between p
 \includegraphics{better-model-fig} \begin{flushleft}
 \ttfamily\noindent
 \hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{p.m1}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }precis{\ }of{\ }m1a}\mbox{}
 \normalfont
 \end{flushleft}
+\begin{verbatim}
+##    Estimate Std. Error     2.5%  97.5%
+## a     0.981     0.3192  0.35542  1.607
+## bP    4.557     1.0545  2.49024  6.624
+## bV   -4.933     1.1193 -7.12690 -2.739
+## bA    1.097     0.5465  0.02623  2.168
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{p.m1c}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }precis{\ }of{\ }m1c}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##     Estimate Std. Error   2.5%   97.5%
+## a     -1.151      1.142 -3.390  1.0883
+## bP     7.122      1.760  3.672 10.5725
+## bV    -5.432      1.360 -8.098 -2.7665
+## bA     4.020      1.513  1.056  6.9851
+## bPA   -3.661      1.628 -6.852 -0.4708
+\end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
 
+As shown in above figures, averaged model (using AICc) does a much better job at prediction.
+Model averaging provides support for an interaction between pirate age and size. 
+
+As indicated by the table of coefficients, the effect of the interaction is negative. 
+This means that the effects of largeness and adultness are non-additive. 
+The improved model estimates a greater effect of size on outcome, and these estimates for either pirate or victim are relatively equal but opposite. 
+A small adult pirate has a better chance than a small immature pirate, but (due to the interaction), this advantage of adulthood disappears at large size. A large adult pirate actually does worse than a large immature pirate.
+
+
 \subsection*{Herptiles}
+
+I'm looking at data for salamander counts per plot from CA. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -693,7 +701,7 @@ We'd like to improve the model, so we  fit a model with an interaction between p
 
 
 The data set includes counts of salamanders in each plot (SALAMAN), as well as percent (PCTCOVER) and age (FORESTAGE) of ground cover.
-I recenter the predictors. 
+I recenter the predictors PCTCOVER to {\tt pc} and FORESTAGE to {\tt fc} in case I want to look at interaction coefficients. 
 
 
 \subsubsection*{(A)}
@@ -733,15 +741,8 @@ where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{n}\mbox{}
-\normalfont
-\end{flushleft}
-\begin{verbatim}
-## Error: object 'n' not found
-\end{verbatim}
-\begin{flushleft}
-\ttfamily\noindent
-\hlsymbol{y.pred.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{y.pred.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred.pi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rpois}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{30000}\hlkeyword{,}\hspace*{\fill}\\
@@ -771,15 +772,19 @@ where $S_i$ is SALAMAN and $P_i$ is PCTCOVER
 The model does a good job at low percent ground cover, with all observation falling within the 95\% PI. 
 At very high coverages, however, there are some high counts that are not captured by the model.
 
-Looking at the pairs plot, we can see perhaps why a model based on pc alone does a bad job at high counts. 
-At high pc, there are counts ranging from 0 to 12 (the maximum), thus there is little information in pc to predict  at these counts. 
-There are a wide range of forestage values at high percent-cover values, however, and if forestage were a strong predictor of salamander count, a model with both variables could work well. 
+Looking at the pairs plot, I can see perhaps why a model based on percent cover alone does a bad job at high counts. 
+At high percent cover, there are counts ranging from 0 to 12 (the maximum), thus there is little information in percent cover to predict  at these counts. 
 
-There's a big problem, however, with forestage as a predictor. This can be seen in the pairs plot.
+
 
 \subsubsection*{(B)}
 
-We'll see if model selection and averaging bears out our suspicion that forestage can't help much. . . 
+I'll try to improve the model using age of tree cover (FORESTAGE).
+There are a wide range of forestage values at high percent-cover values (in the pairs plot). 
+If forestage were a strong predictor of salamander count, a model with both variables could work well. 
+
+On the other hand, also from the pairs plot, the relationship between forestage and salamander does not seem to strong.
+I'll see if model selection and averaging bears out our suspicion that forestage can't help much. . . 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -807,10 +812,11 @@ We'll see if model selection and averaging bears out our suspicion that forestag
 \end{knitrout}
 
 
-There is support for a model that includes both pc and fs, but with more weight on pc alone. 
-(BIC and AICc agree pretty well here, so it shouldn't matter which I use)
-Averaged predictions (not shown) display no difference from the predictions using pc alone. 
+There is support for a model that includes both percent cover and forestage, but with more weight on percent cover alone. 
+(BIC and AICc agree pretty well here, so it shouldn't matter which I use.)
+Averaged predictions (not shown) display no difference from the predictions using percent cover alone. 
 This, in part, because forestage is such a poor predictor. 
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -828,14 +834,7 @@ This, in part, because forestage is such a poor predictor.
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fore.mean}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{y.pred.pi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{pct.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{z}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rpois}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{30000}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fore.mean}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }plot(SALAMAN\urltilda{}pc,{\ }data=d,col=col.alpha(\usebox{\hlnormalsizeboxsinglequote}gray\usebox{\hlnormalsizeboxsinglequote},{\ }.9),{\ }pch=19)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(pct.seq,{\ }y.pred)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(pct.seq,{\ }y.pred.ci[1,],{\ }lty=2)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(pct.seq,{\ }y.pred.ci[2,],{\ }lty=2)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(pct.seq,{\ }y.pred.pi[1,],{\ }lty=3)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(pct.seq,{\ }y.pred.pi[2,],{\ }lty=3)}\mbox{}
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{lambda}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.P}{\ }\hlkeyword{*}{\ }\hlsymbol{z}{\ }\hlkeyword{+}{\ }\hlsymbol{post}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b.F}{\ }\hlkeyword{*}{\ }\hlsymbol{fore.mean}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \end{kframe}}
@@ -878,12 +877,22 @@ This, in part, because forestage is such a poor predictor.
 \end{knitrout}
 
 
-Visualized another way, we see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
+Visualized another way (top plot), one can see massive spread in count at high percent cover (> 60\%) and very little pattern in forestage (dot size) at these values of percent cover.
+In this light, it's unsurprising that forestage didn't help much. 
 
-
-So why was the Poisson model bad in teh first place? 
-Over-dispersion. 
+But there may also be deeper reasons why the model didn't work, even for our single predictor of percent cover.
 In the Poisson distribution the mean should be equal to the variance. 
+A variance exceeding the mean is called (at least in the parasite literature) over-dispersion.
+
+Salamanders do, in fact, show overdispersion (bottom plot). 
+This figure plots the (sample) variance against mean for SALAMAN binned across increasing values of PCTCOVER (bin width 10).
+Within each bin, SALAMAN displays overdispersion (variance exceeding the mean), while a Poisson distribution always has variance equal to mean (with predicted value lambda shown by dot size). 
+This means that any model for salamander count as a Poisson outcome with a relatively fixed mean for bins of PCTCOVER will be unable to explain the variance in salamander counts. 
+
+So how would one improve this?
+As I pointed out above, if age of the tree cover (FORESTAGE) were a good predictor,  a regression based on both predictors {\em could} do a better job. 
+Tree cover age, however, was a very poor predictor.
+Absent a good predictor, an alternative would be to specifiy a distribution that displays overdispersion, e.g. negative-binomial or some zero-inflated mixture. 
 
 
 \subsection*{Colophon}
