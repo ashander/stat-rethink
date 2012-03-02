@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+%\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+require(emdbook)
+@
+
+\begin{center}
+  {\bf \Large Homework 8, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+\subsection*{Morality and predictors}
+
+<<load, message=FALSE>>=
+
+data(trolley)
+d <- trolley
+head(d,n=1)
+@ 
+
+\subsubsection*{(a)}
+
+
+<<polr-gender,message=TRUE,cache=TRUE>>=
+m1 <- polr( as.ordered(response) ~ action * intention + contact * intention, data=d , Hess=TRUE )
+m2 <- polr( as.ordered(response) ~ action * intention + contact * intention + male * contact , data=d , Hess=TRUE )
+precis(m2)
+@ 
+
+\subsection*{Basketball}
+
+<<load-b,message=FALSE>>=
+d <- read.csv('fieldgoals0708.csv')
+d <- d[order(d$FGM),]               
+d$ID <- seq_along(d$player)
+head(d)
+@ 
+
+
+<<beta-binom,message=FALSE>>=
+ndbetabinom2 <- function(x, pbar,  theta, size, log=FALSE){
+  #using PMF from http://en.wikipedia.org/wiki/Beta-binomial_distribution with 
+  n <- size
+  k <- x
+  a <- pbar*theta 
+  b <- (1-pbar)*theta
+  lp <- lchoose(n,k)+lbeta(k+a, n-k +b) - lbeta(a,b) #rewritten to log after looking at Bolker's emdbook::dbetabinom
+  if(log)
+    return(lp)
+  else return(exp(lp))
+  }
+
+@ 
+
+\subsubsection*{(a)}
+
+<<binom,message=FALSE,cache=TRUE>>=
+m2b <- mle2(FGM ~ dbinom(prob=logistic(a), size=FGA), data=d, start=list(a=0))
+m2bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a), theta=exp(tau), size=FGA), data=d, start=list(a=0, tau=log(2)))
+
+@ 
+
+<<post-bs,message=FALSE,cache=TRUE>>=
+post.b <-sample.naive.posterior(m2b)
+post.bb <- sample.naive.posterior(m2bb)
+att.seq <- d$FGA
+
+mu <- sapply(att.seq, function(x) mean(rbinom(n=1e4, prob=logistic(post.b$a), size=x)))
+mu.ci <- sapply(att.seq, function(x) PCI(rbinom(n=1e4, prob=logistic(post.b$a), size=x)))
+
+plot(FGM~ID, data=d, pch='')
+
+for(i in 1:length(d$ID)) lines(c(d$ID[i],d$ID[i]), c(mu.ci[,i]),col='grey')
+points(FGM~ID, data=d)
+#lines(mu~ID, data=d)
+
+
+mu <- sapply(att.seq, function(x) mean(rbinom(n=1e4, prob=rbeta2(n=1, prob=logistic(post.bb$a), theta=exp(post.bb$tau)), size=x)))
+mu.ci <- sapply(att.seq, function(x) PCI(rbinom(n=1e4, prob=rbeta2(n=1, prob=logistic(post.bb$a), theta=exp(post.bb$tau)), size=x)))               
+
+plot(FGM/FGA~ID, data=d, pch='', ylim=c(0,5))
+
+for(i in 1:length(d$ID)) lines(c(d$ID[i],d$ID[i]), c(mu.ci[,i]),col='grey')
+points(FGM/FGA~ID, data=d)
+lines(mu~ID, data=d)
+@ 
+
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'hw8ashander.Rnw',sep='/')) ## to run
+
+##x to use all cores
+require(snowfall)
+sfInit(parallel=TRUE,cpus=4)
+sfLibrary(rethinking)
+sfExportAll()
+sfStop()
+@ 
+
+\end{document}
