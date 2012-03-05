@@ -58,10 +58,50 @@ head(d,n=1)
 
 
 <<polr-gender,message=TRUE,cache=TRUE>>=
+m0 <- mle2(response ~ dordlogit(a=c(a1,a2,a3,a4,a5,a6), phi=bA*action + bI*intention), data=d, start=list(a1=-2,a2=-1,a3=0,a4=1,a5=2,a6=2.5,bA=0,bI=0))
+
 m1 <- polr( as.ordered(response) ~ action * intention + contact * intention, data=d , Hess=TRUE )
 m2 <- polr( as.ordered(response) ~ action * intention + contact * intention + male * contact , data=d , Hess=TRUE )
-precis(m2)
+m3 <- polr( as.ordered(response) ~ action * intention + contact * intention + male  , data=d , Hess=TRUE )
+
+compare(m1,m2,m3,nobs=nrow(d))
+
 @ 
+
+<<trolley-plots,message=FALSE,cache=TRUE>>=
+
+post <- sample.naive.posterior(m2)
+prob.indices <- grep("1|2|3|4|5|6|7", names(post))
+
+plot(1,1, type='n', xlab='male', ylab='probability', xlim=c(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
+
+kA <- 0
+kC <- 1
+kI <- 0
+kM <- 0:1 ## variable axis
+title(paste('action',kA,'contact',kC,'intent',kI))
+
+for(s in 1:200){
+  p <- post[s,]
+
+  ak <- as.numeric(p[prob.indices])
+  phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
+  pk <- pordlogit(1:6, a=ak, phi=phi)
+  for(i in 1:6)
+    lines(male, pk[,i], col=col.alpha('slateblue', 0.01))
+}
+
+pmle <- as.list(coef(m2))
+if(class(m2)=='polr')
+  ak <- m2$zeta
+#else ak <- as.numeric(pmle[prob.indices]))
+phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
+pk.mle <- pordlogit(1:6, a=ak, phi=phi)
+for(i in 1:6) lines(0:1, pk.mle[,i], col='white')
+
+@ 
+
+
 
 \subsection*{Basketball}
 

@@ -448,31 +448,178 @@
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{m1}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{male}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\mbox{}
+\hlsymbol{m0}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{response}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dordlogit}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{a1}\hlkeyword{,}{\ }\hlsymbol{a2}\hlkeyword{,}{\ }\hlsymbol{a3}\hlkeyword{,}{\ }\hlsymbol{a4}\hlkeyword{,}{\ }\hlsymbol{a5}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{a6}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{bI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a1}{\ }\hlargument{=}{\ }\hlkeyword{-}\hlnumber{2}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{a2}{\ }\hlargument{=}{\ }\hlkeyword{-}\hlnumber{1}\hlkeyword{,}{\ }\hlargument{a3}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{a4}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{a5}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{,}{\ }\hlargument{a6}{\ }\hlargument{=}{\ }\hlnumber{2.5}\hlkeyword{,}{\ }\hlargument{bA}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{bI}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##                   Estimate Std. Error     2.5%    97.5%
-## action            -0.47586    0.05470 -0.58307 -0.36865
-## intention         -0.28332    0.05825 -0.39748 -0.16915
-## contact           -0.21874    0.08484 -0.38501 -0.05246
-## male               0.61579    0.04007  0.53724  0.69433
-## action:intention  -0.45285    0.08080 -0.61122 -0.29448
-## intention:contact -1.29739    0.09949 -1.49239 -1.10239
-## contact:male      -0.20997    0.08917 -0.38473 -0.03521
-## 1|2               -2.33345    0.05552 -2.44226 -2.22464
-## 2|3               -1.63747    0.05188 -1.73914 -1.53580
-## 3|4               -1.03578    0.05002 -1.13382 -0.93774
-## 4|5                0.02287    0.04906 -0.07328  0.11902
-## 5|6                0.71287    0.04987  0.61513  0.81061
-## 6|7                1.64024    0.05301  1.53634  1.74413
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{verbatim}
+## Warning message: NaNs produced
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m1}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{male}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{male}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m1}\hlkeyword{,}{\ }\hlsymbol{m2}\hlkeyword{,}{\ }\hlsymbol{m3}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##     k  AICc   BIC w.AICc  w.BIC   dAICc   dBIC
+## m2 13 36670 36764 0.8543 0.1382   0.000   3.66
+## m3 12 36674 36760 0.1457 0.8618   3.538   0.00
+## m1 11 36929 37008 <2e-16 <2e-16 258.976 248.24
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{prob.indices}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{grep}\hlkeyword{(}\hlstring{"{}1|2|3|4|5|6|7"{}}\hlkeyword{,}{\ }\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{post}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{type}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}male"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}probability"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{yaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{kA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{kC}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{1}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{kI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{kM}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }variable{\ }axis}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{title}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"{}action"{}}\hlkeyword{,}{\ }\hlsymbol{kA}\hlkeyword{,}{\ }\hlstring{"{}contact"{}}\hlkeyword{,}{\ }\hlsymbol{kC}\hlkeyword{,}{\ }\hlstring{"{}intent"{}}\hlkeyword{,}{\ }\hlsymbol{kI}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{s}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{200}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post}\hlkeyword{[}\hlsymbol{s}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.numeric}\hlkeyword{(}\hlsymbol{p}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{p}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{pk}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{male}\hlkeyword{,}{\ }\hlsymbol{pk}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"{}slateblue"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{0.01}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{pmle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{if}{\ }\hlkeyword{(}\hlfunctioncall{class}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}{\ }=={\ }\hlstring{"{}polr"{}}\hlkeyword{)}{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{m2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{zeta}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}else{\ }ak{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }as.numeric(pmle[prob.indices]))}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{pmle}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{pk.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{,}{\ }\hlsymbol{pk.mle}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}white"{}}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+
+
+\centering{}\includegraphics{trolley-plots} 
+
+\end{kframe}}
+\end{knitrout}
+
+
 
 
 \subsection*{Basketball}
@@ -592,7 +739,7 @@
 \hlfunctioncall{require}\hlkeyword{(}\hlsymbol{knitr}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }package}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{getwd}\hlkeyword{(}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"{}hw8ashander.Rnw"{}}\hlkeyword{,}{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"{}/"{}}\hlkeyword{)}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }use{\ }all{\ }cores}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}x{\ }to{\ }use{\ }all{\ }cores}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{require}\hlkeyword{(}\hlsymbol{snowfall}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{sfInit}\hlkeyword{(}\hlargument{parallel}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{,}{\ }\hlargument{cpus}{\ }\hlargument{=}{\ }\hlnumber{4}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{sfLibrary}\hlkeyword{(}\hlsymbol{rethinking}\hlkeyword{)}\hspace*{\fill}\\
