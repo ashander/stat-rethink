@@ -57,8 +57,8 @@ head(d,n=1)
 \subsubsection*{(a)}
 
 
-<<polr-gender,message=TRUE,cache=TRUE>>=
-m0 <- mle2(response ~ dordlogit(a=c(a1,a2,a3,a4,a5,a6), phi=bA*action + bI*intention), data=d, start=list(a1=-2,a2=-1,a3=0,a4=1,a5=2,a6=2.5,bA=0,bI=0))
+<<polr-gender,message=TRUE,cache=TRUE,warning=FALSE>>=
+#m0 <- mle2(response ~ dordlogit(a=c(a1,a2,a3,a4,a5,a6), phi=bA*action + bI*intention), data=d, start=list(a1=-2,a2=-1,a3=0,a4=1,a5=2,a6=2.5,bA=0,bI=0))
 
 m1 <- polr( as.ordered(response) ~ action * intention + contact * intention, data=d , Hess=TRUE )
 m2 <- polr( as.ordered(response) ~ action * intention + contact * intention + male * contact , data=d , Hess=TRUE )
@@ -68,18 +68,30 @@ compare(m1,m2,m3,nobs=nrow(d))
 
 @ 
 
+Model an interaction between gender and contact. 
+Also look at a model without the interaction, but with gender. 
+
+Gender improves the model. 
+Model averaging is equivocal on the question of an interaction. 
+Both AICc and BIC put some weight on each of the models with gender (with and without an interaction). 
+BIC favors the interaction-less model, while AIC the other. 
+As a conservative test, I'll use model averaging based on AICc (which seems to favor an interaction between contact and gender) to  check for support for the interaction in plotted results. 
+
+
 <<trolley-plots,message=FALSE,cache=TRUE>>=
 
-post <- sample.naive.posterior(m2)
+post <- sample.naive.posterior(list(m2,m3), n=2e4, method='AICc', nobs=nrow(d))
 prob.indices <- grep("1|2|3|4|5|6|7", names(post))
 
-plot(1,1, type='n', xlab='male', ylab='probability', xlim=c(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
+plot(1,1, type='n', xlab='contact', ylab='probability', xlim=c
+(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
+col.vec=c('orange','slateblue')
+title(paste('action',kA,'male 0:1','intent',kI))
 
+for(kM in 0:1){
 kA <- 0
-kC <- 1
 kI <- 0
-kM <- 0:1 ## variable axis
-title(paste('action',kA,'contact',kC,'intent',kI))
+kC <- 0:1 ## variable axis
 
 for(s in 1:200){
   p <- post[s,]
@@ -88,7 +100,7 @@ for(s in 1:200){
   phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
   pk <- pordlogit(1:6, a=ak, phi=phi)
   for(i in 1:6)
-    lines(male, pk[,i], col=col.alpha('slateblue', 0.01))
+    lines(kC, pk[,i], col=col.alpha(col.vec[kM+1], 0.01))
 }
 
 pmle <- as.list(coef(m2))
@@ -98,9 +110,24 @@ if(class(m2)=='polr')
 phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
 pk.mle <- pordlogit(1:6, a=ak, phi=phi)
 for(i in 1:6) lines(0:1, pk.mle[,i], col='white')
+}
 
 @ 
 
+Light gray = female; dark gray = male. 
+
+<<interact-coef,message=TRUE,cache=TRUE>>=
+
+op <- par(mfrow=c(1,2))
+  dens(post$`contact:male`, main='AICc')
+post <- sample.naive.posterior(list(m2,m3), n=2e4, method='BIC', nobs=nrow(d))
+dens(post$`contact:male`, main='BIC')
+par(op)
+@ 
+Model-averaged value for the interaction coefficient between {\tt contact} and {\tt male}. 
+
+
+\subsubsection*{(b)}
 
 
 \subsection*{Basketball}
