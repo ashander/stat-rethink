@@ -486,44 +486,49 @@ As a conservative test, I'll use model averaging based on AICc (which seems to f
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hspace*{\fill}\\
-\hlstd{}\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{,}{\ }\hlsymbol{m3}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{20000}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"{}AICc"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{,}{\ }\hlsymbol{m3}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{20000}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"{}AICc"{}}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{prob.indices}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{grep}\hlkeyword{(}\hlstring{"{}1|2|3|4|5|6|7"{}}\hlkeyword{,}{\ }\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{post}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{type}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}contact"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}probability"{}}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{yaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{col.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}orange"{}}\hlkeyword{,}{\ }\hlstring{"{}slateblue"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{title}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"{}action"{}}\hlkeyword{,}{\ }\hlsymbol{kA}\hlkeyword{,}{\ }\hlstring{"{}male{\ }0:1"{}}\hlkeyword{,}{\ }\hlstring{"{}intent"{}}\hlkeyword{,}{\ }\hlsymbol{kI}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kM}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kI}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{type}{\ }\hlargument{=}{\ }\hlstring{"{}n"{}}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"{}contact"{}}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"{}probability"{}}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{yaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{col.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}grey"{}}\hlkeyword{,}{\ }\hlstring{"{}black"{}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{ci.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}black"{}}\hlkeyword{,}{\ }\hlstring{"{}white"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{kI}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kC}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }variable{\ }axis}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{s}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{200}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post}\hlkeyword{[}\hlsymbol{s}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"{}action"{}}\hlkeyword{,}{\ }\hlsymbol{kA}\hlkeyword{,}{\ }\hlstring{"{}male{\ }0:1"{}}\hlkeyword{,}{\ }\hlstring{"{}intent"{}}\hlkeyword{,}{\ }\hlsymbol{kI}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.numeric}\hlkeyword{(}\hlsymbol{p}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{p}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kM}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{s}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{200}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post}\hlkeyword{[}\hlsymbol{s}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.numeric}\hlkeyword{(}\hlsymbol{p}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{p}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{kC}\hlkeyword{,}{\ }\hlsymbol{pk}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlsymbol{col.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{,}{\ }\hlnumber{0.01}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pmle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{if}{\ }\hlkeyword{(}\hlfunctioncall{class}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}{\ }=={\ }\hlstring{"{}polr"{}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{m2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{zeta}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}else{\ }ak{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }as.numeric(pmle[prob.indices]))}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}\hlsymbol{}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{pmle}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{kC}\hlkeyword{,}{\ }\hlsymbol{pk}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlsymbol{col.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{,}{\ }\hlnumber{0.01}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{,}{\ }\hlsymbol{pk.mle}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlsymbol{ci.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{pmle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{if}{\ }\hlkeyword{(}\hlfunctioncall{class}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}{\ }=={\ }\hlstring{"{}polr"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{m2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{zeta}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}else{\ }ak{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }as.numeric(pmle[prob.indices]))}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{phi}\hlsymbol{}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{pmle}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{pk.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{,}{\ }\hlsymbol{pk.mle}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"{}white"{}}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\mbox{}
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 
@@ -534,7 +539,18 @@ As a conservative test, I'll use model averaging based on AICc (which seems to f
 \end{knitrout}
 
 
-Light gray = female; dark gray = male. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+
+
+\centering{}\includegraphics{trolley-plot-2} 
+
+\end{kframe}}
+\end{knitrout}
+
+Above depicts (model-averaged) effect of contact for female (light gray w/ black center lines) and male (dark gray w/ white centerlines). 
+Males consistently respond more to contact scearios. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -560,6 +576,106 @@ Model-averaged value for the interaction coefficient between {\tt contact} and {
 
 
 \subsubsection*{(b)}
+
+
+Construct standardized predictors based on square and cube of age: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{Standardize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{(}\hlsymbol{x}{\ }\hlkeyword{-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{)}\hlkeyword{/}\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m4}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{age}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m5}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{age2}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m6}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{age3}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{,}{\ }\hlsymbol{m5}\hlkeyword{,}{\ }\hlsymbol{m6}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##     k  AICc   BIC    w.AICc     w.BIC dAICc  dBIC
+## m4 12 36913 36999 0.9992264 0.9992264  0.00  0.00
+## m5 12 36927 37014 0.0006843 0.0006843 14.57 14.57
+## m6 12 36931 37018 8.932e-05 8.932e-05 18.65 18.65
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{coeftab}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{,}{\ }\hlsymbol{m5}\hlkeyword{,}{\ }\hlsymbol{m6}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##                          m4        m5        m6
+## action              -0.4739   -0.4730   -0.4724
+## intention           -0.2828   -0.2827   -0.2827
+## contact             -0.3319   -0.3317   -0.3316
+## age                 -0.0770        NA        NA
+## action:intention    -0.4466   -0.4463   -0.4464
+## intention:contact   -1.2774   -1.2744   -1.2727
+## 1|2                 -2.6373   -2.6352   -2.6349
+## 2|3                 -1.9392   -1.9384   -1.9388
+## 3|4                 -1.3428   -1.3427   -1.3435
+## 4|5                 -0.3053   -0.3066   -0.3080
+## 5|6                  0.3671    0.3648    0.3630
+## 6|7                  1.2728    1.2705    1.2691
+## age2                     NA   -0.0364        NA
+## age3                     NA        NA    0.0024
+## nobs              9930.0000 9930.0000 9930.0000
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##                   Estimate Std. Error    2.5%    97.5%
+## action            -0.47386    0.05485 -0.5814 -0.36635
+## intention         -0.28278    0.05837 -0.3972 -0.16837
+## contact           -0.33190    0.06980 -0.4687 -0.19510
+## age               -0.07705    0.01785 -0.1120 -0.04207
+## action:intention  -0.44663    0.08084 -0.6051 -0.28819
+## intention:contact -1.27744    0.09940 -1.4723 -1.08262
+## 1|2               -2.63726    0.05228 -2.7397 -2.53479
+## 2|3               -1.93923    0.04834 -2.0340 -1.84449
+## 3|4               -1.34282    0.04612 -1.4332 -1.25242
+## 4|5               -0.30532    0.04423 -0.3920 -0.21864
+## 5|6                0.36712    0.04444  0.2800  0.45423
+## 6|7                1.27280    0.04719  1.1803  1.36530
+\end{verbatim}
+\end{kframe}}
+\end{knitrout}
+
+
+Model selection support a linear effect of age, with just a hint of a quadratic effect. 
+In both cases the effect of age is negative, decreasing the tendancy toward Action, Intention or Contact. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{post2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{,}{\ }\hlsymbol{m5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"{}AICc"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{20000}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+
+
+\centering{}\includegraphics{mod-avg-age} 
+
+\end{kframe}}
+\end{knitrout}
+
+Model-averaged (via AICc) coefficient on age.
 
 
 \subsection*{Basketball}

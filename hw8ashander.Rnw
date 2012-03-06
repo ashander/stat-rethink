@@ -79,19 +79,23 @@ As a conservative test, I'll use model averaging based on AICc (which seems to f
 
 
 <<trolley-plots,message=FALSE,cache=TRUE>>=
-
 post <- sample.naive.posterior(list(m2,m3), n=2e4, method='AICc', nobs=nrow(d))
 prob.indices <- grep("1|2|3|4|5|6|7", names(post))
 
+op <- par(mfrow=c(1,2))
+
+for(kI in 0:1){
 plot(1,1, type='n', xlab='contact', ylab='probability', xlim=c
 (0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
-col.vec=c('orange','slateblue')
+col.vec=c('grey','black')
+ci.vec=c('black','white')
+kA <- 0
+kI <- kI
+kC <- 0:1 ## variable axis
+
 title(paste('action',kA,'male 0:1','intent',kI))
 
 for(kM in 0:1){
-kA <- 0
-kI <- 0
-kC <- 0:1 ## variable axis
 
 for(s in 1:200){
   p <- post[s,]
@@ -109,12 +113,49 @@ if(class(m2)=='polr')
 #else ak <- as.numeric(pmle[prob.indices]))
 phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
 pk.mle <- pordlogit(1:6, a=ak, phi=phi)
-for(i in 1:6) lines(0:1, pk.mle[,i], col='white')
+for(i in 1:6) lines(0:1, pk.mle[,i], col=ci.vec[kM+1])
+}
+}
+par(op)
+@
+
+
+<<trolley-plot-2,message=FALSE,cache=TRUE,echo=FALSE>>=
+op <- par(mfrow=c(1,2))
+for(kA in 0:1){
+plot(1,1, type='n', xlab='contact', ylab='probability', xlim=c
+(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
+col.vec=c('grey','black')
+ci.vec=c('black','white')
+kI <- 0
+kC <- 0:1 ## variable axis
+title(paste('action',kA,'male 0:1','intent',kI))
+
+for(kM in 0:1){
+
+for(s in 1:200){
+  p <- post[s,]
+
+  ak <- as.numeric(p[prob.indices])
+  phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
+  pk <- pordlogit(1:6, a=ak, phi=phi)
+  for(i in 1:6)
+    lines(kC, pk[,i], col=col.alpha(col.vec[kM+1], 0.01))
 }
 
+pmle <- as.list(coef(m2))
+if(class(m2)=='polr')
+  ak <- m2$zeta
+#else ak <- as.numeric(pmle[prob.indices]))
+phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
+pk.mle <- pordlogit(1:6, a=ak, phi=phi)
+for(i in 1:6) lines(0:1, pk.mle[,i], col=ci.vec[kM+1])
+}
+}
+par(op)
 @ 
-
-Light gray = female; dark gray = male. 
+Above depicts (model-averaged) effect of contact for female (light gray w/ black center lines) and male (dark gray w/ white centerlines). 
+Males consistently respond more to contact scearios. 
 
 <<interact-coef,message=TRUE,cache=TRUE>>=
 
@@ -128,6 +169,36 @@ Model-averaged value for the interaction coefficient between {\tt contact} and {
 
 
 \subsubsection*{(b)}
+
+
+Construct standardized predictors based on square and cube of age: 
+
+<<polr-age,message=TRUE,cache=TRUE,warning=FALSE>>=
+Standardize <- function(x){(x-mean(x))/sd(x)}
+d$age2 <- Standardize(d$age^2)
+d$age3 <- Standardize(d$age^3)
+d$age <- Standardize(d$age)
+
+m4 <- polr( as.ordered(response) ~ action * intention + contact * intention + age, data=d , Hess=TRUE )
+m5 <- polr( as.ordered(response) ~ action * intention + contact * intention + age2, data=d , Hess=TRUE )
+m6 <- polr( as.ordered(response) ~ action * intention + contact * intention + age3, data=d , Hess=TRUE )
+
+compare(m4,m5,m6,nobs=nrow(d))
+
+coeftab(m4,m5,m6)
+
+precis(m4)
+
+@ 
+
+Model selection support a linear effect of age, with just a hint of a quadratic effect. 
+In both cases the effect of age is negative, decreasing the tendancy toward Action, Intention or Contact. 
+
+<<mod-avg-age,message=TRUE,cache=TRUE>>=
+post2 <- sample.naive.posterior(list(m4,m5),method='AICc',nobs=nrow(d), n=2e4)
+dens(post2$age)
+@ 
+Model-averaged (via AICc) coefficient on age.
 
 
 \subsection*{Basketball}
