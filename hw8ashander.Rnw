@@ -28,7 +28,7 @@
 \begin{document}
 
 %% still can't get paths to work ...
-%\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
+\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
 
 <<setup,echo=FALSE,results=hide,message=FALSE>>=
 options(replace.assign=TRUE,width=90)
@@ -157,7 +157,7 @@ par(op)
 Above depicts (model-averaged) effect of contact for female (light gray w/ black center lines) and male (dark gray w/ white centerlines). 
 Males consistently respond more to contact scearios. 
 
-<<interact-coef,message=TRUE,cache=TRUE>>=
+<<interact-coef,message=TRUE,cache=TRUE,warning=FALSE>>=
 
 op <- par(mfrow=c(1,2))
   dens(post$`contact:male`, main='AICc')
@@ -208,11 +208,12 @@ d <- read.csv('fieldgoals0708.csv')
 d <- d[order(d$FGM),]               
 d$ID <- seq_along(d$player)
 head(d)
+
 @ 
 
 
 <<beta-binom,message=FALSE>>=
-ndbetabinom2 <- function(x, pbar,  theta, size, log=FALSE){
+dbetabinom2 <- function(x, pbar,  theta, size, log=FALSE){
   #using PMF from http://en.wikipedia.org/wiki/Beta-binomial_distribution with 
   n <- size
   k <- x
@@ -228,35 +229,198 @@ ndbetabinom2 <- function(x, pbar,  theta, size, log=FALSE){
 
 \subsubsection*{(a)}
 
+For the beta-binomial model, fits to the raw data yielded poor estimates, with unrealistically low variance (0). 
+
 <<binom,message=FALSE,cache=TRUE>>=
+min.goals <- min(d$FGM)
+d$FGM <-d$FGM - min.goals
+d$FGA <-d$FGA - min.goals
+
 m2b <- mle2(FGM ~ dbinom(prob=logistic(a), size=FGA), data=d, start=list(a=0))
 m2bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a), theta=exp(tau), size=FGA), data=d, start=list(a=0, tau=log(2)))
+@ 
+
+<<post-bs,message=FALSE,cache=TRUE,warning=FALSE>>=
+post.b1 <-sample.naive.posterior(m2b)
+post.bb1 <- sample.naive.posterior(m2bb)
+id.seq <- d$ID #seq(min(d$FGA), max(d$FGA), by=4)
+
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=logistic(post.b1$a), size=d$FGA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=logistic(post.b1$a), size=d$FGA[i])))
+
+Plot0 <- function(d, mu, mu.ci){
+  plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
+  lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
+  lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
+  lines(mu/FGA~id.seq, data=d)
+}
+Plot0(d, mu, mu.ci)
+
+prob <- rbeta2(n=1e4, prob=logistic(post.bb1$a), theta=exp(post.bb1$tau))
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=prob, size=d$FGA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=prob, size=d$FGA[i])))               
+
+op <- par(mfrow=c(1,2))
+
+Plot0(d, mu, mu.ci)
+## plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
+## lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
+## lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
+## lines(mu/FGA~id.seq, data=d)
+
+prob.dens <- rbeta2(nrow(d)*100, prob=logistic(post.bb1$a), theta=exp(post.bb1$tau))
+dens(prob.dens)
+par(op)
+
+PCI(prob.dens)
 
 @ 
 
-<<post-bs,message=FALSE,cache=TRUE>>=
-post.b <-sample.naive.posterior(m2b)
-post.bb <- sample.naive.posterior(m2bb)
-att.seq <- d$FGA
+The above plots show field goals made over attempted plotted against player ID (assigned in order of shooting percentage). 
+The first plot is the binomial model and the second is the beta-binomial.
 
-mu <- sapply(att.seq, function(x) mean(rbinom(n=1e4, prob=logistic(post.b$a), size=x)))
-mu.ci <- sapply(att.seq, function(x) PCI(rbinom(n=1e4, prob=logistic(post.b$a), size=x)))
+The beta binomial distribution does a much better job capturing the spread in the data. 
+This is because the mixture does not have the same constrained relationship between mean and variance as the binomial.
 
-plot(FGM~ID, data=d, pch='')
+As we can see, however, there is a lot of heterogeneity in the players shooting percentage that is still unaccounted for by the mixture model. 
+This is because the beta-binomial implemented above still assigns a constant (albeit beta-binomially distributed) mean. 
 
-for(i in 1:length(d$ID)) lines(c(d$ID[i],d$ID[i]), c(mu.ci[,i]),col='grey')
-points(FGM~ID, data=d)
-#lines(mu~ID, data=d)
+\subsubsection{(b)}
+
+Still working with scaled attempts and successes, we fit the model 
+
+(with FGA as predictor)
+
+<<binom-w-pred,message=FALSE,cache=TRUE,warning=FALSE>>=
+d <- read.csv('fieldgoals0708.csv')
+d <- d[order(d$FGM),]               
+d$ID <- seq_along(d$player)
+
+min.goals <- min(d$FGM)
+d$FGM <-d$FGM - min.goals
+d$FGA <-d$FGA - min.goals
+
+#max.attempts <- max(d$FGA) 
+m3b <- mle2(FGM ~ dbinom(prob=logistic(a+b*FGA), size=FGA), data=d, start=list(a=0, b=0))
+m3bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a+b*FGA), theta=exp(tau), size=FGA), data=d, start=list(a=0, b=0, tau=log(2)))
+precis(m3b)
+precis(m3bb)
+@
 
 
-mu <- sapply(att.seq, function(x) mean(rbinom(n=1e4, prob=rbeta2(n=1, prob=logistic(post.bb$a), theta=exp(post.bb$tau)), size=x)))
-mu.ci <- sapply(att.seq, function(x) PCI(rbinom(n=1e4, prob=rbeta2(n=1, prob=logistic(post.bb$a), theta=exp(post.bb$tau)), size=x)))               
+<<post-bs-w-pred,message=FALSE,cache=TRUE>>=
+post.b2 <-sample.naive.posterior(m3b)
+post.bb2 <- sample.naive.posterior(m3bb)
+id.seq <- d$ID #seq(min(d$FGA), max(d$FGA), by=4)
 
-plot(FGM/FGA~ID, data=d, pch='', ylim=c(0,5))
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=logistic(post.b2$a+post.b2$b*d$FGA[i]), size=d$FGA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=logistic(post.b2$a+post.b2$b*d$FGA[i]), size=d$FGA[i])))
 
-for(i in 1:length(d$ID)) lines(c(d$ID[i],d$ID[i]), c(mu.ci[,i]),col='grey')
-points(FGM/FGA~ID, data=d)
-lines(mu~ID, data=d)
+plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
+lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
+lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
+lines(mu/FGA~id.seq, data=d)
+
+Plot1 <- function(POST, mu, mu.ci, D=d, betabin=FALSE){
+  op <- par(mfrow=c(1,2))
+  plot(FGM/FGA~FGA, data=D, pch='', ylim=c(0,1))
+  for(i in 1:length(id.seq)) with(D, lines(rep(FGA[i],2), c(mu.ci[,i]/FGA[i]),col='lightgrey', lwd=1.5))
+  points(FGM/FGA~FGA, data=D,col=col.alpha('darkgray', 0.8), pch=19)
+  points(mu/FGA~FGA, data=D, pch=19, cex=0.5)
+
+  if(betabin){
+    prob.dens3 <- rbeta2(nrow(d)*100, prob=logistic(POST$a+ POST$b*d$FGA), theta=exp(POST$tau))
+    dens(prob.dens3)
+    par(op)
+    return(prob.dens3)
+    }
+  dens(with(POST,  logistic(a + b*with(D, mean(FGA)))))
+  par(op)
+  return(NULL)
+}
+
+tmp <- Plot1(post.b2, mu, mu.ci, d)
+
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb2$a+post.bb2$b*d$FGA[i]), theta=exp(post.bb2$tau)), size=d$FGA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb2$a+post.bb2$b*d$FGA[i]), theta=exp(post.bb2$tau)), size=d$FGA[i])))               
+
+plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
+lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
+lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
+lines(mu/FGA~id.seq, data=d)
+
+
+betabin.fga.dens <- Plot1(post.bb2, mu, mu.ci, d, TRUE)
+
+PCI(betabin.fga.dens)
+
+@ 
+
+Those taking more attempts have {\em a higher chance} of making the baskets.
+It's like the player know who among them is a better shooter and preferentially allocate shooting attempts to those players.
+
+\subsubsection{(c)}
+
+
+
+<<binom-3pt,message=FALSE,cache=TRUE,warning=FALSE>>=
+d <- read.csv('fieldgoals0708.csv')
+d <- d[order(d$FGM),]               
+d$ID <- seq_along(d$player)
+d$TM <- d$FGM-d$X2PM
+d$TA <- d$FGA-d$X2PA
+
+#min.goals <- min(d$FGM)
+#d$FGM <-d$FGM - min.goals
+#d$FGA <-d$FGA - min.goals
+
+#max.attempts <- max(d$FGA) 
+m4b <- mle2(TM ~ dbinom(prob=logistic(a+bT*TA + bA*FGA), size=TA), data=d, start=list(a=0, bT=0, bA=0))
+m4bb <- mle2(TM ~ dbetabinom2(pbar=logistic(a+bT*TA ), theta=exp(tau), size=TA), data=d, start=list(a=0, bT=0, tau=log(2)))
+m4bb2 <- mle2(TM ~ dbetabinom2(pbar=logistic(a+bT*TA + bA*FGA), theta=exp(tau), size=TA), data=d, start=list(a=0, bT=0, bA=0, tau=log(2)))
+precis(m4b)
+precis(m4bb)
+precis(m4bb2)
+compare(m4b, m4bb, m4bb2, nobs=nrow(d))
+@
+
+
+
+<<post-bs-threes,message=FALSE,cache=TRUE,warning=FALSE>>=
+post.b3 <-sample.naive.posterior(m4b)
+post.bb3 <- sample.naive.posterior(m4bb)
+id.seq <- d$ID #seq(min(d$TA), max(d$TA), by=4)
+
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=logistic(post.b3$a+post.b3$bT*d$TA[i]), size=d$TA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=logistic(post.b3$a+post.b3$bT*d$TA[i]), size=d$TA[i])))
+
+
+Plot2 <- function(POST, mu, mu.ci, D=d, betabin=FALSE){
+  op <- par(mfrow=c(1,2))
+  plot(TM/TA~log(TA), data=D, pch='', ylim=c(0,1))
+  for(i in 1:length(id.seq)) with(D, lines(rep(log(TA[i]),2), c(mu.ci[,i]/TA[i]),col='lightgrey', lwd=1.5))
+  points(TM/TA~log(TA), data=D,col=col.alpha('darkgray', 0.8), pch=19)
+  points(mu/TA~log(TA), data=D, pch=19, cex=0.5)
+
+  if(betabin){
+    prob.dens3 <- rbeta2(nrow(d)*100, prob=logistic(POST$a+POST$bT*d$TA), theta=exp(POST$tau))
+    dens(prob.dens3)
+    par(op)
+    return(prob.dens3)
+    }
+  dens(with(POST,  logistic(a + bT*with(D, mean(TA)))))
+  par(op)
+  return(NULL)
+}
+
+tmp <- Plot2(post.b3, mu, mu.ci, d)
+
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb3$a+post.bb3$bT*d$TA[i]), theta=exp(post.bb3$tau)), size=d$TA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb3$a+post.bb3$bT*d$TA[i]), theta=exp(post.bb3$tau)), size=d$TA[i])))               
+
+betabin.dens <- Plot2(post.bb3, mu, mu.ci, d, TRUE)
+PCI(betabin.dens)
+
 @ 
 
 
@@ -264,7 +428,7 @@ lines(mu~ID, data=d)
 
 <<runit,eval=FALSE>>=
 require(knitr) ### the package
-knit(paste(getwd(),'hw8ashander.Rnw',sep='/')) ## to run
+knit(paste(getwd(),'hw8ashander.Rnw',sep='/')) ## to run1
 
 ##x to use all cores
 require(snowfall)
@@ -272,6 +436,12 @@ sfInit(parallel=TRUE,cpus=4)
 sfLibrary(rethinking)
 sfExportAll()
 sfStop()
+@ 
+
+<<other-ideas,eval=FALSE>>=
+## make 'error bars'
+#
+
 @ 
 
 \end{document}
