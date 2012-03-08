@@ -80,80 +80,42 @@ As a conservative test, I'll use model averaging based on AICc (which seems to f
 
 <<trolley-plots,message=FALSE,cache=TRUE>>=
 post <- sample.naive.posterior(list(m2,m3), n=2e4, method='AICc', nobs=nrow(d))
-prob.indices <- grep("1|2|3|4|5|6|7", names(post))
+prob.indices <- grep("\\|", names(post2))
 
-op <- par(mfrow=c(1,2))
+op <- par(mfrow=c(2,2))
 
 for(kI in 0:1){
-plot(1,1, type='n', xlab='contact', ylab='probability', xlim=c
-(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
-col.vec=c('grey','black')
-ci.vec=c('black','white')
-kA <- 0
-kI <- kI
-kC <- 0:1 ## variable axis
+  for(kA in 0:1){
+    kC <- 0:1 
+    plot(1,1, type='n', xlab='contact', ylab='probability', xlim=c(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
+    col.vec=c('grey','black')
+    ci.vec=c('black','white')
 
-title(paste('action',kA,'male 0:1','intent',kI))
+    title(paste('action',kA,'male 0:1','intent',kI))
 
-for(kM in 0:1){
-
-for(s in 1:200){
-  p <- post[s,]
-
-  ak <- as.numeric(p[prob.indices])
-  phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
-  pk <- pordlogit(1:6, a=ak, phi=phi)
-  for(i in 1:6)
-    lines(kC, pk[,i], col=col.alpha(col.vec[kM+1], 0.01))
-}
-
-pmle <- as.list(coef(m2))
-if(class(m2)=='polr')
-  ak <- m2$zeta
-#else ak <- as.numeric(pmle[prob.indices]))
-phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
-pk.mle <- pordlogit(1:6, a=ak, phi=phi)
-for(i in 1:6) lines(0:1, pk.mle[,i], col=ci.vec[kM+1])
-}
+    for(kM in 0:1){
+      for(s in 1:200){
+        p <- post[s,]
+        ak <- as.numeric(p[prob.indices])
+        phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
+        pk <- pordlogit(1:6, a=ak, phi=phi)
+        for(i in 1:6)
+          lines(kC, pk[,i], col=col.alpha(col.vec[kM+1], 0.01))
+      }
+      pmle <- as.list(coef(m2))
+      if(class(m2)=='polr')
+        ak <- m2$zeta
+      phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
+      pk.mle <- pordlogit(1:6, a=ak, phi=phi)
+      for(i in 1:6) lines(0:1, pk.mle[,i], col=ci.vec[kM+1])
+    }
+  }
 }
 par(op)
+
 @
 
 
-<<trolley-plot-2,message=FALSE,cache=TRUE,echo=FALSE>>=
-op <- par(mfrow=c(1,2))
-for(kA in 0:1){
-plot(1,1, type='n', xlab='contact', ylab='probability', xlim=c
-(0,1), ylim=c(0,1), xaxp=c(0,1,1), yaxp=c(0,1,2))
-col.vec=c('grey','black')
-ci.vec=c('black','white')
-kI <- 0
-kC <- 0:1 ## variable axis
-title(paste('action',kA,'male 0:1','intent',kI))
-
-for(kM in 0:1){
-
-for(s in 1:200){
-  p <- post[s,]
-
-  ak <- as.numeric(p[prob.indices])
-  phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
-  pk <- pordlogit(1:6, a=ak, phi=phi)
-  for(i in 1:6)
-    lines(kC, pk[,i], col=col.alpha(col.vec[kM+1], 0.01))
-}
-
-pmle <- as.list(coef(m2))
-if(class(m2)=='polr')
-  ak <- m2$zeta
-#else ak <- as.numeric(pmle[prob.indices]))
-phi <-  with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention`+kM*kC*`contact:male` + kM*male)
-pk.mle <- pordlogit(1:6, a=ak, phi=phi)
-for(i in 1:6) lines(0:1, pk.mle[,i], col=ci.vec[kM+1])
-}
-}
-par(op)
-@ 
 Above depicts (model-averaged) effect of contact for female (light gray w/ black center lines) and male (dark gray w/ white centerlines). 
 Males consistently respond more to contact scearios. 
 
@@ -174,20 +136,22 @@ Model-averaged value for the interaction coefficient between {\tt contact} and {
 Construct standardized predictors based on square and cube of age: 
 
 <<polr-age,message=TRUE,cache=TRUE,warning=FALSE>>=
-Standardize <- function(x){(x-mean(x))/sd(x)}
-d$age2 <- Standardize(d$age^2)
-d$age3 <- Standardize(d$age^3)
-d$age <- Standardize(d$age)
+Standardize <- function(x) { 
+  (x - mean(x))/sd(x)
+}
+d$age1 <- Standardize(d$age)
+d$age2 <- Standardize(d$age^2) 
+d$age3 <- Standardize(d$age^3) 
 
-m4 <- polr( as.ordered(response) ~ action * intention + contact * intention + age, data=d , Hess=TRUE )
-m5 <- polr( as.ordered(response) ~ action * intention + contact * intention + age2, data=d , Hess=TRUE )
-m6 <- polr( as.ordered(response) ~ action * intention + contact * intention + age3, data=d , Hess=TRUE )
+m4 <- polr( as.ordered(response) ~ action * intention + contact * intention + Standardize(age), data=d , Hess=TRUE )
+m5 <- polr( as.ordered(response) ~ action * intention + contact * intention + Standardize(age) + Standardize(age^2), data=d , Hess=TRUE )
+m6 <- polr( as.ordered(response) ~ action * intention + contact * intention + Standardize(age) + Standardize(age^2) + Standardize(age^3), data=d , Hess=TRUE )
 
 compare(m4,m5,m6,nobs=nrow(d))
 
 coeftab(m4,m5,m6)
 
-precis(m4)
+precis(m6)
 
 @ 
 
@@ -195,10 +159,42 @@ Model selection support a linear effect of age, with just a hint of a quadratic 
 In both cases the effect of age is negative, decreasing the tendancy toward Action, Intention or Contact. 
 
 <<mod-avg-age,message=TRUE,cache=TRUE>>=
-post2 <- sample.naive.posterior(list(m4,m5),method='AICc',nobs=nrow(d), n=2e4)
-dens(post2$age)
+post2 <- sample.naive.posterior(list(m5,m6),method='AICc',nobs=nrow(d), n=2e4)
+prob.indices <- grep("\\|", names(post2))
+
+avg.coef <- colMeans(post2)
+
+
+ages <- min(d$age):max(d$age)
+for(kC in 0:1){
+  op <- par(mfrow=c(2,2))
+  for(kA in 0:1){
+    for(kI in 0:1)
+      {
+        plot(1,1, xlab='age', ylab='probability', xlim=range(d$age), ylim=c(0,1), yaxp=c(0,1,2)) 
+
+        title(paste('act',kA,'inten',kI,'cont',kC))
+
+        for(s in 1:200){
+          p <- post2[s,]
+          ak <- as.numeric(p[prob.indices])
+          phi <- with(p, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention` + Standardize(ages)*`Standardize(age)` + Standardize(ages^2)*`Standardize(age^2)` + Standardize(ages^3)*`Standardize(age^3)`)
+          pk <- pordlogit(1:6, a=ak, phi=phi)
+          for(i in 1:6)
+            lines(ages, pk[,i], col=col.alpha("grey", 0.01))
+        }
+        pmle <- as.list(avg.coef)
+        ak <- avg.coef[prob.indices]
+        phi <- with(pmle, kA*action + kI*intention + kC*contact + kA*kI*`action:intention` + kC*kI*`action:intention` + Standardize(ages)*`Standardize(age)` + Standardize(ages^2)*`Standardize(age^2)` + Standardize(ages^3)*`Standardize(age^3)`)    
+        pk.mle <- pordlogit(1:6, a=ak, phi=phi)
+        for(i in 1:6) lines(ages, pk.mle[,i], col="black")
+      }
+  }
+  par(op)
+}
+
 @ 
-Model-averaged (via AICc) coefficient on age.
+
 
 
 \subsection*{Basketball}
@@ -232,12 +228,14 @@ dbetabinom2 <- function(x, pbar,  theta, size, log=FALSE){
 For the beta-binomial model, fits to the raw data yielded poor estimates, with unrealistically low variance (0). 
 
 <<binom,message=FALSE,cache=TRUE>>=
-min.goals <- min(d$FGM)
-d$FGM <-d$FGM - min.goals
-d$FGA <-d$FGA - min.goals
+#min.goals <- min(d$FGM)
+#d$FGM <-d$FGM - min.goals
+#d$FGA <-d$FGA - min.goals
 
 m2b <- mle2(FGM ~ dbinom(prob=logistic(a), size=FGA), data=d, start=list(a=0))
-m2bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a), theta=exp(tau), size=FGA), data=d, start=list(a=0, tau=log(2)))
+m2bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a), theta=theta, size=FGA), data=d, start=list(a=0, theta=2))
+compare(m2b, m2bb, nobs=sum(d$FGA))
+precis(m2bb)
 @ 
 
 <<post-bs,message=FALSE,cache=TRUE,warning=FALSE>>=
@@ -254,26 +252,21 @@ Plot0 <- function(d, mu, mu.ci){
   lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
   lines(mu/FGA~id.seq, data=d)
 }
+op <- par(mfrow=c(2,2))
 Plot0(d, mu, mu.ci)
+dens(logistic(post.b1$a), xlim=c(.3,.6))
+title('binomial probability')
 
-prob <- rbeta2(n=1e4, prob=logistic(post.bb1$a), theta=exp(post.bb1$tau))
+prob <- rbeta2(n=1e4, prob=logistic(post.bb1$a), theta=post.bb1$theta)
 mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=prob, size=d$FGA[i])))
 mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=prob, size=d$FGA[i])))               
 
-op <- par(mfrow=c(1,2))
-
 Plot0(d, mu, mu.ci)
-## plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
-## lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
-## lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
-## lines(mu/FGA~id.seq, data=d)
 
-prob.dens <- rbeta2(nrow(d)*100, prob=logistic(post.bb1$a), theta=exp(post.bb1$tau))
-dens(prob.dens)
+prob.dens <- rbeta2(nrow(d)*100, prob=logistic(post.bb1$a), theta=post.bb1$theta)
+dens(prob.dens, xlim=c(.3,.6))
+title('beta-binomial probability')
 par(op)
-
-PCI(prob.dens)
-
 @ 
 
 The above plots show field goals made over attempted plotted against player ID (assigned in order of shooting percentage). 
@@ -296,15 +289,12 @@ d <- read.csv('fieldgoals0708.csv')
 d <- d[order(d$FGM),]               
 d$ID <- seq_along(d$player)
 
-min.goals <- min(d$FGM)
-d$FGM <-d$FGM - min.goals
-d$FGA <-d$FGA - min.goals
-
 #max.attempts <- max(d$FGA) 
-m3b <- mle2(FGM ~ dbinom(prob=logistic(a+b*FGA), size=FGA), data=d, start=list(a=0, b=0))
-m3bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a+b*FGA), theta=exp(tau), size=FGA), data=d, start=list(a=0, b=0, tau=log(2)))
+m3b <- mle2(FGM ~ dbinom(prob=logistic(a+b*FGA/max(FGA)), size=FGA), data=d, start=list(a=0, b=0))
+m3bb <- mle2(FGM ~ dbetabinom2(pbar=logistic(a+b*FGA/max(FGA)), theta=theta, size=FGA), data=d, start=list(a=0, b=0, theta=2))
 precis(m3b)
 precis(m3bb)
+
 @
 
 
@@ -313,55 +303,42 @@ post.b2 <-sample.naive.posterior(m3b)
 post.bb2 <- sample.naive.posterior(m3bb)
 id.seq <- d$ID #seq(min(d$FGA), max(d$FGA), by=4)
 
+post.b2$b <- post.b2$b/max(d$FGA) ## rescale posterior coefficient as in fitted equation
+post.bb2$b <- post.bb2$b/max(d$FGA)
+
 mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=logistic(post.b2$a+post.b2$b*d$FGA[i]), size=d$FGA[i])))
 mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=logistic(post.b2$a+post.b2$b*d$FGA[i]), size=d$FGA[i])))
 
-plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
-lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
-lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
-lines(mu/FGA~id.seq, data=d)
-
 Plot1 <- function(POST, mu, mu.ci, D=d, betabin=FALSE){
-  op <- par(mfrow=c(1,2))
   plot(FGM/FGA~FGA, data=D, pch='', ylim=c(0,1))
   for(i in 1:length(id.seq)) with(D, lines(rep(FGA[i],2), c(mu.ci[,i]/FGA[i]),col='lightgrey', lwd=1.5))
   points(FGM/FGA~FGA, data=D,col=col.alpha('darkgray', 0.8), pch=19)
   points(mu/FGA~FGA, data=D, pch=19, cex=0.5)
 
   if(betabin){
-    prob.dens3 <- rbeta2(nrow(d)*100, prob=logistic(POST$a+ POST$b*d$FGA), theta=exp(POST$tau))
-    dens(prob.dens3)
-    par(op)
+    prob.dens3 <- rbeta2(nrow(d)*100, prob=logistic(POST$a+ POST$b*d$FGA), theta=POST$theta)
+    dens(prob.dens3,xlim=c(.3,.6))
+    title('beta binomial probability')
     return(prob.dens3)
     }
-  dens(with(POST,  logistic(a + b*with(D, mean(FGA)))))
-  par(op)
+  dens(with(POST,  logistic(a + b*with(D, mean(FGA)))),xlim=c(.3,.6))
+  title('binomial probability')
   return(NULL)
 }
-
+op <- par(mfrow=c(2,2))
 tmp <- Plot1(post.b2, mu, mu.ci, d)
 
-mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb2$a+post.bb2$b*d$FGA[i]), theta=exp(post.bb2$tau)), size=d$FGA[i])))
-mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb2$a+post.bb2$b*d$FGA[i]), theta=exp(post.bb2$tau)), size=d$FGA[i])))               
+mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb2$a+post.bb2$b*d$FGA[i]), theta=post.bb2$theta), size=d$FGA[i])))
+mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb2$a+post.bb2$b*d$FGA[i]), theta=post.bb2$theta), size=d$FGA[i])))               
 
-plot(FGM/FGA~ID, data=d, xlab='Player ID',col=col.alpha('gray', 0.5), pch=19, ylim=c(0,1))
-lines(id.seq, mu.ci[1,]/d$FGA, lty=2)
-lines(id.seq, mu.ci[2,]/d$FGA, lty=2)
-lines(mu/FGA~id.seq, data=d)
-
-
-betabin.fga.dens <- Plot1(post.bb2, mu, mu.ci, d, TRUE)
-
-PCI(betabin.fga.dens)
-
+tmp <- Plot1(post.bb2, mu, mu.ci, d, TRUE)
+  par(op)
 @ 
 
-Those taking more attempts have {\em a higher chance} of making the baskets.
-It's like the player know who among them is a better shooter and preferentially allocate shooting attempts to those players.
+Those taking more attempts have {\em a lower chance} of making the baskets.
+Perhaps those who shoot more often shoot from further away?
 
 \subsubsection{(c)}
-
-
 
 <<binom-3pt,message=FALSE,cache=TRUE,warning=FALSE>>=
 d <- read.csv('fieldgoals0708.csv')
@@ -370,20 +347,17 @@ d$ID <- seq_along(d$player)
 d$TM <- d$FGM-d$X2PM
 d$TA <- d$FGA-d$X2PA
 
-#min.goals <- min(d$FGM)
-#d$FGM <-d$FGM - min.goals
-#d$FGA <-d$FGA - min.goals
-
-#max.attempts <- max(d$FGA) 
-m4b <- mle2(TM ~ dbinom(prob=logistic(a+bT*TA + bA*FGA), size=TA), data=d, start=list(a=0, bT=0, bA=0))
+m4b <- mle2(TM ~ dbinom(prob=logistic(a+bT*TA), size=TA), data=d, start=list(a=0, bT=0))
 m4bb <- mle2(TM ~ dbetabinom2(pbar=logistic(a+bT*TA ), theta=exp(tau), size=TA), data=d, start=list(a=0, bT=0, tau=log(2)))
+m4bbolker <- mle2(TM ~ dbetabinom(prob=logistic(a+bT*TA ), theta=exp(tau), size=TA), data=d, start=list(a=0, bT=0, tau=log(2)))
 m4bb2 <- mle2(TM ~ dbetabinom2(pbar=logistic(a+bT*TA + bA*FGA), theta=exp(tau), size=TA), data=d, start=list(a=0, bT=0, bA=0, tau=log(2)))
 precis(m4b)
-precis(m4bb)
 precis(m4bb2)
-compare(m4b, m4bb, m4bb2, nobs=nrow(d))
+compare(m4b, m4bb, m4bb2, nobs=sum(d$FGA))
+
 @
 
+No issues fitting, likely because of the exponential parameterization for $\theta$
 
 
 <<post-bs-threes,message=FALSE,cache=TRUE,warning=FALSE>>=
@@ -396,7 +370,7 @@ mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=logistic(post.b3$a+po
 
 
 Plot2 <- function(POST, mu, mu.ci, D=d, betabin=FALSE){
-  op <- par(mfrow=c(1,2))
+
   plot(TM/TA~log(TA), data=D, pch='', ylim=c(0,1))
   for(i in 1:length(id.seq)) with(D, lines(rep(log(TA[i]),2), c(mu.ci[,i]/TA[i]),col='lightgrey', lwd=1.5))
   points(TM/TA~log(TA), data=D,col=col.alpha('darkgray', 0.8), pch=19)
@@ -404,23 +378,22 @@ Plot2 <- function(POST, mu, mu.ci, D=d, betabin=FALSE){
 
   if(betabin){
     prob.dens3 <- rbeta2(nrow(d)*100, prob=logistic(POST$a+POST$bT*d$TA), theta=exp(POST$tau))
-    dens(prob.dens3)
-    par(op)
+    dens(prob.dens3,xlim=c(.2,.5))
+    title('beta binomial probability')
     return(prob.dens3)
     }
-  dens(with(POST,  logistic(a + bT*with(D, mean(TA)))))
-  par(op)
+  dens(with(POST,  logistic(a + bT*with(D, mean(TA)))),xlim=c(.2,.5))
+  title('binomial probability')
   return(NULL)
 }
-
+  op <- par(mfrow=c(2,2))
 tmp <- Plot2(post.b3, mu, mu.ci, d)
 
 mu <- sapply(id.seq, function(i) mean(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb3$a+post.bb3$bT*d$TA[i]), theta=exp(post.bb3$tau)), size=d$TA[i])))
 mu.ci <- sapply(id.seq, function(i) PCI(rbinom(n=1e4, prob=rbeta2(n=1e4, prob=logistic(post.bb3$a+post.bb3$bT*d$TA[i]), theta=exp(post.bb3$tau)), size=d$TA[i])))               
 
-betabin.dens <- Plot2(post.bb3, mu, mu.ci, d, TRUE)
-PCI(betabin.dens)
-
+tmp <- Plot2(post.bb3, mu, mu.ci, d, TRUE)
+par(op)
 @ 
 
 

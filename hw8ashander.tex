@@ -488,44 +488,42 @@ As a conservative test, I'll use model averaging based on AICc (which seems to f
 \ttfamily\noindent
 \hlsymbol{post}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{,}{\ }\hlsymbol{m3}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{20000}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{prob.indices}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{grep}\hlkeyword{(}\hlstring{"1|2|3|4|5|6|7"}\hlkeyword{,}{\ }\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{post}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{prob.indices}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{grep}\hlkeyword{(}\hlstring{"\usebox{\hlnormalsizeboxbackslash}\usebox{\hlnormalsizeboxbackslash}|"}\hlkeyword{,}{\ }\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kI}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{type}{\ }\hlargument{=}{\ }\hlstring{"n"}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"contact"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"probability"}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{yaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{col.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"grey"}\hlkeyword{,}{\ }\hlstring{"black"}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{ci.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"black"}\hlkeyword{,}{\ }\hlstring{"white"}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kI}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{kI}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{kC}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }variable{\ }axis}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kA}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kC}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{type}{\ }\hlargument{=}{\ }\hlstring{"n"}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"contact"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"probability"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{yaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{col.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"grey"}\hlkeyword{,}{\ }\hlstring{"black"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ci.vec}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"black"}\hlkeyword{,}{\ }\hlstring{"white"}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"action"}\hlkeyword{,}{\ }\hlsymbol{kA}\hlkeyword{,}{\ }\hlstring{"male{\ }0:1"}\hlkeyword{,}{\ }\hlstring{"intent"}\hlkeyword{,}{\ }\hlsymbol{kI}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"action"}\hlkeyword{,}{\ }\hlsymbol{kA}\hlkeyword{,}{\ }\hlstring{"male{\ }0:1"}\hlkeyword{,}{\ }\hlstring{"intent"}\hlkeyword{,}{\ }\hlsymbol{kI}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kM}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{s}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{200}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post}\hlkeyword{[}\hlsymbol{s}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.numeric}\hlkeyword{(}\hlsymbol{p}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{p}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kM}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{s}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{200}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post}\hlkeyword{[}\hlsymbol{s}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.numeric}\hlkeyword{(}\hlsymbol{p}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{p}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{kC}\hlkeyword{,}{\ }\hlsymbol{pk}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlsymbol{col.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{,}{\ }\hlnumber{0.01}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pmle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{if}{\ }\hlkeyword{(}\hlfunctioncall{class}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}{\ }=={\ }\hlstring{"polr"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{m2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{zeta}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}\hlsymbol{}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{pmle}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{kC}\hlkeyword{,}{\ }\hlsymbol{pk}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlsymbol{col.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{,}{\ }\hlnumber{0.01}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{,}{\ }\hlsymbol{pk.mle}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlsymbol{ci.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pmle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlfunctioncall{coef}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{if}{\ }\hlkeyword{(}\hlfunctioncall{class}\hlkeyword{(}\hlsymbol{m2}\hlkeyword{)}{\ }=={\ }\hlstring{"polr"}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{m2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{zeta}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}else{\ }ak{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }as.numeric(pmle[prob.indices]))}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}\hlsymbol{}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{pmle}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}contact:male\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kM}{\ }\hlkeyword{*}{\ }\hlsymbol{male}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{,}{\ }\hlsymbol{pk.mle}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlsymbol{ci.vec}\hlkeyword{[}\hlsymbol{kM}{\ }\hlkeyword{+}{\ }\hlnumber{1}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\mbox{}
 \normalfont
@@ -539,11 +537,6 @@ As a conservative test, I'll use model averaging based on AICc (which seems to f
 \end{knitrout}
 
 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
-\includegraphics{trolley-plot-2} \end{kframe}}
-\end{knitrout}
 
 Above depicts (model-averaged) effect of contact for female (light gray w/ black center lines) and male (dark gray w/ white centerlines). 
 Males consistently respond more to contact scearios. 
@@ -583,25 +576,26 @@ Construct standardized predictors based on square and cube of age:
 \hlsymbol{Standardize}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{(}\hlsymbol{x}{\ }\hlkeyword{-}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hlkeyword{)}\hlkeyword{/}\hlfunctioncall{sd}\hlkeyword{(}\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age1}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{3}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m4}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{age}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{age}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m5}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{age2}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{age}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m6}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{polr}\hlkeyword{(}\hlfunctioncall{as.ordered}\hlkeyword{(}\hlsymbol{response}\hlkeyword{)}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{action}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{contact}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{age3}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{age}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{age}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{3}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{Hess}{\ }\hlargument{=}{\ }\hlnumber{TRUE}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{,}{\ }\hlsymbol{m5}\hlkeyword{,}{\ }\hlsymbol{m6}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##     k  AICc   BIC    w.AICc     w.BIC dAICc  dBIC
-## m4 12 36913 36999 0.9992264 0.9992264  0.00  0.00
-## m5 12 36927 37014 0.0006843 0.0006843 14.57 14.57
-## m6 12 36931 37018 8.932e-05 8.932e-05 18.65 18.65
+##     k  AICc   BIC    w.AICc     w.BIC  dAICc   dBIC
+## m6 14 36735 36836         1 0.9996935   0.00   0.00
+## m5 13 36759 36852 8.387e-06 0.0003065  23.38  16.18
+## m4 12 36913 36999 < 2.2e-16 < 2.2e-16 177.31 162.91
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -610,43 +604,45 @@ Construct standardized predictors based on square and cube of age:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##                          m4        m5        m6
-## action              -0.4739   -0.4730   -0.4724
-## intention           -0.2828   -0.2827   -0.2827
-## contact             -0.3319   -0.3317   -0.3316
-## age                 -0.0770        NA        NA
-## action:intention    -0.4466   -0.4463   -0.4464
-## intention:contact   -1.2774   -1.2744   -1.2727
-## 1|2                 -2.6373   -2.6352   -2.6349
-## 2|3                 -1.9392   -1.9384   -1.9388
-## 3|4                 -1.3428   -1.3427   -1.3435
-## 4|5                 -0.3053   -0.3066   -0.3080
-## 5|6                  0.3671    0.3648    0.3630
-## 6|7                  1.2728    1.2705    1.2691
-## age2                     NA   -0.0364        NA
-## age3                     NA        NA    0.0024
-## nobs              9930.0000 9930.0000 9930.0000
+##                           m4        m5        m6
+## action               -0.4739   -0.4780   -0.4775
+## intention            -0.2828   -0.2853   -0.2845
+## contact              -0.3319   -0.3333   -0.3326
+## Standardize(age)     -0.0770   -1.3036    0.4507
+## action:intention     -0.4466   -0.4524   -0.4559
+## intention:contact    -1.2774   -1.2940   -1.2986
+## 1|2                  -2.6373   -2.6633   -2.6670
+## 2|3                  -1.9392   -1.9591   -1.9625
+## 3|4                  -1.3428   -1.3578   -1.3614
+## 4|5                  -0.3053   -0.3091   -0.3113
+## 5|6                   0.3671    0.3721    0.3718
+## 6|7                   1.2728    1.2853    1.2876
+## Standardize(age^2)        NA    1.2595   -2.6148
+## Standardize(age^3)        NA        NA    2.1776
+## nobs               9930.0000 9930.0000 9930.0000
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
 \hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\mbox{}
+\hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m6}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##                   Estimate Std. Error    2.5%    97.5%
-## action            -0.47386    0.05485 -0.5814 -0.36635
-## intention         -0.28278    0.05837 -0.3972 -0.16837
-## contact           -0.33190    0.06980 -0.4687 -0.19510
-## age               -0.07705    0.01785 -0.1120 -0.04207
-## action:intention  -0.44663    0.08084 -0.6051 -0.28819
-## intention:contact -1.27744    0.09940 -1.4723 -1.08262
-## 1|2               -2.63726    0.05228 -2.7397 -2.53479
-## 2|3               -1.93923    0.04834 -2.0340 -1.84449
-## 3|4               -1.34282    0.04612 -1.4332 -1.25242
-## 4|5               -0.30532    0.04423 -0.3920 -0.21864
-## 5|6                0.36712    0.04444  0.2800  0.45423
-## 6|7                1.27280    0.04719  1.1803  1.36530
+##                    Estimate Std. Error    2.5%   97.5%
+## action              -0.4775    0.05490 -0.5850 -0.3699
+## intention           -0.2845    0.05839 -0.3990 -0.1701
+## contact             -0.3326    0.06984 -0.4695 -0.1958
+## Standardize(age)     0.4507    0.36286 -0.2605  1.1619
+## Standardize(age^2)  -2.6148    0.77704 -4.1378 -1.0919
+## Standardize(age^3)   2.1776    0.43315  1.3286  3.0265
+## action:intention    -0.4559    0.08088 -0.6144 -0.2973
+## intention:contact   -1.2986    0.09949 -1.4936 -1.1036
+## 1|2                 -2.6670    0.05246 -2.7698 -2.5641
+## 2|3                 -1.9625    0.04846 -2.0575 -1.8675
+## 3|4                 -1.3614    0.04622 -1.4520 -1.2708
+## 4|5                 -0.3113    0.04430 -0.3981 -0.2245
+## 5|6                  0.3718    0.04452  0.2845  0.4591
+## 6|7                  1.2876    0.04730  1.1948  1.3803
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -659,15 +655,59 @@ In both cases the effect of age is negative, decreasing the tendancy toward Acti
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{post2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{,}{\ }\hlsymbol{m5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{20000}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\mbox{}
+\hlsymbol{post2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlfunctioncall{list}\hlkeyword{(}\hlsymbol{m5}\hlkeyword{,}{\ }\hlsymbol{m6}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{method}{\ }\hlargument{=}{\ }\hlstring{"AICc"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{20000}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{mod-avg-age} \end{kframe}}
+\begin{verbatim}
+## Warning message: One or more models produced zero samples, because of very low posterior probability.
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlsymbol{prob.indices}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{grep}\hlkeyword{(}\hlstring{"\usebox{\hlnormalsizeboxbackslash}\usebox{\hlnormalsizeboxbackslash}|"}\hlkeyword{,}{\ }\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{avg.coef}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{colMeans}\hlkeyword{(}\hlsymbol{post2}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{ages}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hlkeyword{:}\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kC}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kA}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{kI}{\ }\hlkeyword{in}{\ }\hlnumber{0}\hlkeyword{:}\hlnumber{1}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"age"}\hlkeyword{,}{\ }\hlargument{ylab}{\ }\hlargument{=}{\ }\hlstring{"probability"}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{range}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{yaxp}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlstring{"act"}\hlkeyword{,}{\ }\hlsymbol{kA}\hlkeyword{,}{\ }\hlstring{"inten"}\hlkeyword{,}{\ }\hlsymbol{kI}\hlkeyword{,}{\ }\hlstring{"cont"}\hlkeyword{,}{\ }\hlsymbol{kC}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{s}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{200}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{p}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post2}\hlkeyword{[}\hlsymbol{s}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.numeric}\hlkeyword{(}\hlsymbol{p}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{p}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}Standardize(age)\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}Standardize(age\usebox{\hlnormalsizeboxhat}2)\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{3}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}Standardize(age\usebox{\hlnormalsizeboxhat}3)\usebox{\hlnormalsizeboxbacktick}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{,}{\ }\hlsymbol{pk}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"grey"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{0.01}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pmle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.list}\hlkeyword{(}\hlsymbol{avg.coef}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{ak}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{avg.coef}\hlkeyword{[}\hlsymbol{prob.indices}\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{phi}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{pmle}\hlkeyword{,}{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{action}{\ }\hlkeyword{+}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{intention}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{contact}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{kA}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlsymbol{kC}{\ }\hlkeyword{*}{\ }\hlsymbol{kI}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}action:intention\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}Standardize(age)\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}Standardize(age\usebox{\hlnormalsizeboxhat}2)\usebox{\hlnormalsizeboxbacktick}}{\ }\hlkeyword{+}{\ }\hlfunctioncall{Standardize}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{\usebox{\hlnormalsizeboxhat}}\hlnumber{3}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlsymbol{\usebox{\hlnormalsizeboxbacktick}Standardize(age\usebox{\hlnormalsizeboxhat}3)\usebox{\hlnormalsizeboxbacktick}}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{pk.mle}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{pordlogit}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{,}{\ }\hlargument{a}{\ }\hlargument{=}{\ }\hlsymbol{ak}\hlkeyword{,}{\ }\hlargument{phi}{\ }\hlargument{=}{\ }\hlsymbol{phi}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlnumber{6}\hlkeyword{)}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{,}{\ }\hlsymbol{pk.mle}\hlkeyword{[}\hlkeyword{,}{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"black"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\mbox{}
+\normalfont
+\end{flushleft}
+\includegraphics{mod-avg-age1} \includegraphics{mod-avg-age2} \end{kframe}}
 \end{knitrout}
 
-Model-averaged (via AICc) coefficient on age.
+
 
 
 \subsection*{Basketball}
@@ -725,16 +765,32 @@ For the beta-binomial model, fits to the raw data yielded poor estimates, with u
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{min.goals}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}{\ }\hlkeyword{-}{\ }\hlsymbol{min.goals}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}{\ }\hlkeyword{-}{\ }\hlsymbol{min.goals}\hspace*{\fill}\\
+\hlcomment{\usebox{\hlnormalsizeboxhash}min.goals{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }min(d\usebox{\hlnormalsizeboxdollar}FGM)}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}d\usebox{\hlnormalsizeboxdollar}FGM{\ }\usebox{\hlnormalsizeboxlessthan}-d\usebox{\hlnormalsizeboxdollar}FGM{\ }-{\ }min.goals}\hspace*{\fill}\\
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}d\usebox{\hlnormalsizeboxdollar}FGA{\ }\usebox{\hlnormalsizeboxlessthan}-d\usebox{\hlnormalsizeboxdollar}FGA{\ }-{\ }min.goals}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m2b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m2bb}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom2}\hlkeyword{(}\hlargument{pbar}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{tau}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{m2bb}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom2}\hlkeyword{(}\hlargument{pbar}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{theta}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m2b}\hlkeyword{,}{\ }\hlsymbol{m2bb}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{sum}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
+\begin{verbatim}
+##      k AICc  BIC w.AICc  w.BIC dAICc  dBIC
+## m2bb 2 1298 1304      1      1   0.0   0.0
+## m2b  1 1827 1830 <2e-16 <2e-16 529.4 526.5
+\end{verbatim}
+\begin{flushleft}
+\ttfamily\noindent
+\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m2bb}\hlkeyword{)}\mbox{}
+\normalfont
+\end{flushleft}
+\begin{verbatim}
+##       Estimate Std. Error    2.5%     97.5%
+## a      -0.1146    0.01642 -0.1468  -0.08244
+## theta 135.9415   20.11182 96.5230 175.35993
+\end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
@@ -759,43 +815,30 @@ For the beta-binomial model, fits to the raw data yielded poor estimates, with u
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu}\hlkeyword{/}\hlsymbol{FGA}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{Plot0}\hlkeyword{(}\hlsymbol{d}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\includegraphics{post-bs1} \begin{flushleft}
-\ttfamily\noindent
-\hspace*{\fill}\\
-\hlstd{}\hlsymbol{prob}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{Plot0}\hlkeyword{(}\hlsymbol{d}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{dens}\hlkeyword{(}\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.b1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.3}\hlkeyword{,}{\ }\hlnumber{0.6}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{title}\hlkeyword{(}\hlstring{"binomial{\ }probability"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{prob}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{theta}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{prob}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlsymbol{prob}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{Plot0}\hlkeyword{(}\hlsymbol{d}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }plot(FGM/FGA\urltilda{}ID,{\ }data=d,{\ }xlab=\usebox{\hlnormalsizeboxsinglequote}Player{\ }ID\usebox{\hlnormalsizeboxsinglequote},col=col.alpha(\usebox{\hlnormalsizeboxsinglequote}gray\usebox{\hlnormalsizeboxsinglequote},}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}{\ }{\ }{\ }0.5),{\ }pch=19,{\ }ylim=c(0,1))}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(id.seq,{\ }mu.ci[1,]/d\usebox{\hlnormalsizeboxdollar}FGA,{\ }lty=2)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(id.seq,{\ }mu.ci[2,]/d\usebox{\hlnormalsizeboxdollar}FGA,{\ }lty=2)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }lines(mu/FGA\urltilda{}id.seq,{\ }data=d)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{prob.dens}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlnumber{100}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{prob.dens}\hlkeyword{)}\mbox{}
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{post.bb1}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{theta}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{prob.dens}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.3}\hlkeyword{,}{\ }\hlnumber{0.6}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{title}\hlkeyword{(}\hlstring{"beta-binomial{\ }probability"}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{post-bs2} \begin{flushleft}
+\includegraphics{post-bs} \begin{flushleft}
 \ttfamily\noindent
-\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{PCI}\hlkeyword{(}\hlsymbol{prob.dens}\hlkeyword{)}\mbox{}
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\begin{verbatim}
-##    2.5%   97.5% 
-## 0.02436 0.47218 
-\end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
@@ -823,23 +866,19 @@ Still working with scaled attempts and successes, we fit the model
 \hlstd{}\hlsymbol{d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{[}\hlfunctioncall{order}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}\hlkeyword{)}\hlkeyword{,}{\ }\hlkeyword{]}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{ID}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{seq\usebox{\hlnormalsizeboxunderscore}along}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{player}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{min.goals}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{min}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}{\ }\hlkeyword{-}{\ }\hlsymbol{min.goals}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}{\ }\hlkeyword{-}{\ }\hlsymbol{min.goals}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}max.attempts{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }max(d\usebox{\hlnormalsizeboxdollar}FGA)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m3b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m3bb}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom2}\hlkeyword{(}\hlargument{pbar}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{tau}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m3b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{FGA}\hlkeyword{/}\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m3bb}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{FGM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom2}\hlkeyword{(}\hlargument{pbar}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{FGA}\hlkeyword{/}\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{theta}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{b}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m3b}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##     Estimate Std. Error       2.5%      97.5%
-## a -1.8998393  2.520e-02 -1.9492372 -1.8504414
-## b  0.0009062  2.981e-05  0.0008477  0.0009646
+##   Estimate Std. Error     2.5%    97.5%
+## a -0.01389    0.02239 -0.05776  0.02999
+## b -0.18113    0.03548 -0.25067 -0.11159
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -847,10 +886,10 @@ Still working with scaled attempts and successes, we fit the model
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##      Estimate Std. Error      2.5%     97.5%
-## a   -2.458025  0.1714556 -2.794072 -2.121978
-## b    0.001488  0.0002245  0.001048  0.001928
-## tau  2.691860  0.1681873  2.362219  3.021501
+##        Estimate Std. Error      2.5%     97.5%
+## a       0.02988    0.05877  -0.08531   0.14507
+## b      -0.25230    0.09928  -0.44688  -0.05772
+## theta 142.79477   21.18653 101.26995 184.31960
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
@@ -865,23 +904,15 @@ Still working with scaled attempts and successes, we fit the model
 \hlstd{}\hlsymbol{post.bb2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sample.naive.posterior}\hlkeyword{(}\hlsymbol{m3bb}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{id.seq}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{ID}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}seq(min(d\usebox{\hlnormalsizeboxdollar}FGA),{\ }max(d\usebox{\hlnormalsizeboxdollar}FGA),{\ }by=4)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post.b2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post.b2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}\hlkeyword{/}\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }rescale{\ }posterior{\ }coefficient{\ }as{\ }in{\ }fitted{\ }equation}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}\hlkeyword{/}\hlfunctioncall{max}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.b2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{post.b2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.b2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post.b2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{FGM}\hlkeyword{/}\hlsymbol{FGA}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{ID}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"Player{\ }ID"}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu}\hlkeyword{/}\hlsymbol{FGA}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\includegraphics{post-bs-w-pred1} \begin{flushleft}
-\ttfamily\noindent
-\hspace*{\fill}\\
 \hlstd{}\hlsymbol{Plot1}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{POST}\hlkeyword{,}{\ }\hlformalargs{mu}\hlkeyword{,}{\ }\hlformalargs{mu.ci}\hlkeyword{,}{\ }\hlformalargs{D}{\ }\hleqformalargs{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlformalargs{betabin}{\ }\hleqformalargs{=}{\ }\hlnumber{FALSE}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{FGM}\hlkeyword{/}\hlsymbol{FGA}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{FGA}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{D}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlstring{""}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{)}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{D}\hlkeyword{,}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{rep}\hlkeyword{(}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{/}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"lightgrey"}\hlkeyword{,}{\ }\hlargument{lwd}{\ }\hlargument{=}{\ }\hlnumber{1.5}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
@@ -891,63 +922,42 @@ Still working with scaled attempts and successes, we fit the model
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{if}{\ }\hlkeyword{(}\hlsymbol{betabin}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{prob.dens3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlnumber{100}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{prob.dens3}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{theta}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{prob.dens3}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.3}\hlkeyword{,}{\ }\hlnumber{0.6}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlstring{"beta{\ }binomial{\ }probability"}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{return}\hlkeyword{(}\hlsymbol{prob.dens3}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{dens}\hlfunctioncall{}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{,}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{D}\hlkeyword{,}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{dens}\hlfunctioncall{}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{,}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{D}\hlkeyword{,}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.3}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{0.6}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlstring{"binomial{\ }probability"}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{return}\hlkeyword{(}NULL\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{tmp}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot1}\hlkeyword{(}\hlsymbol{post.b2}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{tmp}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot1}\hlkeyword{(}\hlsymbol{post.b2}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\includegraphics{post-bs-w-pred2} \begin{flushleft}
-\ttfamily\noindent
-\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{theta}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu.ci}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{PCI}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{b}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlsymbol{post.bb2}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{theta}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{FGM}\hlkeyword{/}\hlsymbol{FGA}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{ID}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{xlab}{\ }\hlargument{=}{\ }\hlstring{"Player{\ }ID"}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlfunctioncall{col.alpha}\hlkeyword{(}\hlstring{"gray"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlnumber{0.5}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlnumber{19}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{[}\hlnumber{1}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{[}\hlnumber{2}\hlkeyword{,}{\ }\hlkeyword{]}\hlkeyword{/}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{,}{\ }\hlargument{lty}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{lines}\hlkeyword{(}\hlsymbol{mu}\hlkeyword{/}\hlsymbol{FGA}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{tmp}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot1}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{post-bs-w-pred3} \begin{flushleft}
+\includegraphics{post-bs-w-pred} \begin{flushleft}
 \ttfamily\noindent
-\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{betabin.fga.dens}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot1}\hlkeyword{(}\hlsymbol{post.bb2}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{post-bs-w-pred4} \begin{flushleft}
-\ttfamily\noindent
-\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{PCI}\hlkeyword{(}\hlsymbol{betabin.fga.dens}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\begin{verbatim}
-##    2.5%   97.5% 
-## 0.02654 0.47440 
-\end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
 
-Those taking more attempts have {\em a higher chance} of making the baskets.
-It's like the player know who among them is a better shooter and preferentially allocate shooting attempts to those players.
+Those taking more attempts have {\em a lower chance} of making the baskets.
+Perhaps those who shoot more often shoot from further away?
 
 \subsubsection{(c)}
-
-
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
@@ -959,16 +969,14 @@ It's like the player know who among them is a better shooter and preferentially 
 \hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TM}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGM}{\ }\hlkeyword{-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{X2PM}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TA}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}{\ }\hlkeyword{-}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{X2PA}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}min.goals{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }min(d\usebox{\hlnormalsizeboxdollar}FGM)}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}d\usebox{\hlnormalsizeboxdollar}FGM{\ }\usebox{\hlnormalsizeboxlessthan}-d\usebox{\hlnormalsizeboxdollar}FGM{\ }-{\ }min.goals}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}d\usebox{\hlnormalsizeboxdollar}FGA{\ }\usebox{\hlnormalsizeboxlessthan}-d\usebox{\hlnormalsizeboxdollar}FGA{\ }-{\ }min.goals}\hspace*{\fill}\\
-\hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}max.attempts{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }max(d\usebox{\hlnormalsizeboxdollar}FGA)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{m4b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{TM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlsymbol{TA}{\ }\hlkeyword{+}{\ }\hlsymbol{bA}{\ }\hlkeyword{*}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{bT}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{bA}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m4b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{TM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbinom}\hlkeyword{(}\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{bT}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m4bb}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{TM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom2}\hlkeyword{(}\hlargument{pbar}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{bT}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{tau}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{m4bbolker}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{TM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom}\hlkeyword{(}\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{bT}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{tau}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{m4bb2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mle2}\hlkeyword{(}\hlsymbol{TM}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{dbetabinom2}\hlkeyword{(}\hlargument{pbar}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlsymbol{TA}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{bA}{\ }\hlkeyword{*}{\ }\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{start}{\ }\hlargument{=}{\ }\hlfunctioncall{list}\hlkeyword{(}\hlargument{a}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{bT}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{bA}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{tau}{\ }\hlargument{=}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
@@ -977,20 +985,8 @@ It's like the player know who among them is a better shooter and preferentially 
 \end{flushleft}
 \begin{verbatim}
 ##      Estimate Std. Error       2.5%      97.5%
-## a   1.858e-07  5.574e-02 -0.1092391  0.1092395
-## bT  5.825e-04  1.125e-04  0.0003621  0.0008030
-## bA -7.142e-04  5.429e-05 -0.0008206 -0.0006078
-\end{verbatim}
-\begin{flushleft}
-\ttfamily\noindent
-\hlfunctioncall{precis}\hlkeyword{(}\hlsymbol{m4bb}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\begin{verbatim}
-##       Estimate Std. Error       2.5%     97.5%
-## a   -0.8041069   0.046149 -0.8945578 -0.713656
-## bT   0.0008028   0.000137  0.0005342  0.001071
-## tau  5.9697227   0.374477  5.2357619  6.703683
+## a  -0.7712546  0.0368879 -0.8435536 -0.6989557
+## bT  0.0007178  0.0001036  0.0005149  0.0009208
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1006,19 +1002,20 @@ It's like the player know who among them is a better shooter and preferentially 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
-\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m4b}\hlkeyword{,}{\ }\hlsymbol{m4bb}\hlkeyword{,}{\ }\hlsymbol{m4bb2}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}\hlkeyword{)}\mbox{}
+\hlfunctioncall{compare}\hlkeyword{(}\hlsymbol{m4b}\hlkeyword{,}{\ }\hlsymbol{m4bb}\hlkeyword{,}{\ }\hlsymbol{m4bb2}\hlkeyword{,}{\ }\hlargument{nobs}{\ }\hlargument{=}{\ }\hlfunctioncall{sum}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{FGA}\hlkeyword{)}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-##       k  AICc   BIC w.AICc  w.BIC dAICc  dBIC
-## m4bb  3 777.1 785.4      1      1   0.0   0.0
-## m4b   3 886.3 894.6 <2e-16 <2e-16 109.2 109.2
-## m4bb2 4 908.5 919.4 <2e-16 <2e-16 131.4 134.1
+##       k  AICc   BIC    w.AICc   w.BIC  dAICc   dBIC
+## m4bb  3 776.9 785.4 0.9993762 0.99744   0.00   0.00
+## m4b   2 791.6 797.3 0.0006238 0.00256  14.76  11.93
+## m4bb2 4 908.1 919.4 < 2.2e-16 < 2e-16 131.25 134.08
 \end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
 
+No issues fitting, likely because of the exponential parameterization for $\theta$
 
 
 \begin{knitrout}
@@ -1036,7 +1033,7 @@ It's like the player know who among them is a better shooter and preferentially 
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{Plot2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{POST}\hlkeyword{,}{\ }\hlformalargs{mu}\hlkeyword{,}{\ }\hlformalargs{mu.ci}\hlkeyword{,}{\ }\hlformalargs{D}{\ }\hleqformalargs{=}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlformalargs{betabin}{\ }\hleqformalargs{=}{\ }\hlnumber{FALSE}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{plot}\hlkeyword{(}\hlsymbol{TM}\hlkeyword{/}\hlsymbol{TA}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{D}\hlkeyword{,}{\ }\hlargument{pch}{\ }\hlargument{=}{\ }\hlstring{""}\hlkeyword{,}{\ }\hlargument{ylim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{for}{\ }\hlkeyword{(}\hlsymbol{i}{\ }\hlkeyword{in}{\ }\hlnumber{1}\hlkeyword{:}\hlfunctioncall{length}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{)}\hlkeyword{)}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{D}\hlkeyword{,}{\ }\hlfunctioncall{lines}\hlkeyword{(}\hlfunctioncall{rep}\hlkeyword{(}\hlfunctioncall{log}\hlkeyword{(}\hlsymbol{TA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlsymbol{mu.ci}\hlkeyword{[}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{i}\hlkeyword{]}\hlkeyword{/}\hlsymbol{TA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{col}{\ }\hlargument{=}{\ }\hlstring{"lightgrey"}\hlkeyword{,}{\ }\hlargument{lwd}{\ }\hlargument{=}{\ }\hlnumber{1.5}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
@@ -1047,21 +1044,18 @@ It's like the player know who among them is a better shooter and preferentially 
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{if}{\ }\hlkeyword{(}\hlsymbol{betabin}\hlkeyword{)}{\ }\hlkeyword{\usebox{\hlnormalsizeboxopenbrace}}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{prob.dens3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlfunctioncall{nrow}\hlkeyword{(}\hlsymbol{d}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlnumber{100}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TA}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{prob.dens3}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{dens}\hlkeyword{(}\hlsymbol{prob.dens3}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.2}\hlkeyword{,}{\ }\hlnumber{0.5}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlstring{"beta{\ }binomial{\ }probability"}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlfunctioncall{return}\hlkeyword{(}\hlsymbol{prob.dens3}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{dens}\hlfunctioncall{}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{,}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{D}\hlkeyword{,}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{TA}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{dens}\hlfunctioncall{}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{POST}\hlkeyword{,}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{D}\hlkeyword{,}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlsymbol{TA}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{xlim}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0.2}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlnumber{0.5}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{title}\hlkeyword{(}\hlstring{"binomial{\ }probability"}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{return}\hlkeyword{(}NULL\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlkeyword{\usebox{\hlnormalsizeboxclosebrace}}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{op}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{par}\hlkeyword{(}\hlargument{mfrow}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{2}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{tmp}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot2}\hlkeyword{(}\hlsymbol{post.b3}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{tmp}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot2}\hlkeyword{(}\hlsymbol{post.b3}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{)}\mbox{}
-\normalfont
-\end{flushleft}
-\includegraphics{post-bs-threes1} \begin{flushleft}
-\ttfamily\noindent
-\hspace*{\fill}\\
 \hlstd{}\hlsymbol{mu}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{id.seq}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{i}\hlkeyword{)}{\ }\hlfunctioncall{mean}\hlkeyword{(}\hlfunctioncall{rbinom}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post.bb3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bT}{\ }\hlkeyword{*}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post.bb3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
@@ -1069,18 +1063,14 @@ It's like the player know who among them is a better shooter and preferentially 
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{rbeta2}\hlkeyword{(}\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{10000}\hlkeyword{,}{\ }\hlargument{prob}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{post.bb3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{post.bb3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{bT}{\ }\hlkeyword{*}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{theta}{\ }\hlargument{=}{\ }\hlfunctioncall{exp}\hlkeyword{(}\hlsymbol{post.bb3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{tau}\hlkeyword{)}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{TA}\hlkeyword{[}\hlsymbol{i}\hlkeyword{]}\hlkeyword{)}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{betabin.dens}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot2}\hlkeyword{(}\hlsymbol{post.bb3}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
+\hlstd{}\hlsymbol{tmp}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{Plot2}\hlkeyword{(}\hlsymbol{post.bb3}\hlkeyword{,}{\ }\hlsymbol{mu}\hlkeyword{,}{\ }\hlsymbol{mu.ci}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{,}{\ }\hlnumber{TRUE}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{post-bs-threes2} \begin{flushleft}
+\includegraphics{post-bs-threes} \begin{flushleft}
 \ttfamily\noindent
-\hlfunctioncall{PCI}\hlkeyword{(}\hlsymbol{betabin.dens}\hlkeyword{)}\mbox{}
+\hlfunctioncall{par}\hlkeyword{(}\hlsymbol{op}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\begin{verbatim}
-##   2.5%  97.5% 
-## 0.2736 0.4246 
-\end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
