@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+require(emdbook)
+require(lme4)
+@
+
+\begin{center}
+  {\bf \Large Homework 9, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+\subsection*{Contraception in Bangladesh}
+
+Looking at fertility in Bangladesh circa 1980. 
+
+<<load-dat, message=FALSE,cache=TRUE>>=
+d <- read.csv('bangladesh.csv')
+head(d)
+dist.pop <- table(d$district) ## population column
+d$population <- sapply(d$district, function(i) dist.pop[match(i, row.names(dist.pop))])
+@ 
+
+My focus is the variables {\tt district}, defining the woman's location in political geography of Bangladesh, {\tt use.contraception} indicating contraception use, and {\tt urban} indicating city or rural.
+
+\subsection*{Predicting contraception use}
+
+
+First, I focus on predicting contraception use accounting for clustering of observations by district. 
+I'll compare a model with a fixed effect for {\tt district} with a mixed effects model that puts random effects on {\tt district}
+
+<<compare-cont, message=FALSE,cache=TRUE>>=
+m1 <- glm(use.contraception ~ as.factor(district), data=d, family=binomial)
+m2 <- glmer(use.contraception ~ (1|district), data=d, family=binomial)
+precis(m2)  
+@ 
+
+\subsubsection*{Mixed effects or not?}
+<<compare-plot, message=FALSE,cache=TRUE>>=
+
+d2 <- fortify(m1, d) #add predictions to data logistic(d2$.fitted) gives predictions
+d2$upper <- as.factor(ifelse(d2$district > 30, 0, 1))
+d2$m1 <- logistic(d2$.fitted)
+
+re2 <- ranef(m2)$district
+fe2 <- fixef(m2)
+d2$m2 <- sapply(d2$district, function (i) logistic(fe2+ re2[match(i, row.names(re2)),])) 
+
+g <- ggplot(d2)+theme_bw()
+g <- g + geom_violin(aes(as.factor(district), use.contraception), alpha=0.5, fill='lightgrey', color='lightgray') ## construct a violin plot for use/non-use each district 
+
+g <- g + geom_point(aes(as.factor(district), m1), size=1.5)
+g <- g + geom_point(aes(as.factor(district), m2), color='darkgrey', size=2)+geom_hline(yintercept=logistic(fe2), color='darkgrey', linetype=2)
+g + geom_text(aes(as.factor(district),c(1.025),label=population), data=d2, size=3, fontfamily='serif')
+@ 
+
+Point estimates from mixed model (gray dots) are biased toward the group mean (dashed line), relative to estimates from fixed effects model (black dots).
+Number of respondents per district are denoted at the top of the plot. 
+
+
+The mixed effect and fixed effect estimates disagree most in districts with low numbers of respondents. 
+This effect occurs across the whole data set, and is most obvious in districts with very few respondents, and whose cluster mean is very far from the overall mean. 
+For example districts 3, 11, and 49 show no variance in responses and the largest disagreements between mixed and random estimates. 
+There are also large differences in districts with relatively few, but very skewed responses, e.g. district 10 (n=13), 24 (n=14), or 59 (n=10).
+When responses are very skewed, even relatively large districts 
+
+
+
+\subsubsection*{urbanness (b)}
+
+<<urban-model, message=FALSE,cache=TRUE>>=
+m3 <- glmm(use.contraception ~ urban + (urban + 1|district), data=d, family=binomial)
+precis(m3)  
+show(m3)
+
+
+plot(ranef(m3))
+@ 
+
+Negative correlation between the varying intercepts and slopes and slopes on urban, per district:  $\rho = - 0. 662$. 
+
+This implies a tradeoff between these two coefficients, i.e. observed differences can be explained {\em either} via large intercept effect or via a large slope effect on urbanness. 
+This points to an issue of identifiability between random intercept on district alone and a random slope on the effect of urban within district.
+
+<<urban-plot,message=FALSE,cache=TRUE>>=
+g2 <- ggplot(d)
+g2 + geom_violin(aes(district, use.contraception))+facet_grid(~urban)
+
+a_dist <- ranef(m3)$district[,1]
+b_dist <- ranef(m3)$district[,2]
+a <- fixef(m3)[1]
+b <- fixef(m3)[2]
+p_urban <- logistic(a + a_dist + b_dist + b)
+p_rural <- logistic(a + a_dist )
+plot(1,1, ylim=c(0,1), xlim=c(0,1), pch='', xlab='probability rural', ylab='probability urban' )
+abline(0,1, lwd=2,col='grey', lty=2)
+text(p_rural, p_urban, labels=as.character(unique(d2$district)), col=col.alpha('black', 0.6))
+@ 
+
+
+\subsection*{Oxford boy growth}
+
+<<load-ox,message=FALSE,cache=TRUE>>=
+d3 <- read.csv('Oxboys.csv')
+head(d3)
+@ 
+
+The data include several boys ({\tt Subject}) have ({\tt height}) measured over time ({\tt Occasion}). 
+
+<<plot-ox,message=FALSE,cache=TRUE>>=
+g3 <- ggplot(d3)
+g3 + geom_point(aes(age,height))+facet_wrap(~Subject)
+@ 
+
+The data look relatively linear. As these are growing boys, for now, it makes sense to model height as a Normal random variable predicted by {\tt age}. 
+Note that this ignore the autocorrelation we expect from a time series.
+
+\subsubsection*{individual level effects (a)}
+
+Model height nested within individual 
+<<ox-indiv, cache=TRUE,message=FALSE>>=
+
+m4 <- lmer(height ~ age + (age|Subject), data=d3)
+precis(m4)
+
+sd(ranef(m4)$Subject[,1]) ## sample standard deviation in estimated random intercept effects
+sd(ranef(m4)$Subject[,2])## sample standard deviation in estimated random slope effect
+@ 
+
+The estimate for the Subject random intercept on height is much higher than that of the Subject$\times$age effect. 
+Further the variance of the estimated random intercept is much larger than that of random slope on age. 
+
+Per-subject variation, unrelated to age, explains more variation than per-subject variation that is related to age.
+
+\subsubsection*{individual level effects (b)}
+
+<<ox-cor, cache=TRUE,message=FALSE>>=
+show(m4)
+@ 
+
+There is a positive correlation between random intercept and slope (on age) effects of subject. 
+This relationship is noisy (plot not shown).
+It makes sense mechanistically that the boys who are bigger in general durign the study, also grew faster over the ages at which they were observed. 
+Boys who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same boys to continue to grow faster. 
+In a sense this correlation captures some of our intution that this is a {\em time series}.
+
+To make projections about future ages, one would want to account for the correlation by \dots 
+
+\subsubsection*{individual level effects (b)}
+
+<<ox-simulate, cache=TRUE,message=FALSE,eval=FALSE>>=
+S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
+@ 
+
+
+\newpage
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'hw9ashander.Rnw',sep='/')) ## to run1
+
+##x to use all cores
+require(snowfall)
+sfInit(parallel=TRUE,cpus=4)
+sfLibrary(rethinking)
+sfExportAll()
+sfStop()
+@ 
+
+<<other-ideas,eval=FALSE>>=
+## make 'error bars'
+#
+
+@ 
+
+\end{document}
