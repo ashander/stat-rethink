@@ -65,7 +65,7 @@ My focus is the variables {\tt district}, defining the woman's location in polit
 First, I focus on predicting contraception use accounting for clustering of observations by district. 
 I'll compare a model with a fixed effect for {\tt district} with a mixed effects model that puts random effects on {\tt district}
 
-<<compare-cont, message=FALSE,cache=TRUE>>=
+<<compare-cont,message=FALSE,cache=TRUE>>=
 m1 <- glm(use.contraception ~ as.factor(district), data=d, family=binomial)
 m2 <- glmer(use.contraception ~ (1|district), data=d, family=binomial)
 precis(m2)  
@@ -75,23 +75,30 @@ precis(m2)
 <<compare-plot, message=FALSE,cache=TRUE>>=
 
 d2 <- fortify(m1, d) #add predictions to data logistic(d2$.fitted) gives predictions
-d2$upper <- as.factor(ifelse(d2$district > 30, 0, 1))
+d2$upper <- ifelse(d2$district > 30, FALSE, TRUE)
 d2$m1 <- logistic(d2$.fitted)
 
 re2 <- ranef(m2)$district
 fe2 <- fixef(m2)
 d2$m2 <- sapply(d2$district, function (i) logistic(fe2+ re2[match(i, row.names(re2)),])) 
 
-g <- ggplot(d2)+theme_bw()
+g <- ggplot(subset(d2,upper))+theme_bw()
 g <- g + geom_violin(aes(as.factor(district), use.contraception), alpha=0.5, fill='lightgrey', color='lightgray') ## construct a violin plot for use/non-use each district 
-
-g <- g + geom_point(aes(as.factor(district), m1), size=1.5)
+g <-  g + geom_point(aes(as.factor(district), m1), size=1.5)
 g <- g + geom_point(aes(as.factor(district), m2), color='darkgrey', size=2)+geom_hline(yintercept=logistic(fe2), color='darkgrey', linetype=2)
-g + geom_text(aes(as.factor(district),c(1.025),label=population), data=d2, size=3, fontfamily='serif')
+g + geom_text(aes(as.factor(district),c(1.025),label=population), size=3, fontfamily='serif')
+
+g <- ggplot(subset(d2,!upper))+theme_bw()
+g <- g + geom_violin(aes(as.factor(district), use.contraception), alpha=0.5, fill='lightgrey', color='lightgray') ## construct a violin plot for use/non-use each district 
+g <-  g + geom_point(aes(as.factor(district), m1), size=1.5)
+g <- g + geom_point(aes(as.factor(district), m2), color='darkgrey', size=2)+geom_hline(yintercept=logistic(fe2), color='darkgrey', linetype=2)
+g + geom_text(aes(as.factor(district),c(1.025),label=population), size=3, fontfamily='serif')
+
+
 @ 
 
 Point estimates from mixed model (gray dots) are biased toward the group mean (dashed line), relative to estimates from fixed effects model (black dots).
-Number of respondents per district are denoted at the top of the plot. 
+Number of respondents per district are listed at the top of the plot. 
 
 
 The mixed effect and fixed effect estimates disagree most in districts with low numbers of respondents. 
@@ -128,7 +135,7 @@ a <- fixef(m3)[1]
 b <- fixef(m3)[2]
 p_urban <- logistic(a + a_dist + b_dist + b)
 p_rural <- logistic(a + a_dist )
-plot(1,1, ylim=c(0,1), xlim=c(0,1), pch='', xlab='probability rural', ylab='probability urban' )
+plot(1,1, ylim=c(0,1), xlim=c(0,1), pch='', xlab='probability contraceptive use rural', ylab='probability contraceptive use urban' )
 abline(0,1, lwd=2,col='grey', lty=2)
 text(p_rural, p_urban, labels=as.character(unique(d2$district)), col=col.alpha('black', 0.6))
 @ 
@@ -138,18 +145,19 @@ text(p_rural, p_urban, labels=as.character(unique(d2$district)), col=col.alpha('
 
 <<load-ox,message=FALSE,cache=TRUE>>=
 d3 <- read.csv('Oxboys.csv')
-head(d3)
+head(d3, n=1)
 @ 
 
-The data include several boys ({\tt Subject}) have ({\tt height}) measured over time ({\tt Occasion}). 
+The data include several boys ({\tt Subject}) have ({\tt height}) measured over time ({\tt Age}). 
 
 <<plot-ox,message=FALSE,cache=TRUE>>=
 g3 <- ggplot(d3)
 g3 + geom_point(aes(age,height))+facet_wrap(~Subject)
+g3+geom_point(aes(age,height,size=Subject))
 @ 
 
 The data look relatively linear. As these are growing boys, for now, it makes sense to model height as a Normal random variable predicted by {\tt age}. 
-Note that this ignore the autocorrelation we expect from a time series.
+Note that this formulation ignores the autocorrelation we expect from a time series.
 
 \subsubsection*{individual level effects (a)}
 
@@ -171,7 +179,8 @@ Per-subject variation, unrelated to age, explains more variation than per-subjec
 \subsubsection*{individual level effects (b)}
 
 <<ox-cor, cache=TRUE,message=FALSE>>=
-show(m4)
+s.m4 <- summary(m4)
+s.m4
 @ 
 
 There is a positive correlation between random intercept and slope (on age) effects of subject. 
@@ -180,12 +189,35 @@ It makes sense mechanistically that the boys who are bigger in general durign th
 Boys who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same boys to continue to grow faster. 
 In a sense this correlation captures some of our intution that this is a {\em time series}.
 
-To make projections about future ages, one would want to account for the correlation by \dots 
+Are we 
+
+(1) Meant to make projections about future ages? In this case one would want to account for the correlation by including in predictions but also informing starting height by currnt height
+(Be more specific.)
+
+(2) Meant to assume we're somehow resampling boys across same ages sampled?
 
 \subsubsection*{individual level effects (b)}
 
 <<ox-simulate, cache=TRUE,message=FALSE,eval=FALSE>>=
+VC <- VarCorr(m4)$Subject
+attr(VC,'stddev') # random effects standard deviations
+attr(VC,'correlation') # random effects correlatins
 S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
+
+ages <- unique(d3$age)
+re.pred <- mvrnorm(NREP,mu=c(0,0),Sigma=VC)
+a <- fixef(m4)['(Intercept)']
+b <- fixef(m4)['age']
+height.pred <- sapply(ages, function(x) a + re.pred[,"(Intercept)"] +   (b+re.pred[,'age'])*x)
+df.prd <- as.data.frame(t(height.pred))
+names(df.prd) <- as.character(1:NREP)
+df.prd$age <- ages
+require(reshape)
+df <- melt(df.prd, id.vars=c('age'))
+names(df)[2:3] <- c('Subject','height')
+g5 <- ggplot(df)
+g5+geom_point(aes(age,height,size=Subject))
+g5+geom_point(aes(age,height))+facet_wrap(~Subject)
 @ 
 
 
