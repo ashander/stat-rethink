@@ -133,13 +133,18 @@ a_dist <- ranef(m3)$district[,1]
 b_dist <- ranef(m3)$district[,2]
 a <- fixef(m3)[1]
 b <- fixef(m3)[2]
-p_urban <- logistic(a + a_dist + b_dist + b)
-p_rural <- logistic(a + a_dist )
-plot(1,1, ylim=c(0,1), xlim=c(0,1), pch='', xlab='probability contraceptive use rural', ylab='probability contraceptive use urban' )
-abline(0,1, lwd=2,col='grey', lty=2)
-text(p_rural, p_urban, labels=as.character(unique(d2$district)), col=col.alpha('black', 0.6))
-@ 
+urban <- logistic(a + a_dist + b_dist + b)
+rural <- logistic(a + a_dist )
+p.corr <- data.frame(urban=urban,rural=rural)
+p.corr$lab <- as.character(unique(d2$district))
 
+plot(1,1, ylim=c(0,1), xlim=c(0,1), pch='', xlab='probability contraceptive use rural', ylab='probability contraceptive use urban')
+abline(0,1, lwd=2,col='grey', lty=2)
+points(rural,urban, col=col.alpha('grey',0.6),pch=19)
+#find outliers
+labs <- p.corr[c(1,4,11,27,34,41,52),]
+text(labs$rural, labs$urban, labels=labs$lab)
+@ 
 
 \subsection*{Oxford boy growth}
 
@@ -151,6 +156,10 @@ head(d3, n=1)
 The data include several boys ({\tt Subject}) have ({\tt height}) measured over time ({\tt Age}). 
 
 <<plot-ox,message=FALSE,cache=TRUE>>=
+#reorder by intercept
+d3 <- within(d3, Subject <- as.factor(Subject))
+d3 <- within(d3, Subject <- factor(Subject, levels=order(with(d3, by(height,Subject,min)))))
+
 g3 <- ggplot(d3)
 g3 + geom_point(aes(age,height))+facet_wrap(~Subject)
 g3+geom_point(aes(age,height,size=Subject))
@@ -178,7 +187,7 @@ Per-subject variation, unrelated to age, explains more variation than per-subjec
 
 \subsubsection*{individual level effects (b)}
 
-<<ox-cor, cache=TRUE,message=FALSE>>=
+<<ox-cor,cache=TRUE,message=FALSE>>=
 s.m4 <- summary(m4)
 s.m4
 @ 
@@ -189,7 +198,7 @@ It makes sense mechanistically that the boys who are bigger in general durign th
 Boys who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same boys to continue to grow faster. 
 In a sense this correlation captures some of our intution that this is a {\em time series}.
 
-Are we 
+Are we ...
 
 (1) Meant to make projections about future ages? In this case one would want to account for the correlation by including in predictions but also informing starting height by currnt height
 (Be more specific.)
@@ -198,13 +207,15 @@ Are we
 
 \subsubsection*{individual level effects (b)}
 
-<<ox-simulate, cache=TRUE,message=FALSE,eval=FALSE>>=
+<<ox-simulate,cache=TRUE,message=FALSE>>=
 VC <- VarCorr(m4)$Subject
 attr(VC,'stddev') # random effects standard deviations
 attr(VC,'correlation') # random effects correlatins
-S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
+#S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
 
+set.seed(10)
 ages <- unique(d3$age)
+NREP <- 10
 re.pred <- mvrnorm(NREP,mu=c(0,0),Sigma=VC)
 a <- fixef(m4)['(Intercept)']
 b <- fixef(m4)['age']
@@ -215,9 +226,15 @@ df.prd$age <- ages
 require(reshape)
 df <- melt(df.prd, id.vars=c('age'))
 names(df)[2:3] <- c('Subject','height')
+#reorder by intercept
+df <- within(df, Subject <- as.factor(Subject))
+df <- within(df, Subject <- factor(Subject, levels=order(with(df, by(height,Subject,min)))))
+
+
 g5 <- ggplot(df)
 g5+geom_point(aes(age,height,size=Subject))
 g5+geom_point(aes(age,height))+facet_wrap(~Subject)
+
 @ 
 
 
@@ -234,12 +251,6 @@ sfInit(parallel=TRUE,cpus=4)
 sfLibrary(rethinking)
 sfExportAll()
 sfStop()
-@ 
-
-<<other-ideas,eval=FALSE>>=
-## make 'error bars'
-#
-
 @ 
 
 \end{document}
