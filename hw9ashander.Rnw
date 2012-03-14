@@ -39,6 +39,7 @@ require(ggplot2)
 require(emdbook)
 require(lme4)
 require(reshape) # for melt
+require(gridExtra)
 @
 
 \begin{center}
@@ -58,7 +59,7 @@ dist.pop <- table(d$district) ## population column
 d$population <- sapply(d$district, function(i) dist.pop[match(i, row.names(dist.pop))])
 @ 
 
-My focus is the variables {\tt district}, defining the woman's location in political geography of Bangladesh, {\tt use.contraception} indicating contraception use, and {\tt urban} indicating city or rural.
+I'm modelling {\tt use.contraception} indicating contraception use, with predictor variables {\tt district}, defining the woman's location in political geography of Bangladesh, and {\tt urban} indicating city or rural.
 
 \subsection*{Predicting contraception use}
 
@@ -90,13 +91,14 @@ g <- ggplot(subset(d2,upper))+theme_bw()
 g <- g + geom_violin(aes(District, use.contraception), alpha=0.5, fill='lightgrey', color='lightgray') ## construct a violin plot for use/non-use each district 
 g <-  g + geom_point(aes(District, m1), size=1.5)
 g <- g + geom_point(aes(District, m2), color='darkgrey', size=2)+geom_hline(yintercept=logistic(fe2), color='darkgrey', linetype=2)
-g + geom_text(aes(District,c(1.025),label=population), size=3, fontfamily='serif')
+g1 <- g + geom_text(aes(District,c(1.025),label=population), size=3, fontfamily='serif')
 
 g <- ggplot(subset(d2,!upper))+theme_bw()
 g <- g + geom_violin(aes(District, use.contraception), alpha=0.5, fill='lightgrey', color='lightgray') ## construct a violin plot for use/non-use each district 
 g <-  g + geom_point(aes(District, m1), size=1.5)
 g <- g + geom_point(aes(District, m2), color='darkgrey', size=2)+geom_hline(yintercept=logistic(fe2), color='darkgrey', linetype=2)
-g + geom_text(aes(District,c(1.025),label=population), size=3, fontfamily='serif')
+g2 <- g + geom_text(aes(District,c(1.025),label=population), size=3, fontfamily='serif')
+grid.arrange(g1, g2, ncol=1)
 @ 
 
 The figures above show distributions of contraception use for each district (grey violin plots in backgroun) along with point estimates from mixed and fixed-effects only models. The estimates from mixed model (gray dots) are biased toward the group mean (dashed line), relative to estimates from fixed effects model (black dots).
@@ -104,7 +106,7 @@ The number of respondents per district are listed at the top of the plot, and di
 
 The mixed effect and fixed effect estimates disagree most in districts with low numbers of respondents where responses are skewed relative to the overall mean. 
 This effect occurs across the whole data set, and is most obvious in districts with very few respondents, and whose cluster mean is very far from the overall mean. 
-For example districts 3, 11, and 49 show no variance in responses and the largest disagreements between mixed and random estimates. 
+For example districts 3, 11, and 49 show no variation in responses and the largest disagreements between mixed and random estimates. 
 There are also large differences in districts with relatively few, but very skewed responses, e.g. district 10 (n=13), 24 (n=14), or 59 (n=10).
 Even in relatively large districts, when responses are very skewed, the mixed and fixed models differ quite a bit e.g. 56 (n=45) and 34 (n=35), which are both above median.
 
@@ -132,9 +134,6 @@ g8 <- g8+geom_point(aes(`(Intercept)`,urban))
 g9 <- ggplot(melt(d.re,id.vars='district'))+theme_bw()
 g9 <- g9+geom_line(aes(district, value,color=variable))+scale_color_grey()+ylab('varying effect estimate')
 
-#g2 <- ggplot(within(d, urban <- as.factor(urban)))+theme_bw()
-#g2 + geom_violin(aes(district, use.contraception,fill=urban))+facet_grid(~urban)+scale_fill_grey()
-
 a_dist <- ranef(m3)$district[,1]
 b_dist <- ranef(m3)$district[,2]
 a <- fixef(m3)[1]
@@ -147,14 +146,15 @@ p.corr$lab <- as.character(unique(d$district))
 g7 <- ggplot(p.corr)+theme_bw()
 g7 <- g7+geom_abline(intercept=0,slope=1,color='grey')+geom_point(aes(rural,urban))+xlab('prob contraceptive use | rural')+ylab('prob contraceptive use | urban')+ylim(c(0,1))+xlim(c(0,1))
 
-require(gridExtra)
 grid.arrange(g8,g9,g7, ncol=2)
+
+xtabs(~ urban+ district, data=d2)
 @ 
 
 The fit estimated a negative correlation between the varying intercepts and slopes on urban, per district:  $\rho = - 0. 662$. 
-This correlation is shown in figures above (top row). 
+This correlation is shown in figures above (top row), which depict the coefficients plotted against one another (left panel) and by district (right panel).
 
-As indicated by the figures, this implies a tradeoff between these two coefficients, i.e. the differences between districts were such that they had {\em either} high contraceptive use overall (positive intercept effect) or a strong effect of urbanness (positive slope effect). 
+As indicated by the figures, the correlation implies a tradeoff between these two coefficients, i.e. the differences between districts were such that they had {\em either} high contraceptive use overall (positive intercept effect) or a strong effect of urbanness (positive slope effect). 
 This points to an interaction of sorts, where urbanness has a positive effect on contraceptive use in districts with low contraceptive use overall, but the effect of urbanness is negative in districts with high contraception use.
 
 This effect is shown in the bottom figure, which plots the predicted probability of contraception use for an urban resident of a district against that predicted for a rural resident in the same district. 
@@ -182,12 +182,20 @@ grid.arrange(g3 + geom_point(aes(age,height))+facet_wrap(~Subject),g3+geom_point
 The top figure is a panel plot of each subject. 
 The bottom figure shows all data plotted on one figure, but with a different dot size for each subject. 
 
+
 The data look relatively linear. As these are growing boys, for now, it makes sense to model height as a Normal random variable predicted by {\tt age}. 
 Note that this formulation ignores the autocorrelation we expect from a time series.
 
 \subsubsection*{individual level effects (a)}
 
-Model height nested within individual 
+I model height $h_{ij}$ the height observed in {\tt Subject} $j$ at age $i$
+\begin{align*}
+&h_{ij} \sim {\rm Normal}(\mu_{ij}, \sigma)\\
+&\mu_{ij} = \alpha + \alpha_j + (\beta + \beta_j){\rm age}_i\\
+&\left( \begin{matrix}\alpha_j\\ \beta_j\end{matrix}\right) \sim {\rm Normal}
+\left [ \left( \begin{matrix}0\\ 0\end{matrix}\right), \left( \begin{matrix}\sigma^2_\alpha & \sigma_\alpha \sigma_\beta \rho\\ \sigma_\alpha \sigma_\beta \rho &\sigma^2_\beta\end{matrix}\right)\right]
+\end{align*}
+
 <<ox-indiv, cache=TRUE,message=FALSE>>=
 
 m4 <- lmer(height ~ age + (age|Subject), data=d3)
@@ -200,7 +208,7 @@ sd(ranef(m4)$Subject[,2])## sample standard deviation in estimated random slope 
 The estimate for the Subject random intercept on height is much higher than that of the Subject$\times$age effect. 
 Further the variance of the estimated random intercept is much larger than that of random slope on age. 
 
-Per-subject variation, unrelated to age, explains more variation than per-subject variation that is related to age.
+This implies that per-subject variation, unrelated to age, explains more variation than per-subject variation that is related to age.
 
 \subsubsection*{individual level effects (b)}
 
@@ -215,14 +223,24 @@ It makes sense mechanistically that the boys who are bigger in general durign th
 Boys who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same boys to continue to grow faster. 
 In a sense this correlation captures some of our intution that this is a {\em time series}.
 
-Are we ...
-
-(1) Meant to make projections about future ages? In this case one would want to account for the correlation by including in predictions but also informing starting height by currnt height
-(Be more specific.)
-
-(2) Meant to assume we're somehow resampling boys across same ages sampled?
+Now, I'll predict observed heights assuming we're sampling a new set of boys from the same population, across the same ages sampled. 
 
 \subsubsection*{individual level effects (b)}
+
+To simulate new boys, we need to construct random draws from a normal distribution centered on zero, but with variance-covariance structure given by 
+\[
+\left(\begin{matrix}\sigma^2_\alpha & \sigma_\alpha \sigma_\beta \rho\\ \sigma_\alpha \sigma_\beta \rho &\sigma^2_\beta\end{matrix}\right).
+\]
+We can then predict heights from our model above, using these simulated varying effects. 
+The function {\tt VarCorr} gives this matrix for our model.
+<<ox-vc,cache=TRUE,message=FALSE>>=
+VC <- VarCorr(m4)$Subject
+attr(VC,'stddev') # random effects standard deviations
+attr(VC,'correlation') # random effects correlatins
+#S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
+@
+Note that we could also construct it directly as in the commented-out line using the random effects standard deviations ($\sigma_\alpha, \sigma_\beta$)
+and correlation ($\rho$; given by the off diagonal of the correlation matrix) printed above. 
 
 <<ox-simulate,cache=TRUE,message=FALSE>>=
 VC <- VarCorr(m4)$Subject
@@ -249,10 +267,11 @@ df <- within(df, Subject <- factor(Subject, levels=order(with(df, by(height,Subj
 
 
 g5 <- ggplot(df)
-g5+geom_point(aes(age,height,size=Subject))
-g5+geom_point(aes(age,height))+facet_wrap(~Subject)
+grid.arrange(g5+geom_point(aes(age,height,size=Subject)), g5+geom_point(aes(age,height))+facet_wrap(~Subject), ncol=1)
 
 @ 
+
+The simulated data seem to have similar structure... 
 
 
 \newpage
