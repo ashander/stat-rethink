@@ -225,15 +225,15 @@ s.m4
 
 There is a positive correlation between random intercept and slope (on age) effects of subject. 
 This relationship is noisy (plot not shown).
-It makes sense mechanistically that the boys who are bigger in general durign the study, also grew faster over the ages at which they were observed. 
-Boys who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same boys to continue to grow faster. 
-In a sense this correlation captures some of our intution that this is a {\em time series}.
+It makes sense mechanistically that the subjects who are bigger in general during the study also grew faster over the ages at which they were observed. 
+Subjects who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same subjects to continue to grow faster. 
+In a sense this correlation captures some of our intution that this is a  time series where the errors on observations should be autocorrelated across the predictor {\tt age}.
 
-Now, I'll predict observed heights assuming we're sampling a new set of boys from the same population, across the same ages sampled. 
+Now, I'll predict observed heights assuming we're sampling a new set of subjects from the same population, across the same ages sampled. 
 
 \subsubsection*{individual level effects (b)}
 
-To simulate new boys, we need to construct random draws from a normal distribution centered on zero, but with variance-covariance structure given by 
+To simulate new subjects, we need to construct random draws from a normal distribution centered on zero, but with variance-covariance structure given by 
 \[
 \left(\begin{matrix}\sigma^2_\alpha & \sigma_\alpha \sigma_\beta \rho\\ \sigma_\alpha \sigma_\beta \rho &\sigma^2_\beta\end{matrix}\right).
 \]
@@ -271,10 +271,12 @@ grid.arrange(g5+geom_point(aes(age,height,size=Subject)), g5+geom_point(aes(age,
 
 @ 
 
-The simulated data seem to have similar structure... 
+The simulated data have similar structure to the observed data. 
+Specifically, those subjects that had higher initial heights generally have above average growth rates as well (easiest to see on upper figure, where dot size decreases with initial height (aka intercept). 
+The lower panel figure plots height on age for the 10 simulated subjects, with initial height (intercept) increasing left-to-right from the top of the panel.
 
 
-\newpage
+\newpagen
 \subsection*{Colophon}
 
 <<runit,eval=FALSE>>=
