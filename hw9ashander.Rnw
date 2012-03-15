@@ -146,6 +146,9 @@ p.corr$lab <- as.character(unique(d$district))
 g7 <- ggplot(p.corr)+theme_bw()
 g7 <- g7+geom_abline(intercept=0,slope=1,color='grey')+geom_point(aes(rural,urban))+xlab('prob contraceptive use | rural')+ylab('prob contraceptive use | urban')+ylim(c(0,1))+xlim(c(0,1))
 
+#g10 <- ggplot(data.frame(district.contrib=logistic(a+a_dist), urban.contrib=logistic(b_dist+b)))+ylim(c(0,1))+xlim(c(0,1))+theme_bw()
+#g10 <- g10+geom_vline(xintercept=logistic(a),color='grey')+geom_hline(yintercept=logistic(b),color='grey') + geom_point(aes(district.contrib,urban.contrib) )
+
 grid.arrange(g8,g9,g7, ncol=2)
 
 xtabs(~ urban+ district, data=d2)
@@ -157,7 +160,10 @@ This correlation is shown in figures above (top row), which depict the coefficie
 As indicated by the figures, the correlation implies a tradeoff between these two coefficients, i.e. the differences between districts were such that they had {\em either} high contraceptive use overall (positive intercept effect) or a strong effect of urbanness (positive slope effect). 
 This points to an interaction of sorts, where urbanness has a positive effect on contraceptive use in districts with low contraceptive use overall, but the effect of urbanness is negative in districts with high contraception use.
 
-This effect is shown in the bottom figure, which plots the predicted probability of contraception use for an urban resident of a district against that predicted for a rural resident in the same district. 
+This effect is shown in the bottom  figure, which plots the predicted probability of contraception use for an urban resident of a district against that predicted for a rural resident in the same district. 
+The cluster of points below the $x=y$ line represent districts with the highest contraception use overall. 
+For these points, the effect of urbanness was negative. 
+The majority of the points, however, fall above the $x=y$ line, indicating the overall effect of urbanness was positive with a weak trend toward a negative effect in districts with high contraception use overall.
 
 \subsection*{Oxford boy growth}
 
@@ -235,19 +241,13 @@ We can then predict heights from our model above, using these simulated varying 
 The function {\tt VarCorr} gives this matrix for our model.
 <<ox-vc,cache=TRUE,message=FALSE>>=
 VC <- VarCorr(m4)$Subject
-attr(VC,'stddev') # random effects standard deviations
-attr(VC,'correlation') # random effects correlatins
 #S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
+VC # variance covariance matrices; later attributes give random effects standard deviations and random effects correlations 
 @
 Note that we could also construct it directly as in the commented-out line using the random effects standard deviations ($\sigma_\alpha, \sigma_\beta$)
 and correlation ($\rho$; given by the off diagonal of the correlation matrix) printed above. 
 
 <<ox-simulate,cache=TRUE,message=FALSE>>=
-VC <- VarCorr(m4)$Subject
-attr(VC,'stddev') # random effects standard deviations
-attr(VC,'correlation') # random effects correlatins
-#S <- matrix( c( sa^2 , sa*sb*rho , sa*sb*rho , sb^2 ) , nrow=2 )
-
 set.seed(10)
 ages <- unique(d3$age)
 NREP <- 10
