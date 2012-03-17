@@ -151,7 +151,7 @@ g7 <- g7+geom_abline(intercept=0,slope=1,color='grey')+geom_point(aes(rural,urba
 
 grid.arrange(g8,g9,g7, ncol=2)
 
-xtabs(~ urban+ district, data=d2)
+#xtabs(~ urban+ district, data=d2)
 @ 
 
 The fit estimated a negative correlation between the varying intercepts and slopes on urban, per district:  $\rho = - 0. 662$. 
@@ -276,7 +276,7 @@ Specifically, those subjects that had higher initial heights generally have abov
 The lower panel figure plots height on age for the 10 simulated subjects, with initial height (intercept) increasing left-to-right from the top of the panel.
 
 
-\newpagen
+\newpage
 \subsection*{Colophon}
 
 <<runit,eval=FALSE>>=

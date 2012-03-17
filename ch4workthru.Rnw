@@ -1,0 +1,112 @@
+%% lyx 2.1.0svn created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+% \SweaveOpts{path=fig/hw3-,fig.align=center,fig.show=hold,dev=png,width=6,height=4}
+
+<<setup,echo=FALSE,results=hide,message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(bbmle)
+require(rethinking)
+require(ggplot2)
+@
+
+\begin{center}
+  {\bf \Large Statistical Rethinking, Ch 4 workthru}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+
+
+
+<<lognorm>>=
+data(cars)
+d <- cars
+plot(dist~speed, data =d)
+
+d$log.dist <- log(d$dist)
+plot(log.dist~speed , data = d)
+m3 <- mle2(log.dist ~dnorm(mean=a+b*speed, sd=sigma), data=d, start=list(a=mean(d$log.dist), b=0, sigma=sd(d$log.dist)))
+precis(m3)
+
+post <- sample.naive.posterior(m3)
+mu.ci <- sapply(0:30, function(x) HPDI(post$a + post$b*x))
+log.dist.ci <- sapply(0:30, function(x) 
+                      HPDI(
+                           rnorm(nrow(post)*10, 
+                                 mean=post$a+ post$b*x, 
+                                 sd=post$sigma)))
+curve(coef(m3)['a'] + coef(m3)['b']*x, add=TRUE)
+lines(0:30, mu.ci[1,], lty=2)
+lines(0:30, mu.ci[2,], lty=2)
+lines(0:30, log.dist.ci[1,], lty=3)
+lines(0:30, log.dist.ci[2,], lty=3)
+
+plot(dist~speed, data=d)
+curve(exp(coef(m3)['a'] + coef(m3)['b']*x), add=TRUE)
+lines(0:30, exp(mu.ci[1,]), lty=2)
+lines(0:30, exp(mu.ci[2,]), lty=2)
+lines(0:30, exp(log.dist.ci[1,]), lty=3)
+lines(0:30, exp(log.dist.ci[2,]), lty=3)
+
+
+## redo with 
+d$log.dist20 <- log(d$dist + 20)
+
+
+
+@ 
+
+
+<<math,message=FALSE>>=
+vmath <- c(10, 11, 10, 12, 12, 11, 12, 13, 12, 14, 14, 14, 15, 15, 15, 16, 16, 16, 18, 18, 18, 19, 19, 19, 19, 19, 21, 21, 22, 21, 22, 23 ) 
+vyears <- c(5, 5.2, 5.4, 5.6, 5.8, 6, 6.2, 6.4, 6.6, 6.8, 7, 7.2, 7.4, 7.6, 7.8, 8, 8.2, 8.4, 8.6, 8.8, 9, 9.2, 9.4, 9.6, 9.8, 10, 10.2, 10.4, 10.6, 10.8, 11, 11.2 ) 
+vheight <- c(129.44, 129.46, 131.81, 130.54, 130.73, 134.31, 134.07, 135.27, 135.24, 137.21, 137.66, 137.88, 141.74, 142.28, 141.71, 144.73, 145.88, 145.5, 144.3, 145.23, 145.66, 146.06, 148.19, 151.27, 149.4, 150.62, 153.26, 156.84, 155.97, 155, 157.13, 158.04 )
+math.df = data.frame(score=vmath, height=vheight, age=vyears)
+pairs(math.df)
+
+m.math2 <- mle2( score ~ dnorm( mean=a +  by*age +bh*height , sd=sigma ) , data=math.df , start=list(a=mean(math.df$score),bh=0,by=0,sigma=sd(math.df$score)) )
+precis( m.math2 )
+
+@ 
+
+
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'ch4workthru.Rnw',sep='/')) ## to run
+@ 
+
+
+\end{document}

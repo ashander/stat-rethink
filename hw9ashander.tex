@@ -622,23 +622,9 @@ In addition, I allow the overall prevalence (random slope intercept) and effect 
 \includegraphics{urban-model} \begin{flushleft}
 \ttfamily\noindent
 \hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{xtabs}\hlkeyword{(}\hlkeyword{\urltilda{}}\hlsymbol{urban}{\ }\hlkeyword{+}{\ }\hlsymbol{district}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d2}\hlkeyword{)}\mbox{}
+\hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}xtabs(\urltilda{}{\ }urban+{\ }district,{\ }data=d2)}\mbox{}
 \normalfont
 \end{flushleft}
-\begin{verbatim}
-##      district
-## urban   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21
-##     0  54  20   0  19  37  58  18  35  20  13  21  23  16  17  14  18  24  33  22  15  10
-##     1  63   0   2  11   2   7   0   2   3   0   0   6   8 101   8   2   0  14   4   0   8
-##      district
-## urban  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42
-##     0  20  15  14  49  13  39  45  25  45  27  24   7  26  28  14  13   7  24  12  23   6
-##     1   0   0   0  18   0   5   4   7  16   6   0   7   9  20   3   0   7   2  29   3   5
-##      district
-## urban  43  44  45  46  47  48  49  50  51  52  53  55  56  57  58  59  60  61
-##     0  28  27  34  74   9  26   4  15  20  42   0   0  24  23  20  10  22  31
-##     1  17   0   5  12   6  16   0   4  17  19  19   6  21   4  13   0  10  11
-\end{verbatim}
 \end{kframe}}
 \end{knitrout}
 
@@ -793,15 +779,15 @@ This implies that per-subject variation, unrelated to age, explains more variati
 
 There is a positive correlation between random intercept and slope (on age) effects of subject. 
 This relationship is noisy (plot not shown).
-It makes sense mechanistically that the boys who are bigger in general durign the study, also grew faster over the ages at which they were observed. 
-Boys who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same boys to continue to grow faster. 
-In a sense this correlation captures some of our intution that this is a {\em time series}.
+It makes sense mechanistically that the subjects who are bigger in general during the study also grew faster over the ages at which they were observed. 
+Subjects who grew fast prior to the study would tend to be larger upon initiation of the study, and one might expect these same subjects to continue to grow faster. 
+In a sense this correlation captures some of our intution that this is a  time series where the errors on observations should be autocorrelated across the predictor {\tt age}.
 
-Now, I'll predict observed heights assuming we're sampling a new set of boys from the same population, across the same ages sampled. 
+Now, I'll predict observed heights assuming we're sampling a new set of subjects from the same population, across the same ages sampled. 
 
 \subsubsection*{individual level effects (b)}
 
-To simulate new boys, we need to construct random draws from a normal distribution centered on zero, but with variance-covariance structure given by 
+To simulate new subjects, we need to construct random draws from a normal distribution centered on zero, but with variance-covariance structure given by 
 \[
 \left(\begin{matrix}\sigma^2_\alpha & \sigma_\alpha \sigma_\beta \rho\\ \sigma_\alpha \sigma_\beta \rho &\sigma^2_\beta\end{matrix}\right).
 \]
@@ -867,7 +853,9 @@ and correlation ($\rho$; given by the off diagonal of the correlation matrix) pr
 \end{knitrout}
 
 
-The simulated data seem to have similar structure... 
+The simulated data have similar structure to the observed data. 
+Specifically, those subjects that had higher initial heights generally have above average growth rates as well (easiest to see on upper figure, where dot size decreases with initial height (aka intercept). 
+The lower panel figure plots height on age for the 10 simulated subjects, with initial height (intercept) increasing left-to-right from the top of the panel.
 
 
 \newpage
