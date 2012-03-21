@@ -1,0 +1,276 @@
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+
+\begin{document}
+
+%% still can't get paths to work ...
+\SweaveOpts{fig.path='fig/final-',fig.align='center',fig.show='asis',dev='pdf',fig.width=6,fig.height=4}
+
+<<setup,echo=FALSE,results='hide',message=FALSE>>=
+options(replace.assign=TRUE,width=90)
+knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
+require(rethinking)
+require(ggplot2)
+require(emdbook)
+require(reshape) # for melt
+
+@
+
+\begin{center}
+  {\bf \Large Final Exam, Statistical Rethinking}\\
+\vspace{12pt}
+   {\large Jaime Ashander}
+\end{center}
+
+<<load,message=FALSE,cache=TRUE>>=
+d <- read.csv('rinder.csv')
+head(d,n=1)
+@ 
+
+I'm testing the hypothesis that East African herders keep small {\tt stock} as insurance against risk.
+To address this hypothesis, I'll model {\tt mortality} as a function of {\tt stock} type (either {\tt large} cows, or {\tt small} goats and sheep.
+
+<<seed,message=FALSE,cache=TRUE>>=
+set.seed(100) # for reproduciblity of results based on sampling
+@ 
+
+\section{problem 1:}
+
+\subsection{problem 1:a}
+
+First, I model numbers of {\tt mortality} out of total stock {\tt n} as a function of {\tt stock} as a categorical predictor. 
+Specifically, I recode stock as an indicator {\tt L.i}, taking values 1 (for {\tt large}, and 0 (for {\tt small}). 
+Then
+\begin{align*}
+m_i  &\sim {\rm Binomial} (p_i, n_i),\\
+\frac{\log{p_i}}{\log{1-p_i}} &= \alpha + \alpha_L L_i,
+\end{align*}
+with $m_i$ mortality counts, $n_i$ total stock and $L_i$ the indicator of large stock. 
+From this model, I estimate $\alpha$ and $\alpha_L$ using a GLM: 
+
+<<simple-binom,message=FALSE,cache=TRUE>>=
+require(bbmle)
+d$L.i <- with(d, ifelse(stock == 'large', 1, 0))
+m1 <- mle2(mortality ~ dbinom(p=logistic(a+aL*L.i), size=n), data=d, start=list(a=0, aL=0))
+p <- precis(m1)
+p
+logistic(colSums(p))[1] ## MLE probability of mortality for large stock
+sapply(p[1,], function(x) logistic(x))[1] ## MLE probability of mortality for small stock
+@ 
+
+The coefficients suggest small stock actually have higher chance of mortality (MLE 0.48 probability of death for large versus 0.51 for small).
+The confidence interval for the effect of large does not overlap with zero, supporting a negative effect on odds of mortality for large stocks.
+
+\subsection{problem 1:b}
+
+I plotted densities from the likelihood surface estimated via sampling the variance-covariance matrix (naive posterior): 
+
+<<plot-simple-binom,cache=TRUE,message=FALSE>>=
+post <- sample.naive.posterior(m1)
+
+#op <- par(mfrow=c(1,2))
+require(gridExtra)
+g <- ggplot(post)
+g2 <- g+geom_density(aes(logistic(a)), fill='blue', alpha=0.25)+xlim(c(0.45,.55))+xlab('prob mortality | small')
+# show.HPDI=0.95
+g3 <- g+geom_density(aes(logistic(a+aL)), fill='red', alpha=0.5)+xlim(c(0.45,.55))+xlab('prob mortality | large')
+g4 <- g2+geom_density(aes(logistic(a+aL)), fill='red', alpha=0.5)+xlim(c(0.45,.55))+xlab('prob mortality')
+grid.arrange(g2+ylim(c(0,60)),g4,g3, ncol=2)
+
+@ 
+
+The above figure plots densities for estimated probabilty of mortality. 
+The left column for small stock (top plot) and large stock (bottom plot). 
+The right column gives both densities overlaid. 
+
+\subsection{problem 1:c}
+
+To compute the difference I subtract the estimated probability of mortality for large stock $p|_{L_i=1}$ from that for small stock $p|_{L_i=0}$, where 
+\[
+\frac{\log{p}}{1-\log p} = \alpha + \alpha_L L_i, 
+\] 
+by using the logistic transform: 
+
+<<prob-diff,message=FALSE,cache=TRUE>>=
+p.death.diff <- with(post, logistic(a+aL)-logistic(a))
+mean(p.death.diff) # mean change in probabilty of death with large stock
+HPDI(p.death.diff, 0.95) # interval for change in probabilty of death with large stock
+@ 
+The estimates indicate that large stock suffer 0.7 to 5\% less mortality than small stock, with the best estimate of the difference being 3\%.
+
+
+\section{problem 2:}
+
+\subsection{problem 2:a}
+
+Now, I model {\tt mortality} across the whole data set.
+Specifically, I model 
+\begin{align*}
+m_i  &\sim {\rm Binomial} (p_i, n_i),\\
+\frac{\log{p_i}}{\log{1-p_i}} &= \alpha 
+\end{align*}
+with $m_i$ mortality counts, $n_i$ total stock to estimate $\alpha$.
+
+<<really-simple-binom,message=FALSE,cache=TRUE>>=
+m2 <- mle2(mortality ~ dbinom(p=logistic(a), size=n), data=d, start=list(a=0))
+p2 <- precis(m2)
+p2
+logistic(p2)[1]
+@ 
+
+\subsection{problem 2:b}
+
+<<model-compare,message=FALSE,cache=TRUE>>=
+compare(m1,m2, nobs=sum(d$n))
+@ 
+
+Both AICc and BIC favor the first model, with stock size as a predictor. 
+BIC is more generous to the second model, favoring the first over the second 86:15.
+The BIC weight corresponds to the approximate posteior probabilty of the model, conditional on only these two models being considered. 
+The approximate posterior probabilities are 0.86 (model 1)  and 0.14 (model 2).
+
+\subsection{problem 2:c}
+I repeat the procedure from problem 1a, using the logistic link:
+
+<<model-avg,message=FALSE,cache=TRUE>>=
+post.av <- sample.naive.posterior(list(m1,m2), method='AICc', nobs=sum(d$n), n=2e4)
+
+p.death.diff <- with(post.av, logistic(a+aL)-logistic(a))
+mean(p.death.diff)# mean change in probabilty of death with large stock
+HPDI(p.death.diff, 0.95)# interval for change in probabilty of death with large stock
+@ 
+The model averaged estimates, the large stock suffer just above 0 to 5\% less mortality than small sock, with the best estimate of the difference being about 2.8\%.
+
+These estimated differences are smaller than those using just model 1, with the (proportional) magnitude of the change in the MLE being about 5\%. 
+The estimated difference decreased because averaging placed some weight on model 2, which includes {\em no} difference based on stock. 
+The small magnitude of the change owes to the small amount of weight put on model 2 ($\approx 9$\% AICc weight).
+
+\section{problem 3:}
+
+\subsection{problem 3:a}
+
+<<mlm-plot,message=FALSE,cache=TRUE>>=
+d$ID <- as.numeric(row.names(d))
+g0 <- ggplot(d)+theme_bw()
+g0 <- g0 + geom_point(aes(ID, mortality/n, shape=stock, color=stock), size=5)+xlab('observation')+ylab('proportion mortality')+scale_color_grey()
+g0
+
+@ 
+
+The figure above plots the empirical proportion of mortaility across all observations of small (grey triangles) and large (black circles) stocks.
+
+
+\subsection{problem 3:b}
+
+<<mlm-plot-predict,message=FALSE,cache=TRUE>>=
+g1 <- ggplot(d)#+theme_bw()
+g1 <- g1 + geom_point(aes(ID, mortality/n, shape=stock, size=n))+xlab('observation')+ylab('proportion mortality')
+
+m1.coef <- as.list(colMeans(post))
+pred <- with(m1.coef, logistic(a + aL*d$L.i))
+g1 <- g1+geom_line(aes(ID, pred))
+
+m1.ci <- apply(post, 2, function(x) HPDI(x, 0.95))
+lower <- as.list(m1.ci[1,])
+upper <- as.list(m1.ci[2,])
+g1 <- g1+geom_line(aes(ID, with(lower, logistic(a+aL*L.i))), linetype=2)
+g1 <- g1+geom_line(aes(ID, with(upper, logistic(a+aL*L.i))), linetype=2)
+g1
+
+@ 
+
+The figure above plots the empirical proportion of mortaility across all observations of small (triangles) and large (circles) stocks, with MLE mean (solid) and 95\% confidence interval (dashed) for proportion of surviving.
+Dot size is proportional to the number of observations. 
+
+The model predictions are doing a good job capturing the overall mean proportions of mortality (when number of observations are taken into account). 
+The variability in the observations, however, is not captured by the model.
+
+\subsection{problem 3:c}
+
+Now, I model counts of {\tt mortality} across the whole data set, as predicted by stock size, and with varying intercepts clustered by herd.
+Specifically, I model
+\begin{align*}
+m_i  &\sim {\rm Binomial} (p_i, n_i),\\
+\frac{\log{p_i}}{\log{1-p_i}} &= \alpha +\alpha_L L_i + \alpha_j\\
+\alpha_j \sim {\rm Normal}(0, \sigma_\alpha)
+\end{align*}
+with $m_i$ mortality counts, $n_i$ total stock, $L_i$ the indicator of {\tt large} stock, and $j$ the herd. 
+With this model, I estimate $\alpha$, $\alpha_L$ and $\sigma_\alpha$, the variance in the varying effects on {\tt herd}. 
+
+<<mlm-estimate,message=FALSE,cache=TRUE>>=
+require(lme4)
+m3 <- glmer(cbind(mortality, n-mortality) ~ L.i + (1 | herd), data=d, family=binomial)
+precis(m3)
+@ 
+
+Now, the estimates show the overall probability of mortality for small stocks is about 34\% ({\tt logistic (-0.65)}) and for large stocks is {\em increased} to about 37\%  ({\tt logistic (-0.65 + 0.15)}). 
+Thus, the inference from the mixed effects model is opposite to that from the first model, which didn't allow for cluster-level differences.
+
+There is, however, substantial variation among herds.
+The estimated standard deviation of the random effects among the herds is 0.56.
+
+<<mlm-ranef-plot,message=FALSE,cache=TRUE>>=
+# summarized by herd
+d.summ <- ddply(d, c('herd'), summarise, p.empirical=sum(mortality)/sum(n), n.large=sum(n*L.i), n.small=sum(-n*(L.i-1)), mort.large=sum(mortality*L.i), mort.small=sum(-mortality*(L.i-1)), n=sum(n))
+
+pred.m3 <- coef(m3)$herd
+re.m3 <- ranef(m3)$herd
+names(pred.m3) <- c('a','aL')
+pred.m3$a.j <- re.m3[,1]
+
+pred.m3 <- cbind(pred.m3, d.summ)
+
+g <- ggplot(pred.m3)+theme_bw()
+g <- g + geom_line(aes(herd, logistic(a+aL), group=1),linetype=2) + geom_line(aes(herd, logistic(a), group=1),linetype=3)
+g <- g +geom_point(aes(herd, mortality/n,color=stock), size=3,data=d) + scale_color_grey() + opts(legend.position='none')
+g <- g+geom_hline(yintercept=logistic(-.65+0.15),linetype=2)+geom_hline(yintercept=logistic(-.65), linetype=3)
+g <- g + ylab('logistic(a+aL+a.j)')
+#ggplot(d)+geom_boxplot(aes(stock, mortality/n))+theme_bw()
+
+g7 <- ggplot(data=pred.m3)+theme_bw()
+g8 <- g7 + geom_point(aes(n.large/(n.small+n.large),p.empirical), size=3, alpha=0.6)+ylim(c(0,1)) + xlim(c(0.5,1)) + xlab('proportion large stock') + ylab('prop.mortality obs.')
+
+grid.arrange(g8, g, g7 + geom_point(aes(n.large/(n.small+n.large), logistic(a.j)), size=3,alpha=0.6) + xlim(c(0.5,1)) + ylim(c(0,1)) + xlab('proportion large stock'), ncol=2)
+
+@ 
+
+\newpage
+\subsection*{Colophon}
+
+<<runit,eval=FALSE>>=
+require(knitr) ### the package
+knit(paste(getwd(),'finalashander.Rnw',sep='/')) ## to run1
+
+##x to use all cores
+require(snowfall)
+sfInit(parallel=TRUE,cpus=4)
+sfLibrary(rethinking)
+sfExportAll()
+sfStop()
+@ 
+
+\end{document}
