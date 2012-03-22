@@ -55,7 +55,7 @@ I'm testing the hypothesis that East African herders keep small {\tt stock} as i
 To address this hypothesis, I'll model {\tt mortality} as a function of {\tt stock} type (either {\tt large} cows, or {\tt small} goats and sheep.
 
 <<seed,message=FALSE,cache=TRUE>>=
-set.seed(100) # for reproduciblity of results based on sampling
+set.seed(100) # for reproducibility of results based on sampling
 @ 
 
 \section{problem 1:}
@@ -70,7 +70,7 @@ m_i  &\sim {\rm Binomial} (p_i, n_i),\\
 \frac{\log{p_i}}{\log{1-p_i}} &= \alpha + \alpha_L L_i,
 \end{align*}
 with $m_i$ mortality counts, $n_i$ total stock and $L_i$ the indicator of large stock. 
-From this model, I estimate $\alpha$ and $\alpha_L$ using a GLM: 
+From this model, I estimate the log odds of mortality for small stock $\alpha$ and for large stock $\alpha + \alpha_L$, where $\alpha_L$ is the effect of large, using a GLM: 
 
 <<simple-binom,message=FALSE,cache=TRUE>>=
 require(bbmle)
@@ -84,6 +84,7 @@ sapply(p[1,], function(x) logistic(x))[1] ## MLE probability of mortality for sm
 
 The coefficients suggest small stock actually have higher chance of mortality (MLE 0.48 probability of death for large versus 0.51 for small).
 The confidence interval for the effect of large does not overlap with zero, supporting a negative effect on odds of mortality for large stocks.
+My inference from model 1 is that large stock are more likely to survive.
 
 \subsection{problem 1:b}
 
@@ -103,7 +104,7 @@ grid.arrange(g2+ylim(c(0,60)),g4,g3, ncol=2)
 
 @ 
 
-The above figure plots densities for estimated probabilty of mortality. 
+The above figure plots densities for estimated probability of mortality. 
 The left column for small stock (top plot) and large stock (bottom plot). 
 The right column gives both densities overlaid. 
 
@@ -117,11 +118,12 @@ by using the logistic transform:
 
 <<prob-diff,message=FALSE,cache=TRUE>>=
 p.death.diff <- with(post, logistic(a+aL)-logistic(a))
-mean(p.death.diff) # mean change in probabilty of death with large stock
-HPDI(p.death.diff, 0.95) # interval for change in probabilty of death with large stock
+mean(p.death.diff) # mean change in probability of death with large stock
+HPDI(p.death.diff, 0.95) # interval for change in probability of death with large stock
 @ 
-The estimates indicate that large stock suffer 0.7 to 5\% less mortality than small stock, with the best estimate of the difference being 3\%.
 
+The estimates indicate that large stock suffer 0.7 to 5\% less mortality than small stock, with the best estimate of the difference being 3\%.
+This procedure supports the above inference, that large stock are more likely to survive.
 
 \section{problem 2:}
 
@@ -150,7 +152,7 @@ compare(m1,m2, nobs=sum(d$n))
 
 Both AICc and BIC favor the first model, with stock size as a predictor. 
 BIC is more generous to the second model, favoring the first over the second 86:15.
-The BIC weight corresponds to the approximate posteior probabilty of the model, conditional on only these two models being considered. 
+The BIC weight corresponds to the approximate posterior probability of the model, conditional on only these two models being considered. 
 The approximate posterior probabilities are 0.86 (model 1)  and 0.14 (model 2).
 
 \subsection{problem 2:c}
@@ -160,14 +162,15 @@ I repeat the procedure from problem 1a, using the logistic link:
 post.av <- sample.naive.posterior(list(m1,m2), method='AICc', nobs=sum(d$n), n=2e4)
 
 p.death.diff <- with(post.av, logistic(a+aL)-logistic(a))
-mean(p.death.diff)# mean change in probabilty of death with large stock
-HPDI(p.death.diff, 0.95)# interval for change in probabilty of death with large stock
+mean(p.death.diff)# mean change in probability of death with large stock
+HPDI(p.death.diff, 0.95)# interval for change in probability of death with large stock
 @ 
 The model averaged estimates, the large stock suffer just above 0 to 5\% less mortality than small sock, with the best estimate of the difference being about 2.8\%.
 
 These estimated differences are smaller than those using just model 1, with the (proportional) magnitude of the change in the MLE being about 5\%. 
 The estimated difference decreased because averaging placed some weight on model 2, which includes {\em no} difference based on stock. 
 The small magnitude of the change owes to the small amount of weight put on model 2 ($\approx 9$\% AICc weight).
+Nevertheless, the averaged model still supports the inference that large stock suffer less mortality, though the inference is weaker here.
 
 \section{problem 3:}
 
@@ -181,7 +184,7 @@ g0
 
 @ 
 
-The figure above plots the empirical proportion of mortaility across all observations of small (grey triangles) and large (black circles) stocks.
+The figure above plots the empirical proportion of mortality across all observations of small (grey triangles) and large (black circles) stocks.
 
 
 \subsection{problem 3:b}
@@ -203,15 +206,15 @@ g1
 
 @ 
 
-The figure above plots the empirical proportion of mortaility across all observations of small (triangles) and large (circles) stocks, with MLE mean (solid) and 95\% confidence interval (dashed) for proportion of surviving.
-Dot size is proportional to the number of observations. 
+The figure above plots the empirical proportion of mortality across all observations of small (triangles) and large (circles) stocks, with MLE mean (solid) and 95\% confidence interval (dashed) for proportion of surviving.
+Dot size is proportional to the number of observations in each row. 
 
 The model predictions are doing a good job capturing the overall mean proportions of mortality (when number of observations are taken into account). 
 The variability in the observations, however, is not captured by the model.
 
 \subsection{problem 3:c}
 
-Now, I model counts of {\tt mortality} across the whole data set, as predicted by stock size, and with varying intercepts clustered by herd.
+Now, I model counts of {\tt mortality} across the whole data set, as predicted by stock size, and with random intercepts clustered by herd.
 Specifically, I model
 \begin{align*}
 m_i  &\sim {\rm Binomial} (p_i, n_i),\\
@@ -219,7 +222,8 @@ m_i  &\sim {\rm Binomial} (p_i, n_i),\\
 \alpha_j \sim {\rm Normal}(0, \sigma_\alpha)
 \end{align*}
 with $m_i$ mortality counts, $n_i$ total stock, $L_i$ the indicator of {\tt large} stock, and $j$ the herd. 
-With this model, I estimate $\alpha$, $\alpha_L$ and $\sigma_\alpha$, the variance in the varying effects on {\tt herd}. 
+With this model, I estimate $\alpha$, $\alpha_L$, and $\sigma_\alpha$, the variance in the random effects on {\tt herd}. 
+The interpretation of the parameters differs from before; the first two reflect the group mean log odds for small $\alpha$ and large $\alpha + \alpha_L$ and the random effects with variance $\sigma_\alpha$ are assumed in the model to equally affect small and large stock.
 
 <<mlm-estimate,message=FALSE,cache=TRUE>>=
 require(lme4)
@@ -228,12 +232,15 @@ precis(m3)
 @ 
 
 Now, the estimates show the overall probability of mortality for small stocks is about 34\% ({\tt logistic (-0.65)}) and for large stocks is {\em increased} to about 37\%  ({\tt logistic (-0.65 + 0.15)}). 
-Thus, the inference from the mixed effects model is opposite to that from the first model, which didn't allow for cluster-level differences.
+I notice two things here.
+First, the overall estimate for probability of mortality is much lower. This no doubt comes from averaging across herds instead of over total observations. 
+Second, the inference for the effect of large stock is opposite to that from the first model, which didn't allow for cluster-level differences.
 
-There is, however, substantial variation among herds.
-The estimated standard deviation of the random effects among the herds is 0.56.
+This difference must in some way owe to the random effects, for which the estimated standard deviation of 0.56 is substantial.
+At the very least, this must help capture some of the variation that was unexplained by the first model.
+I'll explain this below, but first let's look at how well the predictions fit the observations\dots
 
-<<mlm-ranef-plot,message=FALSE,cache=TRUE>>=
+<<mlm-pred-plot,message=FALSE,cache=TRUE>>=
 # summarized by herd
 d.summ <- ddply(d, c('herd'), summarise, p.empirical=sum(mortality)/sum(n), n.large=sum(n*L.i), n.small=sum(-n*(L.i-1)), mort.large=sum(mortality*L.i), mort.small=sum(-mortality*(L.i-1)), n=sum(n))
 
@@ -246,17 +253,41 @@ pred.m3 <- cbind(pred.m3, d.summ)
 
 g <- ggplot(pred.m3)+theme_bw()
 g <- g + geom_line(aes(herd, logistic(a+aL), group=1),linetype=2) + geom_line(aes(herd, logistic(a), group=1),linetype=3)
-g <- g +geom_point(aes(herd, mortality/n,color=stock), size=3,data=d) + scale_color_grey() + opts(legend.position='none')
+g <- g +geom_point(aes(herd, mortality/n,color=stock, size=n), data=d) + scale_color_grey()
 g <- g+geom_hline(yintercept=logistic(-.65+0.15),linetype=2)+geom_hline(yintercept=logistic(-.65), linetype=3)
 g <- g + ylab('logistic(a+aL+a.j)')
-#ggplot(d)+geom_boxplot(aes(stock, mortality/n))+theme_bw()
+g
+
+@ 
+
+Figure showing the predictions (dashed for {\tt large}, dotted for {\tt small}) for each herd as well as overall (flat lines) along with the observed data (grey dots for {\tt small}, black dots for {\tt large}). 
+Dot size scaled with number of observations per herd. 
+
+The predictions do a good job capturing the variation in the observations.
+In general, they also get the within-herd ranking of mortality of small and large stock correct (small $<$ large). 
+For some of the herds, the prediction is quite far from the observation. 
+In particular for small stocks (gray dots in bottom right corner, quite hard to see) that correspond to low numbers of observations  {\tt n}). 
+These predictions are skewed toward the group mean, an example of shrinkage.
+
+
+<<mlm-ranef-plot,message=FALSE,cache=TRUE>>=
 
 g7 <- ggplot(data=pred.m3)+theme_bw()
 g8 <- g7 + geom_point(aes(n.large/(n.small+n.large),p.empirical), size=3, alpha=0.6)+ylim(c(0,1)) + xlim(c(0.5,1)) + xlab('proportion large stock') + ylab('prop.mortality obs.')
 
-grid.arrange(g8, g, g7 + geom_point(aes(n.large/(n.small+n.large), logistic(a.j)), size=3,alpha=0.6) + xlim(c(0.5,1)) + ylim(c(0,1)) + xlab('proportion large stock'), ncol=2)
+grid.arrange(g7 + geom_point(aes(n.large/(n.small+n.large), logistic(a.j)), size=3,alpha=0.6) + xlim(c(0.5,1)) + ylim(c(0,1)) + xlab('proportion large stock'), g8, ncol=2)
 
 @ 
+
+To understand in more detail the reversal of inference from model 1, I plot the varying effects estimates (logistically transformed) against the proportion of large stock for each herd (left figure). 
+From this plot, I see that there is a strong, negative correlation ($rho = -0.94$). 
+This implies that herds with higher proportion of large stock have lower estimated probability of mortality!
+
+In fact, this correlation is present in the real data, as can be seen by plotting the empirical proportion of mortalities against the proportion of large stock for each herd (right figure).
+Thus, in this data, large stock were more often found in herds that had low mortality overall. 
+By pooling the data, we inferred that large stock had lower probability of mortality, when in fact it was due to this hidden (to model 1) correlation.
+Another great example of Simpson's paradox.
+
 
 \newpage
 \subsection*{Colophon}
