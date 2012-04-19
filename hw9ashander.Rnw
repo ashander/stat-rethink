@@ -27,10 +27,10 @@
 
 \begin{document}
 
-%% still can't get paths to work ...
-\SweaveOpts{path=fig/hw7-,fig.align=center,fig.show=hold,dev=png,fig.width=6,fig.height=4}
+%% for fig paths use path='dir/prefix'
+\SweaveOpts{fig.align='center',fig.show='asis',dev='png',fig.width=6,fig.height=4}
 
-<<setup,echo=FALSE,results=hide,message=FALSE>>=
+<<setup,echo=FALSE,results='hide',message=FALSE>>=
 options(replace.assign=TRUE,width=90)
 knit_hooks$set(par=function(before, options, envir){if (before) par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3,las=1)})
 require(bbmle)
@@ -176,7 +176,7 @@ head(d3, n=1)
 
 The data include several boys ({\tt Subject}) that have ({\tt height}) measured over time ({\tt Age}). 
 
-<<plot-ox,message=FALSE,cache=TRUE>>=
+<<plot-ox,message=FALSE,cache=TRUE,fig.height=8>>=
 #reorder by intercept
 d3 <- within(d3, Subject <- as.factor(Subject))
 d3 <- within(d3, Subject <- factor(Subject, levels=order(with(d3, by(height,Subject,min)))))
@@ -247,7 +247,7 @@ VC # variance covariance matrices; later attributes give random effects standard
 Note that we could also construct it directly as in the commented-out line using the random effects standard deviations ($\sigma_\alpha, \sigma_\beta$)
 and correlation ($\rho$; given by the off diagonal of the correlation matrix) printed above. 
 
-<<ox-simulate,cache=TRUE,message=FALSE>>=
+<<ox-simulate,cache=TRUE,message=FALSE,fig.height=8>>=
 set.seed(10)
 ages <- unique(d3$age)
 NREP <- 10
