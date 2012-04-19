@@ -27,7 +27,6 @@
 
 \begin{document}
 
-%% still can't get paths to work ...
 \SweaveOpts{fig.path='fig/final-',fig.align='center',fig.show='asis',dev='pdf',fig.width=6,fig.height=4}
 
 <<setup,echo=FALSE,results='hide',message=FALSE>>=

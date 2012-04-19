@@ -377,7 +377,12 @@
  {\par\unskip\endMakeFramed}
 \makeatother
 
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\newcommand{\SweaveOpts}[1]{}  % do not interfere with LaTeX
+\newcommand{\SweaveInput}[1]{} % because they are not real TeX commands
+\newcommand{\Sexpr}[1]{}       % will only be parsed by R
 
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
@@ -407,7 +412,7 @@
 
 \begin{document}
 
-%% still can't get paths to work ...
+%% for fig paths use path='dir/prefix'
 
 
 
@@ -424,10 +429,10 @@
 Looking at fertility in Bangladesh circa 1980. 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{read.csv}\hlkeyword{(}\hlstring{"bangladesh.csv"}\hlkeyword{)}\hspace*{\fill}\\
+\hlsymbol{d}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{read.csv}\hlkeyword{(}\hlstring{"{}bangladesh.csv"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{head}\hlkeyword{(}\hlsymbol{d}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
@@ -442,7 +447,7 @@ Looking at fertility in Bangladesh circa 1980.
 \hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{row.names}\hlkeyword{(}\hlsymbol{dist.pop}\hlkeyword{)}\hlkeyword{)}\hlkeyword{]}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
@@ -455,7 +460,7 @@ First, I will model contraception use accounting for clustering of observations 
 I'll compare a model with a fixed effect for {\tt district} with a mixed effects model that puts random effects on {\tt district}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{m1}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{glm}\hlkeyword{(}\hlsymbol{use.contraception}{\ }\hlkeyword{\urltilda{}}{\ }\hlfunctioncall{as.factor}\hlkeyword{(}\hlsymbol{district}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{data}{\ }\hlargument{=}{\ }\hlsymbol{d}\hlkeyword{,}\hspace*{\fill}\\
@@ -470,7 +475,7 @@ I'll compare a model with a fixed effect for {\tt district} with a mixed effects
 ## (Intercept)             -0.5379    0.08395 -0.7024 -0.3733
 ## ((Intercept)|district)   0.4957         NA      NA      NA
 \end{verbatim}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
@@ -478,7 +483,7 @@ I'll compare a model with a fixed effect for {\tt district} with a mixed effects
 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{d2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{fortify}\hlkeyword{(}\hlsymbol{m1}\hlkeyword{,}{\ }\hlsymbol{d}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}add{\ }predictions{\ }to{\ }data{\ }logistic(d2\usebox{\hlnormalsizeboxdollar}.fitted){\ }gives{\ }predictions}\hspace*{\fill}\\
@@ -495,27 +500,33 @@ I'll compare a model with a fixed effect for {\tt district} with a mixed effects
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlfunctioncall{subset}\hlkeyword{(}\hlsymbol{d2}\hlkeyword{,}{\ }\hlsymbol{upper}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{theme\usebox{\hlnormalsizeboxunderscore}bw}\hlkeyword{(}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}violin}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{use.contraception}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{alpha}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{fill}{\ }\hlargument{=}{\ }\hlstring{"lightgrey"}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"lightgray"}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }construct{\ }a{\ }violin{\ }plot{\ }for{\ }use/non-use{\ }each{\ }district}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{fill}{\ }\hlargument{=}{\ }\hlstring{"{}lightgrey"{}}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}lightgray"{}}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }construct{\ }a{\ }violin{\ }plot{\ }for{\ }use/non-use{\ }each{\ }district}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{m1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{1.5}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{m2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"darkgrey"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}hline}\hlkeyword{(}\hlargument{yintercept}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{fe2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"darkgrey"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{m2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}darkgrey"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}hline}\hlkeyword{(}\hlargument{yintercept}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{fe2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}darkgrey"{}}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{linetype}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g1}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}text}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1.025}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{label}{\ }\hlargument{=}{\ }\hlsymbol{population}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{,}{\ }\hlargument{fontfamily}{\ }\hlargument{=}{\ }\hlstring{"serif"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{,}{\ }\hlargument{fontfamily}{\ }\hlargument{=}{\ }\hlstring{"{}serif"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlfunctioncall{subset}\hlkeyword{(}\hlsymbol{d2}\hlkeyword{,}{\ }\hlkeyword{!}\hlsymbol{upper}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{theme\usebox{\hlnormalsizeboxunderscore}bw}\hlkeyword{(}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}violin}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{use.contraception}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{alpha}{\ }\hlargument{=}{\ }\hlnumber{0.5}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{fill}{\ }\hlargument{=}{\ }\hlstring{"lightgrey"}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"lightgray"}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }construct{\ }a{\ }violin{\ }plot{\ }for{\ }use/non-use{\ }each{\ }district}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{fill}{\ }\hlargument{=}{\ }\hlstring{"{}lightgrey"{}}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}lightgray"{}}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }construct{\ }a{\ }violin{\ }plot{\ }for{\ }use/non-use{\ }each{\ }district}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{m1}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{1.5}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{m2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"darkgrey"}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}hline}\hlkeyword{(}\hlargument{yintercept}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{fe2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"darkgrey"}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{g}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlsymbol{m2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}darkgrey"{}}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}hline}\hlkeyword{(}\hlargument{yintercept}{\ }\hlargument{=}{\ }\hlfunctioncall{logistic}\hlkeyword{(}\hlsymbol{fe2}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}darkgrey"{}}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{linetype}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g2}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}text}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{District}\hlkeyword{,}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{1.025}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{label}{\ }\hlargument{=}{\ }\hlsymbol{population}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{,}{\ }\hlargument{fontfamily}{\ }\hlargument{=}{\ }\hlstring{"serif"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlnumber{3}\hlkeyword{,}{\ }\hlargument{fontfamily}{\ }\hlargument{=}{\ }\hlstring{"{}serif"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{grid.arrange}\hlkeyword{(}\hlsymbol{g1}\hlkeyword{,}{\ }\hlsymbol{g2}\hlkeyword{,}{\ }\hlargument{ncol}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{compare-plot} \end{kframe}}
+\end{kframe}
+
+{\centering \includegraphics{compare-plot} 
+
+}
+
+
 \end{knitrout}
 
 
@@ -539,7 +550,7 @@ I model contraception use as a binomial outcome predicted by the catgorical vari
 In addition, I allow the overall prevalence (random slope intercept) and effect of urbanness (random slope) to vary by district.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{m3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{glmm}\hlkeyword{(}\hlsymbol{use.contraception}{\ }\hlkeyword{\urltilda{}}{\ }\hlsymbol{urban}{\ }\hlkeyword{+}{\ }\hlkeyword{(}\hlsymbol{urban}{\ }\hlkeyword{+}{\ }\hlnumber{1}{\ }\hlkeyword{|}{\ }\hlsymbol{district}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
@@ -591,9 +602,9 @@ In addition, I allow the overall prevalence (random slope intercept) and effect 
 \hlstd{}\hlsymbol{g8}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlsymbol{d.re}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{theme\usebox{\hlnormalsizeboxunderscore}bw}\hlkeyword{(}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g8}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g8}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{\usebox{\hlnormalsizeboxbacktick}(Intercept)\usebox{\hlnormalsizeboxbacktick}}\hlkeyword{,}{\ }\hlsymbol{urban}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{g9}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlfunctioncall{melt}\hlkeyword{(}\hlsymbol{d.re}\hlkeyword{,}{\ }\hlargument{id.vars}{\ }\hlargument{=}{\ }\hlstring{"district"}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{theme\usebox{\hlnormalsizeboxunderscore}bw}\hlkeyword{(}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{g9}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlfunctioncall{melt}\hlkeyword{(}\hlsymbol{d.re}\hlkeyword{,}{\ }\hlargument{id.vars}{\ }\hlargument{=}{\ }\hlstring{"{}district"{}}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{theme\usebox{\hlnormalsizeboxunderscore}bw}\hlkeyword{(}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g9}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g9}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}line}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{district}\hlkeyword{,}{\ }\hlsymbol{value}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlsymbol{variable}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{scale\usebox{\hlnormalsizeboxunderscore}color\usebox{\hlnormalsizeboxunderscore}grey}\hlkeyword{(}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{ylab}\hlkeyword{(}\hlstring{"varying{\ }effect{\ }estimate"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{scale\usebox{\hlnormalsizeboxunderscore}color\usebox{\hlnormalsizeboxunderscore}grey}\hlkeyword{(}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{ylab}\hlkeyword{(}\hlstring{"{}varying{\ }effect{\ }estimate"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{a\usebox{\hlnormalsizeboxunderscore}dist}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ranef}\hlkeyword{(}\hlsymbol{m3}\hlkeyword{)}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{district}\hlkeyword{[}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{]}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{b\usebox{\hlnormalsizeboxunderscore}dist}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ranef}\hlkeyword{(}\hlsymbol{m3}\hlkeyword{)}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{district}\hlkeyword{[}\hlkeyword{,}{\ }\hlnumber{2}\hlkeyword{]}\hspace*{\fill}\\
@@ -605,9 +616,9 @@ In addition, I allow the overall prevalence (random slope intercept) and effect 
 \hlstd{}\hlsymbol{p.corr}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{lab}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.character}\hlkeyword{(}\hlfunctioncall{unique}\hlkeyword{(}\hlsymbol{d}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{district}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g7}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlsymbol{p.corr}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{theme\usebox{\hlnormalsizeboxunderscore}bw}\hlkeyword{(}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{g7}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g7}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}abline}\hlkeyword{(}\hlargument{intercept}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{slope}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"grey"}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{rural}\hlkeyword{,}{\ }\hlsymbol{urban}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{xlab}\hlkeyword{(}\hlstring{"prob{\ }contraceptive{\ }use{\ }|{\ }rural"}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{ylab}\hlkeyword{(}\hlstring{"prob{\ }contraceptive{\ }use{\ }|{\ }urban"}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{ylim}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{xlim}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{g7}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{g7}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}abline}\hlkeyword{(}\hlargument{intercept}{\ }\hlargument{=}{\ }\hlnumber{0}\hlkeyword{,}{\ }\hlargument{slope}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{,}{\ }\hlargument{color}{\ }\hlargument{=}{\ }\hlstring{"{}grey"{}}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{rural}\hlkeyword{,}{\ }\hlsymbol{urban}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{xlab}\hlkeyword{(}\hlstring{"{}prob{\ }contraceptive{\ }use{\ }|{\ }rural"{}}\hlkeyword{)}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlfunctioncall{ylab}\hlkeyword{(}\hlstring{"{}prob{\ }contraceptive{\ }use{\ }|{\ }urban"{}}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{ylim}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{xlim}\hlkeyword{(}\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlnumber{1}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}g10{\ }\usebox{\hlnormalsizeboxlessthan}-{\ }ggplot(data.frame(district.contrib=logistic(a+a\usebox{\hlnormalsizeboxunderscore}dist),}\hspace*{\fill}\\
@@ -619,13 +630,19 @@ In addition, I allow the overall prevalence (random slope intercept) and effect 
 \hlstd{}\hlfunctioncall{grid.arrange}\hlkeyword{(}\hlsymbol{g8}\hlkeyword{,}{\ }\hlsymbol{g9}\hlkeyword{,}{\ }\hlsymbol{g7}\hlkeyword{,}{\ }\hlargument{ncol}{\ }\hlargument{=}{\ }\hlnumber{2}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{urban-model} \begin{flushleft}
+\end{kframe}
+
+{\centering \includegraphics{urban-model} 
+
+}
+
+\begin{kframe}\begin{flushleft}
 \ttfamily\noindent
 \hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}xtabs(\urltilda{}{\ }urban+{\ }district,{\ }data=d2)}\mbox{}
 \normalfont
 \end{flushleft}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
@@ -645,10 +662,10 @@ The majority of the points, however, fall above the $x=y$ line, indicating the o
 Now, I model the heights of boys measured at different ages. 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
-\hlsymbol{d3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{read.csv}\hlkeyword{(}\hlstring{"Oxboys.csv"}\hlkeyword{)}\hspace*{\fill}\\
+\hlsymbol{d3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{read.csv}\hlkeyword{(}\hlstring{"{}Oxboys.csv"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{head}\hlkeyword{(}\hlsymbol{d3}\hlkeyword{,}{\ }\hlargument{n}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
@@ -656,14 +673,14 @@ Now, I model the heights of boys measured at different ages.
 ##   Subject age height Occasion
 ## 1       1  -1  140.5        1
 \end{verbatim}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
 The data include several boys ({\tt Subject}) that have ({\tt height}) measured over time ({\tt Age}). 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlcomment{\usebox{\hlnormalsizeboxhash}reorder{\ }by{\ }intercept}\hspace*{\fill}\\
@@ -673,11 +690,17 @@ The data include several boys ({\tt Subject}) that have ({\tt height}) measured 
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{g3}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{ggplot}\hlkeyword{(}\hlsymbol{d3}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{grid.arrange}\hlkeyword{(}\hlsymbol{g3}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{age}\hlkeyword{,}{\ }\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{facet\usebox{\hlnormalsizeboxunderscore}wrap}\hlkeyword{(}\hlkeyword{\urltilda{}}\hlsymbol{Subject}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{g3}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{age}\hlkeyword{,}{\ }\hlsymbol{height}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{Subject}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{opts}\hlkeyword{(}\hlargument{legend.position}{\ }\hlargument{=}{\ }\hlstring{"none"}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{g3}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{age}\hlkeyword{,}{\ }\hlsymbol{height}\hlkeyword{,}{\ }\hlargument{size}{\ }\hlargument{=}{\ }\hlsymbol{Subject}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{opts}\hlkeyword{(}\hlargument{legend.position}{\ }\hlargument{=}{\ }\hlstring{"{}none"{}}\hlkeyword{)}\hlkeyword{,}\hspace*{\fill}\\
 \hlstd{}{\ }{\ }{\ }{\ }\hlargument{ncol}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{plot-ox} \end{kframe}}
+\end{kframe}
+
+{\centering \includegraphics{plot-ox} 
+
+}
+
+
 \end{knitrout}
 
 
@@ -699,7 +722,7 @@ I model height $h_{ij}$ the height observed in {\tt Subject} $j$ at age $i$
 \end{align*}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hspace*{\fill}\\
@@ -732,7 +755,7 @@ I model height $h_{ij}$ the height observed in {\tt Subject} $j$ at age $i$
 \begin{verbatim}
 ## [1] 1.648
 \end{verbatim}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
@@ -744,7 +767,7 @@ This implies that per-subject variation, unrelated to age, explains more variati
 \subsubsection*{individual level effects (b)}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{s.m4}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{summary}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\hspace*{\fill}\\
@@ -773,7 +796,7 @@ This implies that per-subject variation, unrelated to age, explains more variati
 ##     (Intr)
 ## age 0.628 
 \end{verbatim}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
@@ -794,7 +817,7 @@ To simulate new subjects, we need to construct random draws from a normal distri
 We can then predict heights from our model above, using these simulated varying effects. 
 The function {\tt VarCorr} gives this matrix for our model.
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlsymbol{VC}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{VarCorr}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{Subject}\hspace*{\fill}\\
@@ -814,30 +837,30 @@ The function {\tt VarCorr} gives this matrix for our model.
 ## (Intercept)      1.0000 0.6413
 ## age              0.6413 1.0000
 \end{verbatim}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 Note that we could also construct it directly as in the commented-out line using the random effects standard deviations ($\sigma_\alpha, \sigma_\beta$)
 and correlation ($\rho$; given by the off diagonal of the correlation matrix) printed above. 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlfunctioncall{set.seed}\hlkeyword{(}\hlnumber{10}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{ages}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{unique}\hlkeyword{(}\hlsymbol{d3}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{NREP}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlnumber{10}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{re.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{mvrnorm}\hlkeyword{(}\hlsymbol{NREP}\hlkeyword{,}{\ }\hlargument{mu}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlnumber{0}\hlkeyword{,}{\ }\hlnumber{0}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{Sigma}{\ }\hlargument{=}{\ }\hlsymbol{VC}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{fixef}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\hlkeyword{[}\hlstring{"(Intercept)"}\hlkeyword{]}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{fixef}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\hlkeyword{[}\hlstring{"age"}\hlkeyword{]}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{height.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{re.pred}\hlkeyword{[}\hlkeyword{,}{\ }\hlstring{"(Intercept)"}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
-\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{(}\hlsymbol{b}{\ }\hlkeyword{+}{\ }\hlsymbol{re.pred}\hlkeyword{[}\hlkeyword{,}{\ }\hlstring{"age"}\hlkeyword{]}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{a}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{fixef}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\hlkeyword{[}\hlstring{"{}(Intercept)"{}}\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{b}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{fixef}\hlkeyword{(}\hlsymbol{m4}\hlkeyword{)}\hlkeyword{[}\hlstring{"{}age"{}}\hlkeyword{]}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{height.pred}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{sapply}\hlkeyword{(}\hlsymbol{ages}\hlkeyword{,}{\ }\hlkeyword{function}\hlkeyword{(}\hlformalargs{x}\hlkeyword{)}{\ }\hlsymbol{a}{\ }\hlkeyword{+}{\ }\hlsymbol{re.pred}\hlkeyword{[}\hlkeyword{,}{\ }\hlstring{"{}(Intercept)"{}}\hlkeyword{]}{\ }\hlkeyword{+}\hspace*{\fill}\\
+\hlstd{}{\ }{\ }{\ }{\ }\hlkeyword{(}\hlsymbol{b}{\ }\hlkeyword{+}{\ }\hlsymbol{re.pred}\hlkeyword{[}\hlkeyword{,}{\ }\hlstring{"{}age"{}}\hlkeyword{]}\hlkeyword{)}{\ }\hlkeyword{*}{\ }\hlsymbol{x}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{df.prd}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.data.frame}\hlkeyword{(}\hlfunctioncall{t}\hlkeyword{(}\hlsymbol{height.pred}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{df.prd}\hlkeyword{)}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.character}\hlkeyword{(}\hlnumber{1}\hlkeyword{:}\hlsymbol{NREP}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{df.prd}\hlkeyword{\usebox{\hlnormalsizeboxdollar}}\hlsymbol{age}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlsymbol{ages}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
-\hlstd{}\hlsymbol{df}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{melt}\hlkeyword{(}\hlsymbol{df.prd}\hlkeyword{,}{\ }\hlargument{id.vars}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"age"}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{df}\hlkeyword{)}\hlkeyword{[}\hlnumber{2}\hlkeyword{:}\hlnumber{3}\hlkeyword{]}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"Subject"}\hlkeyword{,}{\ }\hlstring{"height"}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlsymbol{df}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{melt}\hlkeyword{(}\hlsymbol{df.prd}\hlkeyword{,}{\ }\hlargument{id.vars}{\ }\hlargument{=}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}age"{}}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{names}\hlkeyword{(}\hlsymbol{df}\hlkeyword{)}\hlkeyword{[}\hlnumber{2}\hlkeyword{:}\hlnumber{3}\hlkeyword{]}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{c}\hlkeyword{(}\hlstring{"{}Subject"{}}\hlkeyword{,}{\ }\hlstring{"{}height"{}}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}reorder{\ }by{\ }intercept}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{df}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{within}\hlkeyword{(}\hlsymbol{df}\hlkeyword{,}{\ }\hlsymbol{Subject}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{as.factor}\hlkeyword{(}\hlsymbol{Subject}\hlkeyword{)}\hlkeyword{)}\hspace*{\fill}\\
 \hlstd{}\hlsymbol{df}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{within}\hlkeyword{(}\hlsymbol{df}\hlkeyword{,}{\ }\hlsymbol{Subject}{\ }\hlassignement{\usebox{\hlnormalsizeboxlessthan}-}{\ }\hlfunctioncall{factor}\hlkeyword{(}\hlsymbol{Subject}\hlkeyword{,}{\ }\hlargument{levels}{\ }\hlargument{=}{\ }\hlfunctioncall{order}\hlkeyword{(}\hlfunctioncall{with}\hlkeyword{(}\hlsymbol{df}\hlkeyword{,}\hspace*{\fill}\\
@@ -849,7 +872,13 @@ and correlation ($\rho$; given by the off diagonal of the correlation matrix) pr
 \hlstd{}{\ }{\ }{\ }{\ }\hlsymbol{g5}{\ }\hlkeyword{+}{\ }\hlfunctioncall{geom\usebox{\hlnormalsizeboxunderscore}point}\hlkeyword{(}\hlfunctioncall{aes}\hlkeyword{(}\hlsymbol{age}\hlkeyword{,}{\ }\hlsymbol{height}\hlkeyword{)}\hlkeyword{)}{\ }\hlkeyword{+}{\ }\hlfunctioncall{facet\usebox{\hlnormalsizeboxunderscore}wrap}\hlkeyword{(}\hlkeyword{\urltilda{}}\hlsymbol{Subject}\hlkeyword{)}\hlkeyword{,}{\ }\hlargument{ncol}{\ }\hlargument{=}{\ }\hlnumber{1}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\includegraphics{ox-simulate} \end{kframe}}
+\end{kframe}
+
+{\centering \includegraphics{ox-simulate} 
+
+}
+
+
 \end{knitrout}
 
 
@@ -862,11 +891,11 @@ The lower panel figure plots height on age for the 10 simulated subjects, with i
 \subsection*{Colophon}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{.97, .97, .97}{\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{flushleft}
 \ttfamily\noindent
 \hlfunctioncall{require}\hlkeyword{(}\hlsymbol{knitr}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }the{\ }package}\hspace*{\fill}\\
-\hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{getwd}\hlkeyword{(}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"hw9ashander.Rnw"}\hlkeyword{,}{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"/"}\hlkeyword{)}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run1}\hspace*{\fill}\\
+\hlstd{}\hlfunctioncall{knit}\hlkeyword{(}\hlfunctioncall{paste}\hlkeyword{(}\hlfunctioncall{getwd}\hlkeyword{(}\hlkeyword{)}\hlkeyword{,}{\ }\hlstring{"{}hw9ashander.Rnw"{}}\hlkeyword{,}{\ }\hlargument{sep}{\ }\hlargument{=}{\ }\hlstring{"{}/"{}}\hlkeyword{)}\hlkeyword{)}{\ }{\ }\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}{\ }to{\ }run1}\hspace*{\fill}\\
 \hlstd{}\hspace*{\fill}\\
 \hlstd{}\hlcomment{\usebox{\hlnormalsizeboxhash}\usebox{\hlnormalsizeboxhash}x{\ }to{\ }use{\ }all{\ }cores}\hspace*{\fill}\\
 \hlstd{}\hlfunctioncall{require}\hlkeyword{(}\hlsymbol{snowfall}\hlkeyword{)}\hspace*{\fill}\\
@@ -876,7 +905,7 @@ The lower panel figure plots height on age for the 10 simulated subjects, with i
 \hlstd{}\hlfunctioncall{sfStop}\hlkeyword{(}\hlkeyword{)}\mbox{}
 \normalfont
 \end{flushleft}
-\end{kframe}}
+\end{kframe}
 \end{knitrout}
 
 
